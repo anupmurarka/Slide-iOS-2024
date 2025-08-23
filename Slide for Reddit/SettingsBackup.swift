@@ -82,6 +82,16 @@ extension SettingsBackup {
     }
 
     func backupSync() {
+        // Check if iCloud is available
+        guard FileManager.default.ubiquityIdentityToken != nil else {
+            let alert = UIAlertController.init(title: "iCloud Not Available", message: "iCloud is not available or not signed in. Please sign in to iCloud in Settings.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction.init(title: "Close", style: .cancel, handler: { (_) in
+                self.dismiss(animated: true, completion: nil)
+            }))
+            present(alert, animated: true)
+            return
+        }
+        
         let icloud = NSUbiquitousKeyValueStore.default
         for item in icloud.dictionaryRepresentation {
             icloud.removeObject(forKey: item.key)
@@ -100,6 +110,16 @@ extension SettingsBackup {
     }
 
     func restoreSync() {
+        // Check if iCloud is available
+        guard FileManager.default.ubiquityIdentityToken != nil else {
+            let alert = UIAlertController.init(title: "iCloud Not Available", message: "iCloud is not available or not signed in. Please sign in to iCloud in Settings.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction.init(title: "Close", style: .cancel, handler: { (_) in
+                self.dismiss(animated: true, completion: nil)
+            }))
+            present(alert, animated: true)
+            return
+        }
+        
         let icloud = NSUbiquitousKeyValueStore.default
         for item in icloud.dictionaryRepresentation {
             print(item)

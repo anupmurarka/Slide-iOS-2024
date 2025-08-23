@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '11'
+platform :ios, '12.0'
 inhibit_all_warnings!
 target 'Slide for Reddit' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
@@ -14,7 +14,7 @@ target 'Slide for Reddit' do
   pod 'MaterialComponents/ProgressView'
   pod 'SwiftEntryKit', :git => 'https://github.com/ccrama/SwiftEntryKit'
   pod 'SubtleVolume'
-  pod 'SDCAlertView', :git => 'https://github.com/ccrama/SDCAlertView'
+  pod 'SDCAlertView', '~> 12.0'
   pod 'MTColorDistance'
   pod 'SwiftLinkPreview', '~> 3.0.1'
   pod 'DTCoreText', :git => 'https://github.com/Cocoanetics/DTCoreText'
@@ -37,7 +37,7 @@ target 'Slide for Reddit' do
   post_install do |installer|
     installer.pods_project.targets.each do |target|
     	target.build_configurations.each do |config|
-     	 config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11'
+     	 config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
     	end
         if [
           'HTMLSpecialCharacters',

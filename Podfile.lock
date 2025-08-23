@@ -44,7 +44,7 @@ PODS:
     - HTMLSpecialCharacters
     - MiniKeychain
   - RLBAlertsPickers (1.1.1)
-  - SDCAlertView (10.0)
+  - SDCAlertView (12.0.5)
   - SubtleVolume (1.1.0)
   - SwiftEntryKit (1.2.1):
     - QuickLayout (= 3.0.0)
@@ -65,7 +65,7 @@ DEPENDENCIES:
   - OpalImagePicker
   - reddift (from `https://github.com/ccrama/reddift`)
   - RLBAlertsPickers (from `https://github.com/ccrama/Alerts-Pickers`)
-  - SDCAlertView (from `https://github.com/ccrama/SDCAlertView`)
+  - SDCAlertView (~> 12.0)
   - SubtleVolume
   - SwiftEntryKit (from `https://github.com/ccrama/SwiftEntryKit`)
   - SwiftLinkPreview (~> 3.0.1)
@@ -88,6 +88,7 @@ SPEC REPOS:
     - MTColorDistance
     - OpalImagePicker
     - QuickLayout
+    - SDCAlertView
     - SubtleVolume
     - SwiftLinkPreview
     - SwiftLint
@@ -103,8 +104,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/ccrama/reddift
   RLBAlertsPickers:
     :git: https://github.com/ccrama/Alerts-Pickers
-  SDCAlertView:
-    :git: https://github.com/ccrama/SDCAlertView
   SwiftEntryKit:
     :git: https://github.com/ccrama/SwiftEntryKit
   SwiftyJSON:
@@ -124,9 +123,6 @@ CHECKOUT OPTIONS:
   RLBAlertsPickers:
     :commit: a22003f93a803c2e14b193f636669c21358fb1d7
     :git: https://github.com/ccrama/Alerts-Pickers
-  SDCAlertView:
-    :commit: 644380f73489b1eded3c332335e589e026254486
-    :git: https://github.com/ccrama/SDCAlertView
   SwiftEntryKit:
     :commit: 4418c7bdda528b850483ea70a786003fce4f4a68
     :git: https://github.com/ccrama/SwiftEntryKit
@@ -149,9 +145,9 @@ SPEC CHECKSUMS:
   MTColorDistance: 5ab8708eb88bc22d4d88e309d09eb912f3a6e27b
   OpalImagePicker: 38e772dd93a54431fc516b33e1f337c50f745834
   QuickLayout: 07b45a72b10083fee3f095990cfed1c1e7b27f0a
-  reddift: 42af05f3d2db6315cdf144be9256de36e86a523a
+  reddift: 8fd60c2b94def78a3d6a2511b15a79a47e720b81
   RLBAlertsPickers: c93e83c13526a5840b67eb52f702d3f83eeaac6a
-  SDCAlertView: 5fbc48cae6d7bf9781097e3f27883924ef3b922c
+  SDCAlertView: c9042ba201897da46d833193b8462a186f79c47c
   SubtleVolume: 101038d203018736bcd1df3ac95bcc0f6b8640ce
   SwiftEntryKit: 1661b766dd22b07679e6ebb326ccfbd81ceb0a20
   SwiftLinkPreview: 7524438c43bf63a5041615713777c3d8f19a9a31
@@ -160,6 +156,6 @@ SPEC CHECKSUMS:
   TGPControls: 52c0770bee9c9aee364f1559cc627fc01ea5e8b2
   YoutubePlayer-in-WKWebView: cfbf46da51d7370662a695a8f351e5fa1d3e1008
 
-PODFILE CHECKSUM: 921cd225b4120efa1cb2e0c32101c3932f6ceb0c
+PODFILE CHECKSUM: 6d3fa27c6fd1296e42b198cf93758e707ddc1a84
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.16.2
