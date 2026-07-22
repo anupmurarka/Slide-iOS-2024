@@ -41,3 +41,37 @@ On iOS:
   `reddift_config.example.json` template so real/borrowed values stay out of future commits.
 - Or move the values to a git-ignored `Secrets.xcconfig` surfaced via `Info.plist`
   build settings (CI-friendly; pairs with the Phase 7 xcconfig work in MIGRATION.md).
+
+## iCloud / CloudKit provisioning — finish verifying
+
+The stripped entitlements (iCloud/CloudKit, `aps-environment`, `ubiquity-kvstore`,
+`user-fonts`, app group) were restored in `Slide for Reddit/Slide for Reddit.entitlements`,
+which fixed the launch crash at `AppDelegate.isCloudKitAvailable()` (`CKContainer`
+trapped without the `com.apple.developer.icloud-services` entitlement).
+
+Provisioning appeared to work when building to device (akm-iPad8) but is **not fully
+tested**. Still to verify:
+- iCloud container `iCloud.io.automationworks.redditslide` (and `…-debug`) is created
+  and enabled on the App ID, and CloudKit **and** Key-value storage are both on.
+- The App Group `group.io.automationworks.redditslide.prefs` is provisioned — the earlier
+  "only allowed for System Containers" console warning should be gone.
+- Push (`aps-environment`) and Fonts (`user-fonts`) capabilities are actually enabled, or
+  trim those two entitlement keys if you don't want them (they force extra signing setup).
+- Exercise the iCloud paths end-to-end: Settings → sync/restore (`SettingsBackup`
+  syncSettings/restoreSync via `NSUbiquitousKeyValueStore`) and the CloudKit
+  save/read in `AppDelegate` (readLater/collections/deleted records) on a real device
+  signed into iCloud. Confirm no `CKContainer` trap and that data round-trips.
+
+## Missing bundled font — googleicon.ttf
+
+At launch the console logs:
+`FontParser could not open filePath …/Slide for Reddit.app/googleicon.ttf: [2: No such file or directory]`
+and `GSFont: file doesn't exist … googleicon.ttf`.
+
+The app references a `googleicon.ttf` font that isn't present in the app bundle
+(not copied as a resource / not in the target's Copy Bundle Resources, or the file is
+missing from the repo). Non-fatal, but any UI relying on that icon font won't render.
+To fix: locate where `googleicon` is registered/used (Info.plist `UIAppFonts`, or a
+`UIFont(name: "googleicon", …)` / icon-font helper), then either add the missing
+`googleicon.ttf` to the repo + Copy Bundle Resources, or migrate those glyphs to the
+SF Symbols the app already uses elsewhere.
