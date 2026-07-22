@@ -514,7 +514,13 @@ class SplitMainViewController: MainViewController {
 
         let main: MainViewController = (UIApplication.shared.delegate as! AppDelegate).resetStack(window: keyWindow)
         (UIApplication.shared.delegate as! AppDelegate).login = main
-        AccountController.addAccount(context: main, register: register)
+        // resetStack sets window.rootViewController + makeKeyAndVisible, but the new
+        // root's view is not attached to the window synchronously. Defer presenting the
+        // login web view one run-loop turn so it isn't presented on a view controller
+        // that is "not in the window hierarchy" yet.
+        DispatchQueue.main.async {
+            AccountController.addAccount(context: main, register: register)
+        }
     }
 
     override func addAccount(token: OAuth2Token, register: Bool) {
