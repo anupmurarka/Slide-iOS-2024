@@ -107,7 +107,7 @@ Net result: `LocalPackages/` will contain roughly `Reddift`, `AlertsPickers` (re
 - Left the `Podfile` `post_install` (forces pods to 12.0 / Swift 4.2) untouched — pods deploy below the app fine and are slated for removal in later phases.
 - **Verified:** `Slide for Reddit` scheme (app + widgets + WidgetConfigIntent + extensions) builds clean on iOS 17 simulator; `Slide for Apple Watch` scheme builds clean on watchOS simulator. Both BUILD SUCCEEDED.
 
-### Phase 2 — Vendor reddift (and residual forks)  🚧 IN PROGRESS
+### Phase 2 — Vendor reddift (and residual forks)  ✅ DONE
 - ✅ **reddift vendored** as local Swift Package `LocalPackages/Reddift` with three
   targets: `reddift` (62 files), `HTMLSpecialCharacters`, `MiniKeychain`.
   - Discovery: reddift does **not** depend on Alamofire/Starscream/SwiftyJSON — only
@@ -118,7 +118,19 @@ Net result: `LocalPackages/` will contain roughly `Reddift`, `AlertsPickers` (re
   - Wired the local package into the `Slide for Reddit` app target via a new
     `XCLocalSwiftPackageReference` in the pbxproj. Only the main app links reddift.
   - **Verified:** `Slide for Reddit` scheme BUILD SUCCEEDED with the SPM reddift.
-- ⬜ Remaining: vendor/replace `SubtleVolume`, `TGPControls`, `MTColorDistance`.
+- ✅ **SubtleVolume, TGPControls, MTColorDistance** moved to a second local Swift
+  Package `LocalPackages/VendoredUI` (three library products):
+  - SubtleVolume & TGPControls vendored as pure Swift; TGPControls needed two Swift-5
+    API renames (`NSLayoutAttribute`→`NSLayoutConstraint.Attribute`,
+    `UIControlEvents`→`UIControl.Event`).
+  - **MTColorDistance** was the project's only Objective-C dependency (a CIE-Lab
+    `UIColor` color-distance category). Rather than a mixed-language SPM target, it
+    was **ported to Swift** (`UIColor+Distance.swift`), preserving the original
+    algorithm exactly (including its integer-division quirk). Call site
+    `ColorUtil.swift` unchanged (`closestColor(inPalette:)`).
+  - Removed all three from the Podfile; `pod install` dropped them from `Pods/`.
+  - **Verified:** `Slide for Reddit` scheme BUILD SUCCEEDED with all four vendored
+    packages. CocoaPods is now down to 14 declared / 18 total pods.
 
 > **Environment note (this machine):** CocoaPods was not installed; installed via
 > `brew install cocoapods` (1.17.0, Ruby 4.0). `pod` commands must run with

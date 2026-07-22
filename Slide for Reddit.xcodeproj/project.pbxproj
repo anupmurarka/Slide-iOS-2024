@@ -410,6 +410,9 @@
 		BEF6F5361E19B4A2002B03B6 /* adsources.txt in Resources */ = {isa = PBXBuildFile; fileRef = BEF6F5351E19B4A2002B03B6 /* adsources.txt */; };
 		BEF7483220DD894100B6236B /* SettingsGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF7483120DD894100B6236B /* SettingsGestures.swift */; };
 		DADA00000000000000000003 /* reddift in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000002 /* reddift */; };
+		DADA00000000000000000008 /* SubtleVolume in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000005 /* SubtleVolume */; };
+		DADA00000000000000000009 /* TGPControls in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000006 /* TGPControls */; };
+		DADA0000000000000000000A /* MTColorDistance in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000007 /* MTColorDistance */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -982,6 +985,9 @@
 				BE7BFB481F1997BA009CA2E1 /* MapKit.framework in Frameworks */,
 				B4F3349F251277B80032BB64 /* Starscream in Frameworks */,
 				DADA00000000000000000003 /* reddift in Frameworks */,
+				DADA00000000000000000008 /* SubtleVolume in Frameworks */,
+				DADA00000000000000000009 /* TGPControls in Frameworks */,
+				DADA0000000000000000000A /* MTColorDistance in Frameworks */,
 				01BBE6AB1AC863FE2E897632 /* Pods_Slide_for_Reddit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1846,6 +1852,9 @@
 				B4F3355525127BD20032BB64 /* Then */,
 				BE31454525674E03004A908C /* Proton */,
 				DADA00000000000000000002 /* reddift */,
+				DADA00000000000000000005 /* SubtleVolume */,
+				DADA00000000000000000006 /* TGPControls */,
+				DADA00000000000000000007 /* MTColorDistance */,
 			);
 			productName = "Slide for Reddit";
 			productReference = BE8FCA041E0C46090063B8EF /* Slide for Reddit.app */;
@@ -2017,6 +2026,7 @@
 				B4F3355425127BD20032BB64 /* XCRemoteSwiftPackageReference "Then" */,
 				BE31454425674E03004A908C /* XCRemoteSwiftPackageReference "proton" */,
 				DADA00000000000000000001 /* XCLocalSwiftPackageReference "Reddift" */,
+				DADA00000000000000000004 /* XCLocalSwiftPackageReference "VendoredUI" */,
 			);
 			productRefGroup = BE8FCA051E0C46090063B8EF /* Products */;
 			projectDirPath = "";
@@ -2292,7 +2302,6 @@
 				"${BUILT_PRODUCTS_DIR}/LicensesViewController/LicensesViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/MDFInternationalization/MDFInternationalization.framework",
 				"${BUILT_PRODUCTS_DIR}/MKColorPicker/MKColorPicker.framework",
-				"${BUILT_PRODUCTS_DIR}/MTColorDistance/MTColorDistance.framework",
 				"${BUILT_PRODUCTS_DIR}/MaterialComponents/MaterialComponents.framework",
 				"${BUILT_PRODUCTS_DIR}/MotionAnimator/MotionAnimator.framework",
 				"${BUILT_PRODUCTS_DIR}/MotionInterchange/MotionInterchange.framework",
@@ -2300,11 +2309,9 @@
 				"${BUILT_PRODUCTS_DIR}/QuickLayout/QuickLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/RLBAlertsPickers/RLBAlertsPickers.framework",
 				"${BUILT_PRODUCTS_DIR}/SDCAlertView/SDCAlertView.framework",
-				"${BUILT_PRODUCTS_DIR}/SubtleVolume/SubtleVolume.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftEntryKit/SwiftEntryKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftLinkPreview/SwiftLinkPreview.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/TGPControls/TGPControls.framework",
 				"${BUILT_PRODUCTS_DIR}/YoutubePlayer-in-WKWebView/YoutubePlayer_in_WKWebView.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -2315,7 +2322,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LicensesViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFInternationalization.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MKColorPicker.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MTColorDistance.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialComponents.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MotionAnimator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MotionInterchange.framework",
@@ -2323,11 +2329,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QuickLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RLBAlertsPickers.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDCAlertView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SubtleVolume.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftEntryKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLinkPreview.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TGPControls.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YoutubePlayer_in_WKWebView.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3560,6 +3564,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = LocalPackages/Reddift;
 		};
+		DADA00000000000000000004 /* XCLocalSwiftPackageReference "VendoredUI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = LocalPackages/VendoredUI;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -3673,6 +3681,18 @@
 		DADA00000000000000000002 /* reddift */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = reddift;
+		};
+		DADA00000000000000000005 /* SubtleVolume */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SubtleVolume;
+		};
+		DADA00000000000000000006 /* TGPControls */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TGPControls;
+		};
+		DADA00000000000000000007 /* MTColorDistance */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MTColorDistance;
 		};
 /* End XCSwiftPackageProductDependency section */
 

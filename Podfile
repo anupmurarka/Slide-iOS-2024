@@ -14,16 +14,15 @@ target 'Slide for Reddit' do
   pod 'MaterialComponents/ActivityIndicator'
   pod 'MaterialComponents/ProgressView'
   pod 'SwiftEntryKit', :git => 'https://github.com/ccrama/SwiftEntryKit'
-  pod 'SubtleVolume'
   pod 'SDCAlertView', '~> 12.0'
-  pod 'MTColorDistance'
   pod 'SwiftLinkPreview', '~> 3.0.1'
   pod 'DTCoreText', :git => 'https://github.com/Cocoanetics/DTCoreText'
   pod 'RLBAlertsPickers', :git => 'https://github.com/ccrama/Alerts-Pickers'
   pod 'Alamofire', '~> 4.3'
   pod 'SwiftyJSON', :git => 'https://github.com/ccrama/SwiftyJSON.git', :branch => 'hotfix-xcode12'
   pod "YoutubePlayer-in-WKWebView", "~> 0.3.0"
-  pod 'TGPControls'
+  # SubtleVolume, TGPControls and MTColorDistance (Swift port) migrated to the
+  # local Swift Package at LocalPackages/VendoredUI (see MIGRATION.md, Phase 2).
 
   target 'Slide for RedditTests' do
     inherit! :search_paths
