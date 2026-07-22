@@ -66,10 +66,11 @@ public struct OAuth2AppOnlyToken: Token {
     - returns: URLRequest object to request your access token.
     */
     public static func requestForOAuth2AppOnly(username: String, password: String, clientID: String, secret: String) -> URLRequest? {
-        guard let URL = URL(string: "https://ssl.reddit.com/api/v1/access_token") else { return nil }
+        guard let URL = URL(string: "https://www.reddit.com/api/v1/access_token") else { return nil }
         var request = URLRequest(url: URL)
         do {
             try request.setRedditBasicAuthentication(username: clientID, password: secret)
+            request.setUserAgentForReddit()
             let param = "grant_type=password&username=" + username + "&password=" + password
             let data = param.data(using: .utf8)
             request.httpBody = data

@@ -80,6 +80,7 @@ public struct OAuth2Token: Token {
         var request = URLRequest(url: URL)
         do {
             try request.setRedditBasicAuthentication()
+            request.setUserAgentForReddit()
             let param = "grant_type=authorization_code&code=" + code + "&redirect_uri=" + Config.sharedInstance.redirectURI
             let data = param.data(using: .utf8)
             request.httpBody = data
@@ -101,6 +102,7 @@ public struct OAuth2Token: Token {
         var request = URLRequest(url: URL)
         do {
             try request.setRedditBasicAuthentication()
+            request.setUserAgentForReddit()
             let param = "grant_type=refresh_token&refresh_token=" + refreshToken
             let data = param.data(using: .utf8)
             request.httpBody = data
@@ -122,6 +124,7 @@ public struct OAuth2Token: Token {
         var request = URLRequest(url: URL)
         do {
             try request.setRedditBasicAuthentication()
+            request.setUserAgentForReddit()
             let param = "token=" + accessToken + "&token_type_hint=access_token"
             let data = param.data(using: .utf8)
             request.httpBody = data
