@@ -11,7 +11,8 @@ target 'Slide for Reddit' do
   # MKColorPicker (embedded swatch grid, no native equivalent) vendored to
   # LocalPackages/VendoredUI (see MIGRATION.md, Phase 4).
   # LicensesViewController vendored to LocalPackages/VendoredUI (Phase 3).
-  pod 'OpalImagePicker'
+  # OpalImagePicker removed: it backed only the iOS <14 fallback, now dead at the
+  # iOS 15 floor. Image picking uses PHPickerViewController (MIGRATION.md, Phase 4).
   # MaterialComponents (archived by Google) replaced by a native UIKit
   # MDCActivityIndicator shim at Slide for Reddit/Compat (see MIGRATION.md, Phase 4).
   # SwiftEntryKit migrated to upstream huri000/SwiftEntryKit 2.x via SPM (Phase 3).
