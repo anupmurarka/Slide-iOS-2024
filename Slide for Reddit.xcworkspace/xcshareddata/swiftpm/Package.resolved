@@ -1,5 +1,5 @@
 {
-  "originHash" : "7e1776fb257f2fecf9b82349549a98a1a11f81b4da37371b96a8dea0343f4f17",
+  "originHash" : "f571ad2f44d950ece4bd6c1d8af050ee779fa4176b98af6d9d9cbcde27a9cdca",
   "pins" : [
     {
       "identity" : "anchorage",
@@ -53,6 +53,15 @@
       "state" : {
         "revision" : "e9257e11ff2a708f6b6ea98a9d593ab3bef7ea1b",
         "version" : "0.5.0"
+      }
+    },
+    {
+      "identity" : "sdcalertview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sberrevoets/SDCAlertView",
+      "state" : {
+        "revision" : "eda84764885b55b30c334384afee5f8f06ac48de",
+        "version" : "12.0.5"
       }
     },
     {

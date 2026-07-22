@@ -14,7 +14,7 @@ target 'Slide for Reddit' do
   pod 'MaterialComponents/ActivityIndicator'
   pod 'MaterialComponents/ProgressView'
   # SwiftEntryKit migrated to upstream huri000/SwiftEntryKit 2.x via SPM (Phase 3).
-  pod 'SDCAlertView', '~> 12.0'
+  # SDCAlertView migrated to sberrevoets/SDCAlertView via SPM (Phase 3).
   # SwiftLinkPreview migrated to official LeonardoCardoso/SwiftLinkPreview via SPM (Phase 3).
   # DTCoreText migrated to Cocoanetics/DTCoreText via SPM (Phase 3).
   pod 'RLBAlertsPickers', :git => 'https://github.com/ccrama/Alerts-Pickers'

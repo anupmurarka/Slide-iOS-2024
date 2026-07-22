@@ -418,6 +418,7 @@
 		DADA00000000000000000032 /* SwiftEntryKit in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000031 /* SwiftEntryKit */; };
 		DADA00000000000000000042 /* LicensesViewController in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000040 /* LicensesViewController */; };
 		DADA00000000000000000052 /* DTCoreText in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000051 /* DTCoreText */; };
+		DADA00000000000000000062 /* SDCAlertView in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000061 /* SDCAlertView */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -998,6 +999,7 @@
 				DADA00000000000000000032 /* SwiftEntryKit in Frameworks */,
 				DADA00000000000000000042 /* LicensesViewController in Frameworks */,
 				DADA00000000000000000052 /* DTCoreText in Frameworks */,
+				DADA00000000000000000062 /* SDCAlertView in Frameworks */,
 				01BBE6AB1AC863FE2E897632 /* Pods_Slide_for_Reddit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1870,6 +1872,7 @@
 				DADA00000000000000000031 /* SwiftEntryKit */,
 				DADA00000000000000000040 /* LicensesViewController */,
 				DADA00000000000000000051 /* DTCoreText */,
+				DADA00000000000000000061 /* SDCAlertView */,
 			);
 			productName = "Slide for Reddit";
 			productReference = BE8FCA041E0C46090063B8EF /* Slide for Reddit.app */;
@@ -2046,6 +2049,7 @@
 				DADA00000000000000000020 /* XCRemoteSwiftPackageReference "SwiftLinkPreview" */,
 				DADA00000000000000000030 /* XCRemoteSwiftPackageReference "SwiftEntryKit" */,
 				DADA00000000000000000050 /* XCRemoteSwiftPackageReference "DTCoreText" */,
+				DADA00000000000000000060 /* XCRemoteSwiftPackageReference "SDCAlertView" */,
 			);
 			productRefGroup = BE8FCA051E0C46090063B8EF /* Products */;
 			projectDirPath = "";
@@ -2323,7 +2327,6 @@
 				"${BUILT_PRODUCTS_DIR}/MotionInterchange/MotionInterchange.framework",
 				"${BUILT_PRODUCTS_DIR}/OpalImagePicker/OpalImagePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/RLBAlertsPickers/RLBAlertsPickers.framework",
-				"${BUILT_PRODUCTS_DIR}/SDCAlertView/SDCAlertView.framework",
 				"${BUILT_PRODUCTS_DIR}/YoutubePlayer-in-WKWebView/YoutubePlayer_in_WKWebView.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -2336,7 +2339,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MotionInterchange.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpalImagePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RLBAlertsPickers.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDCAlertView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YoutubePlayer_in_WKWebView.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3672,6 +3674,14 @@
 				minimumVersion = 1.6.26;
 			};
 		};
+		DADA00000000000000000060 /* XCRemoteSwiftPackageReference "SDCAlertView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sberrevoets/SDCAlertView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.0.5;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -3754,6 +3764,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DADA00000000000000000050 /* XCRemoteSwiftPackageReference "DTCoreText" */;
 			productName = DTCoreText;
+		};
+		DADA00000000000000000061 /* SDCAlertView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DADA00000000000000000060 /* XCRemoteSwiftPackageReference "SDCAlertView" */;
+			productName = SDCAlertView;
 		};
 /* End XCSwiftPackageProductDependency section */
 
