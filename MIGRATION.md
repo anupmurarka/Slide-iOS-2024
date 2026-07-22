@@ -138,9 +138,22 @@ Net result: `LocalPackages/` will contain roughly `Reddift`, `AlertsPickers` (re
 > `Encoding::CompatibilityError` on the space-containing project path. Fold this into
 > `bootstrap.sh` in Phase 8 (or moot once CocoaPods is gone).
 
-### Phase 3 — Add SPM remotes
-- Alamofire 5.x, SwiftyJSON 5.x (official), SDCAlertView, DTCoreText, SwiftLinkPreview, SwiftEntryKit (upstream), LicensesViewController.
-- Pin explicit versions; commit `Package.resolved`.
+### Phase 3 — Add SPM remotes  ✅ DONE
+Migrated one dependency at a time (add SPM → drop pod → fix call sites → verify green build):
+- ✅ **SwiftyJSON** — ccrama fork → official 5.0.1 (SPM). Drop-in.
+- ✅ **SwiftLinkPreview** — pod → official 3.4 (SPM). Drop-in.
+- ✅ **SwiftEntryKit** — ccrama fork → upstream 2.x (SPM); dropped transitive QuickLayout. Drop-in.
+- ✅ **DTCoreText** — git pod → Cocoanetics/DTCoreText (SPM); pulls DTFoundation transitively.
+- ✅ **LicensesViewController** — no upstream SPM → vendored 3 Swift files into `VendoredUI`.
+- ✅ **SDCAlertView** — pod → sberrevoets/SDCAlertView 12.x (SPM). Drop-in despite 29 call sites.
+- ✅ **Alamofire** — 4.9 → 5.9 (SPM). Breaking; fixes applied:
+  - `Alamofire.request/download/upload` free funcs → `AF.*`
+  - `DownloadRequest.DownloadOptions` → `.Options`; `DownloadResponse<Data>` → `AFDownloadResponse<Data>`
+  - `upload(multipartFormData:…encodingCompletion:)` → chained `.uploadProgress/.responseData`
+  - `responseJSON` (removed in AF5) → `responseData` + `JSON(data:)` / `JSONSerialization`
+  - `Session` ambiguity (Alamofire.Session vs reddift.Session) → qualified `reddift.Session`
+  - The custom `extension String: ParameterEncoding` still valid (protocol unchanged in AF5).
+- Verified after each step: `Slide for Reddit` BUILD SUCCEEDED. **Pods now 7 declared / 9 total.**
 
 ### Phase 4 — Native replacements
 - MaterialComponents → `UIActivityIndicatorView` / `UIProgressView` (10 sites).

@@ -248,8 +248,8 @@ public class ToolbarTextView: NSObject {
         })
 
         if assets.count > 1 {
-            Alamofire.request("https://api.imgur.com/3/album", method: .post, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": "Client-ID bef87913eb202e9"])
-                    .responseJSON { response in
+            AF.request("https://api.imgur.com/3/album", method: .post, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": "Client-ID bef87913eb202e9"])
+                    .responseData { response in
                         print(response)
                         if let status = response.response?.statusCode {
                             switch status {
@@ -261,7 +261,7 @@ public class ToolbarTextView: NSObject {
                         }
 
                         if let result = response.value {
-                            let json = JSON(result)
+                            let json = (try? JSON(data: result)) ?? JSON()
                             print(json)
                             let album = json["data"]["deletehash"].stringValue
                             let url = "https://imgur.com/a/" + json["data"]["id"].stringValue
@@ -416,7 +416,7 @@ public class ToolbarTextView: NSObject {
                     }
                 }
 
-                Alamofire.upload(multipartFormData: { (multipartFormData) in
+                AF.upload(multipartFormData: { (multipartFormData) in
                     multipartFormData.append(data!, withName: "image", fileName: name, mimeType: mime! as String)
                     for (key, value) in parameters {
                         multipartFormData.append((value.data(using: .utf8))!, withName: key)
@@ -424,29 +424,25 @@ public class ToolbarTextView: NSObject {
                     if !album.isEmpty {
                         multipartFormData.append(album.data(using: .utf8)!, withName: "album")
                     }
-                }, to: "https://api.imgur.com/3/image", method: .post, headers: ["Authorization": "Client-ID bef87913eb202e9"], encodingCompletion: { (encodingResult) in
-                    switch encodingResult {
-                    case .success(let upload, _, _):
-                        print("Success")
-                        upload.uploadProgress { progress in
-                            DispatchQueue.main.async {
-                                print(progress.fractionCompleted)
-                                self.progressBar.setProgress(Float(progress.fractionCompleted), animated: true)
-                            }
+                }, to: "https://api.imgur.com/3/image", method: .post, headers: ["Authorization": "Client-ID bef87913eb202e9"])
+                    .uploadProgress { progress in
+                        DispatchQueue.main.async {
+                            print(progress.fractionCompleted)
+                            self.progressBar.setProgress(Float(progress.fractionCompleted), animated: true)
                         }
-                        upload.responseJSON { response in
-                            debugPrint(response)
-                            let link = JSON(response.value!)["data"]["link"].stringValue
-                            print("Link is \(link)")
-                            if count == assets.count {
-                                completion(link)
-                            }
-                        }
-
-                    case .failure:
-                        completion("Failure")
                     }
-                })
+                    .responseData { response in
+                        debugPrint(response)
+                        guard let data = response.data else {
+                            completion("Failure")
+                            return
+                        }
+                        let link = (try? JSON(data: data))?["data"]["link"].stringValue ?? ""
+                        print("Link is \(link)")
+                        if count == assets.count {
+                            completion(link)
+                        }
+                    }
             })
         }
     }
@@ -469,8 +465,8 @@ public class ToolbarTextView: NSObject {
         })
 
         if results.count > 1 {
-            Alamofire.request("https://api.imgur.com/3/album", method: .post, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": "Client-ID bef87913eb202e9"])
-                    .responseJSON { response in
+            AF.request("https://api.imgur.com/3/album", method: .post, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": "Client-ID bef87913eb202e9"])
+                    .responseData { response in
                         print(response)
                         if let status = response.response?.statusCode {
                             switch status {
@@ -482,7 +478,7 @@ public class ToolbarTextView: NSObject {
                         }
 
                         if let result = response.value {
-                            let json = JSON(result)
+                            let json = (try? JSON(data: result)) ?? JSON()
                             print(json)
                             let album = json["data"]["deletehash"].stringValue
                             let url = "https://imgur.com/a/" + json["data"]["id"].stringValue
@@ -638,42 +634,36 @@ public class ToolbarTextView: NSObject {
                         return
                     }
                     
-                    Alamofire.upload(multipartFormData: { (multipartFormData) in
+                    AF.upload(multipartFormData: { (multipartFormData) in
                         multipartFormData.append(data, withName: "image", fileName: UUID().uuidString + ".jpeg", mimeType: "image/jpg")
                         if !album.isEmpty {
                             multipartFormData.append(album.data(using: .utf8)!, withName: "album")
                         }
-                    }, to: "https://api.imgur.com/3/image", method: .post, headers: ["Authorization": "Client-ID bef87913eb202e9"], encodingCompletion: { (encodingResult) in
-                        switch encodingResult {
-                        case .success(let upload, _, _):
-                            print("Success")
-                            upload.uploadProgress { progress in
-                                DispatchQueue.main.async {
-                                    print(progress.fractionCompleted)
-                                    self.progressBar.setProgress(Float(progress.fractionCompleted), animated: true)
-                                }
+                    }, to: "https://api.imgur.com/3/image", method: .post, headers: ["Authorization": "Client-ID bef87913eb202e9"])
+                        .uploadProgress { progress in
+                            DispatchQueue.main.async {
+                                print(progress.fractionCompleted)
+                                self.progressBar.setProgress(Float(progress.fractionCompleted), animated: true)
                             }
-                            upload.responseJSON { response in
-                                if let val = response.value {
-                                    let json = JSON(val)
-                                    debugPrint(response)
-                                    let link = json["data"]["link"].stringValue
-                                    if link.isEmpty {
-                                        if json["data"]["error"].stringValue != "" {
-                                            tryUploadWithSize(size: size - 0.1)
-                                            return
-                                        }
-                                    }
-                                    print("Link is \(link)")
-                                    if count == results.count {
-                                        completion(link, true)
-                                    }
-                                }
-                            }
-                        case .failure:
-                            completion("Failure", false)
                         }
-                    })
+                        .responseData { response in
+                            debugPrint(response)
+                            guard let data = response.data, let json = try? JSON(data: data) else {
+                                completion("Failure", false)
+                                return
+                            }
+                            let link = json["data"]["link"].stringValue
+                            if link.isEmpty {
+                                if json["data"]["error"].stringValue != "" {
+                                    tryUploadWithSize(size: size - 0.1)
+                                    return
+                                }
+                            }
+                            print("Link is \(link)")
+                            if count == results.count {
+                                completion(link, true)
+                            }
+                        }
                 }
                 
                 tryUploadWithSize(size: 1)

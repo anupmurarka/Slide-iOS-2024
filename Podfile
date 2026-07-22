@@ -18,7 +18,7 @@ target 'Slide for Reddit' do
   # SwiftLinkPreview migrated to official LeonardoCardoso/SwiftLinkPreview via SPM (Phase 3).
   # DTCoreText migrated to Cocoanetics/DTCoreText via SPM (Phase 3).
   pod 'RLBAlertsPickers', :git => 'https://github.com/ccrama/Alerts-Pickers'
-  pod 'Alamofire', '~> 4.3'
+  # Alamofire migrated to 5.x via SPM (see MIGRATION.md, Phase 3).
   # SwiftyJSON migrated to the official SwiftyJSON via SPM (see MIGRATION.md, Phase 3).
   pod "YoutubePlayer-in-WKWebView", "~> 0.3.0"
   # SubtleVolume, TGPControls and MTColorDistance (Swift port) migrated to the

@@ -1,5 +1,4 @@
 PODS:
-  - Alamofire (4.9.1)
   - MaterialComponents/ActivityIndicator (119.5.0):
     - MaterialComponents/Palettes
     - MaterialComponents/private/Application
@@ -23,7 +22,6 @@ PODS:
   - YoutubePlayer-in-WKWebView (0.3.5)
 
 DEPENDENCIES:
-  - Alamofire (~> 4.3)
   - MaterialComponents/ActivityIndicator
   - MaterialComponents/ProgressView
   - MKColorPicker (from `https://github.com/ccrama/MKColorPicker`)
@@ -34,7 +32,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Alamofire
     - MaterialComponents
     - MDFInternationalization
     - MotionAnimator
@@ -58,7 +55,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/ccrama/Alerts-Pickers
 
 SPEC CHECKSUMS:
-  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   MaterialComponents: 2cdc12c16528ed7e6f1d5bd6d6927c47f9f4e90f
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   MKColorPicker: 8998b2ab977e4f240fdf254db27a18b810da3cfc
@@ -69,6 +65,6 @@ SPEC CHECKSUMS:
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
   YoutubePlayer-in-WKWebView: cfbf46da51d7370662a695a8f351e5fa1d3e1008
 
-PODFILE CHECKSUM: 75b648833c2a8e6ec7c9c7a704a791c207bbed6e
+PODFILE CHECKSUM: d779a1fccce33c6105e977dd8562114e58036d81
 
 COCOAPODS: 1.17.0
