@@ -36,12 +36,8 @@ PODS:
     - MotionInterchange (~> 1.6)
   - MotionInterchange (1.6.0)
   - OpalImagePicker (3.0.0)
-  - QuickLayout (3.0.0)
   - RLBAlertsPickers (1.1.1)
   - SDCAlertView (12.0.5)
-  - SwiftEntryKit (1.2.1):
-    - QuickLayout (= 3.0.0)
-  - SwiftLinkPreview (3.0.1)
   - SwiftLint (0.42.0)
   - YoutubePlayer-in-WKWebView (0.3.5)
 
@@ -55,8 +51,6 @@ DEPENDENCIES:
   - OpalImagePicker
   - RLBAlertsPickers (from `https://github.com/ccrama/Alerts-Pickers`)
   - SDCAlertView (~> 12.0)
-  - SwiftEntryKit (from `https://github.com/ccrama/SwiftEntryKit`)
-  - SwiftLinkPreview (~> 3.0.1)
   - SwiftLint
   - YoutubePlayer-in-WKWebView (~> 0.3.0)
 
@@ -70,9 +64,7 @@ SPEC REPOS:
     - MotionAnimator
     - MotionInterchange
     - OpalImagePicker
-    - QuickLayout
     - SDCAlertView
-    - SwiftLinkPreview
     - SwiftLint
     - YoutubePlayer-in-WKWebView
 
@@ -83,8 +75,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/ccrama/MKColorPicker
   RLBAlertsPickers:
     :git: https://github.com/ccrama/Alerts-Pickers
-  SwiftEntryKit:
-    :git: https://github.com/ccrama/SwiftEntryKit
 
 CHECKOUT OPTIONS:
   DTCoreText:
@@ -96,9 +86,6 @@ CHECKOUT OPTIONS:
   RLBAlertsPickers:
     :commit: a22003f93a803c2e14b193f636669c21358fb1d7
     :git: https://github.com/ccrama/Alerts-Pickers
-  SwiftEntryKit:
-    :commit: 4418c7bdda528b850483ea70a786003fce4f4a68
-    :git: https://github.com/ccrama/SwiftEntryKit
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
@@ -111,14 +98,11 @@ SPEC CHECKSUMS:
   MotionAnimator: ee16aa30567c5bae0fb2750c132915829cfaaf8a
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   OpalImagePicker: 38e772dd93a54431fc516b33e1f337c50f745834
-  QuickLayout: 07b45a72b10083fee3f095990cfed1c1e7b27f0a
   RLBAlertsPickers: c93e83c13526a5840b67eb52f702d3f83eeaac6a
   SDCAlertView: c9042ba201897da46d833193b8462a186f79c47c
-  SwiftEntryKit: 1661b766dd22b07679e6ebb326ccfbd81ceb0a20
-  SwiftLinkPreview: 7524438c43bf63a5041615713777c3d8f19a9a31
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
   YoutubePlayer-in-WKWebView: cfbf46da51d7370662a695a8f351e5fa1d3e1008
 
-PODFILE CHECKSUM: 932b6747143754ec077186b8144455552a7a945a
+PODFILE CHECKSUM: d0954faeaa779df0f11dceb4a30a904561300d53
 
 COCOAPODS: 1.17.0

@@ -414,6 +414,8 @@
 		DADA00000000000000000009 /* TGPControls in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000006 /* TGPControls */; };
 		DADA0000000000000000000A /* MTColorDistance in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000007 /* MTColorDistance */; };
 		DADA00000000000000000012 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000011 /* SwiftyJSON */; };
+		DADA00000000000000000022 /* SwiftLinkPreview in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000021 /* SwiftLinkPreview */; };
+		DADA00000000000000000032 /* SwiftEntryKit in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000031 /* SwiftEntryKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -990,6 +992,8 @@
 				DADA00000000000000000009 /* TGPControls in Frameworks */,
 				DADA0000000000000000000A /* MTColorDistance in Frameworks */,
 				DADA00000000000000000012 /* SwiftyJSON in Frameworks */,
+				DADA00000000000000000022 /* SwiftLinkPreview in Frameworks */,
+				DADA00000000000000000032 /* SwiftEntryKit in Frameworks */,
 				01BBE6AB1AC863FE2E897632 /* Pods_Slide_for_Reddit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1858,6 +1862,8 @@
 				DADA00000000000000000006 /* TGPControls */,
 				DADA00000000000000000007 /* MTColorDistance */,
 				DADA00000000000000000011 /* SwiftyJSON */,
+				DADA00000000000000000021 /* SwiftLinkPreview */,
+				DADA00000000000000000031 /* SwiftEntryKit */,
 			);
 			productName = "Slide for Reddit";
 			productReference = BE8FCA041E0C46090063B8EF /* Slide for Reddit.app */;
@@ -2031,6 +2037,8 @@
 				DADA00000000000000000001 /* XCLocalSwiftPackageReference "Reddift" */,
 				DADA00000000000000000004 /* XCLocalSwiftPackageReference "VendoredUI" */,
 				DADA00000000000000000010 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				DADA00000000000000000020 /* XCRemoteSwiftPackageReference "SwiftLinkPreview" */,
+				DADA00000000000000000030 /* XCRemoteSwiftPackageReference "SwiftEntryKit" */,
 			);
 			productRefGroup = BE8FCA051E0C46090063B8EF /* Products */;
 			projectDirPath = "";
@@ -2310,11 +2318,8 @@
 				"${BUILT_PRODUCTS_DIR}/MotionAnimator/MotionAnimator.framework",
 				"${BUILT_PRODUCTS_DIR}/MotionInterchange/MotionInterchange.framework",
 				"${BUILT_PRODUCTS_DIR}/OpalImagePicker/OpalImagePicker.framework",
-				"${BUILT_PRODUCTS_DIR}/QuickLayout/QuickLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/RLBAlertsPickers/RLBAlertsPickers.framework",
 				"${BUILT_PRODUCTS_DIR}/SDCAlertView/SDCAlertView.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftEntryKit/SwiftEntryKit.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftLinkPreview/SwiftLinkPreview.framework",
 				"${BUILT_PRODUCTS_DIR}/YoutubePlayer-in-WKWebView/YoutubePlayer_in_WKWebView.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -2329,11 +2334,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MotionAnimator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MotionInterchange.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpalImagePicker.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QuickLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RLBAlertsPickers.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDCAlertView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftEntryKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLinkPreview.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YoutubePlayer_in_WKWebView.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3645,6 +3647,22 @@
 				minimumVersion = 5.0.1;
 			};
 		};
+		DADA00000000000000000020 /* XCRemoteSwiftPackageReference "SwiftLinkPreview" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/LeonardoCardoso/SwiftLinkPreview";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.4.0;
+			};
+		};
+		DADA00000000000000000030 /* XCRemoteSwiftPackageReference "SwiftEntryKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/huri000/SwiftEntryKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -3708,6 +3726,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DADA00000000000000000010 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
 			productName = SwiftyJSON;
+		};
+		DADA00000000000000000021 /* SwiftLinkPreview */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DADA00000000000000000020 /* XCRemoteSwiftPackageReference "SwiftLinkPreview" */;
+			productName = SwiftLinkPreview;
+		};
+		DADA00000000000000000031 /* SwiftEntryKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DADA00000000000000000030 /* XCRemoteSwiftPackageReference "SwiftEntryKit" */;
+			productName = SwiftEntryKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 

@@ -13,9 +13,9 @@ target 'Slide for Reddit' do
   pod 'OpalImagePicker'
   pod 'MaterialComponents/ActivityIndicator'
   pod 'MaterialComponents/ProgressView'
-  pod 'SwiftEntryKit', :git => 'https://github.com/ccrama/SwiftEntryKit'
+  # SwiftEntryKit migrated to upstream huri000/SwiftEntryKit 2.x via SPM (Phase 3).
   pod 'SDCAlertView', '~> 12.0'
-  pod 'SwiftLinkPreview', '~> 3.0.1'
+  # SwiftLinkPreview migrated to official LeonardoCardoso/SwiftLinkPreview via SPM (Phase 3).
   pod 'DTCoreText', :git => 'https://github.com/Cocoanetics/DTCoreText'
   pod 'RLBAlertsPickers', :git => 'https://github.com/ccrama/Alerts-Pickers'
   pod 'Alamofire', '~> 4.3'

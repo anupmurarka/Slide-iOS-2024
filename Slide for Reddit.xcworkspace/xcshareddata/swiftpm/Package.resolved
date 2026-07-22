@@ -1,5 +1,5 @@
 {
-  "originHash" : "edf4f15c3ec86806980b42083a3b56877d6ac0c1a00ed36431bbd8b741738388",
+  "originHash" : "88aee4a858a8be6978ed9b51af77b8959bbc913c68fc17cc0468190b3235eee6",
   "pins" : [
     {
       "identity" : "anchorage",
@@ -71,6 +71,24 @@
       "state" : {
         "revision" : "37760e9a52030bb9011972c5213c3350fa9d41fd",
         "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "swiftentrykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/huri000/SwiftEntryKit",
+      "state" : {
+        "revision" : "5ad36cccf0c4b9fea32f4e9b17a8e38f07563ef0",
+        "version" : "2.0.0"
+      }
+    },
+    {
+      "identity" : "swiftlinkpreview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/LeonardoCardoso/SwiftLinkPreview",
+      "state" : {
+        "revision" : "3eb30b1832a9cf0eaeec3e2cf6cfc0ed18ef763f",
+        "version" : "3.4.0"
       }
     },
     {
