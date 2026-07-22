@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -421,7 +421,7 @@
 		DADA00000000000000000092 /* RLBAlertsPickers in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000090 /* RLBAlertsPickers */; };
 		DADA000000000000000000E2 /* WKYTPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DADA000000000000000000E1 /* WKYTPlayerView.m */; };
 		DADA000000000000000000E5 /* YTPlayerView-iframe-player.html in Resources */ = {isa = PBXBuildFile; fileRef = DADA000000000000000000E4 /* YTPlayerView-iframe-player.html */; };
-		DADA000000000000000000F2 /* MDCActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADA000000000000000000F1 /* MDCActivityIndicator.swift */; };
+		DADA000000000000000000F2 /* Compat/MDCActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADA000000000000000000F1 /* Compat/MDCActivityIndicator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -941,7 +941,7 @@
 		DADA000000000000000000E1 /* WKYTPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKYTPlayerView.m; sourceTree = "<group>"; };
 		DADA000000000000000000E3 /* WKYTPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKYTPlayerView.h; sourceTree = "<group>"; };
 		DADA000000000000000000E4 /* YTPlayerView-iframe-player.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "YTPlayerView-iframe-player.html"; sourceTree = "<group>"; };
-		DADA000000000000000000F1 /* MDCActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compat/MDCActivityIndicator.swift; sourceTree = "<group>"; };
+		DADA000000000000000000F1 /* Compat/MDCActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compat/MDCActivityIndicator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1239,7 +1239,7 @@
 			isa = PBXGroup;
 			children = (
 				BE3E5C0B1E160D7000749C0C /* ColorUtil.swift */,
-				DADA000000000000000000F1 /* MDCActivityIndicator.swift */,
+				DADA000000000000000000F1 /* Compat/MDCActivityIndicator.swift */,
 				DADA000000000000000000E1 /* WKYTPlayerView.m */,
 				DADA000000000000000000E3 /* WKYTPlayerView.h */,
 				DADA000000000000000000E4 /* YTPlayerView-iframe-player.html */,
@@ -1966,7 +1966,6 @@
 					BE8FCA031E0C46090063B8EF = {
 						CreatedOnToolsVersion = 8.2;
 						LastSwiftMigration = 1100;
-						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -2004,8 +2003,6 @@
 					};
 					BED90FDE250BF71600090DF5 = {
 						CreatedOnToolsVersion = 12.0;
-						DevelopmentTeam = FTT89576VQ;
-						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -2027,8 +2024,8 @@
 				B4F3354A25127BAB0032BB64 /* XCRemoteSwiftPackageReference "Anchorage" */,
 				B4F3355425127BD20032BB64 /* XCRemoteSwiftPackageReference "Then" */,
 				BE31454425674E03004A908C /* XCRemoteSwiftPackageReference "proton" */,
-				DADA00000000000000000001 /* XCLocalSwiftPackageReference "Reddift" */,
-				DADA00000000000000000004 /* XCLocalSwiftPackageReference "VendoredUI" */,
+				DADA00000000000000000001 /* XCLocalSwiftPackageReference "LocalPackages/Reddift" */,
+				DADA00000000000000000004 /* XCLocalSwiftPackageReference "LocalPackages/VendoredUI" */,
 				DADA00000000000000000010 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				DADA00000000000000000020 /* XCRemoteSwiftPackageReference "SwiftLinkPreview" */,
 				DADA00000000000000000030 /* XCRemoteSwiftPackageReference "SwiftEntryKit" */,
@@ -2328,7 +2325,7 @@
 				BE9428EA20C46B5600E1A33A /* PostActions.swift in Sources */,
 				BE25CAD624C3A65400736CA5 /* SwipeForwardAnimatedTransitioning.swift in Sources */,
 				BE3E5C0C1E160D7000749C0C /* ColorUtil.swift in Sources */,
-				DADA000000000000000000F2 /* MDCActivityIndicator.swift in Sources */,
+				DADA000000000000000000F2 /* Compat/MDCActivityIndicator.swift in Sources */,
 				DADA000000000000000000E2 /* WKYTPlayerView.m in Sources */,
 				BE325CB4257EFB5A00BD2468 /* ModLogObject.swift in Sources */,
 				BEEA03CD20E1B53E007A8928 /* HapticUtility.swift in Sources */,
@@ -2733,9 +2730,8 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = WidgetConfigIntent/WidgetConfigIntent.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 224;
 				DEVELOPMENT_TEAM = FTT89576VQ;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -2750,7 +2746,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = ccrama.me.redditslide.bundledwidgetconfigintent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development ccrama.me.redditslide.bundledwidgetconfigintent";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3111,8 +3107,6 @@
 				MARKETING_VERSION = 7.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					"-framework",
-					"\"reddift\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -Xfrontend -warn-long-expression-type-checking=300 -Xfrontend -warn-long-function-bodies=300";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(USR_BASE_IDENTIFIER)";
@@ -3133,9 +3127,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Slide for Reddit/Slide for Reddit.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 224;
 				DEVELOPMENT_TEAM = FTT89576VQ;
 				GCC_OPTIMIZATION_LEVEL = fast;
@@ -3149,13 +3142,11 @@
 				MARKETING_VERSION = 7.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					"-framework",
-					"\"reddift\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -Xfrontend -warn-long-expression-type-checking=300 -Xfrontend -warn-long-function-bodies=300";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(USR_BASE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development ccrama.me.redditslide";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Slide for Reddit/Slide for Reddit-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
@@ -3341,9 +3332,8 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "Slide Widgets/Slide Widgets.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 224;
 				DEVELOPMENT_TEAM = FTT89576VQ;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -3358,7 +3348,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = ccrama.me.redditslide.bundledwidgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development ccrama.me.redditslide.bundledwidgets 1599951103";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3461,11 +3451,11 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		DADA00000000000000000001 /* XCLocalSwiftPackageReference "Reddift" */ = {
+		DADA00000000000000000001 /* XCLocalSwiftPackageReference "LocalPackages/Reddift" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = LocalPackages/Reddift;
 		};
-		DADA00000000000000000004 /* XCLocalSwiftPackageReference "VendoredUI" */ = {
+		DADA00000000000000000004 /* XCLocalSwiftPackageReference "LocalPackages/VendoredUI" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = LocalPackages/VendoredUI;
 		};
