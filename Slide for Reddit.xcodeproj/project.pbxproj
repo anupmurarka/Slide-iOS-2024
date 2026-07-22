@@ -421,6 +421,7 @@
 		DADA00000000000000000062 /* SDCAlertView in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000061 /* SDCAlertView */; };
 		DADA00000000000000000072 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000071 /* Alamofire */; };
 		DADA00000000000000000082 /* MKColorPicker in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000080 /* MKColorPicker */; };
+		DADA00000000000000000092 /* RLBAlertsPickers in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000090 /* RLBAlertsPickers */; };
 		DADA000000000000000000E2 /* WKYTPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DADA000000000000000000E1 /* WKYTPlayerView.m */; };
 		DADA000000000000000000E5 /* YTPlayerView-iframe-player.html in Resources */ = {isa = PBXBuildFile; fileRef = DADA000000000000000000E4 /* YTPlayerView-iframe-player.html */; };
 		DADA000000000000000000F2 /* MDCActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADA000000000000000000F1 /* MDCActivityIndicator.swift */; };
@@ -1008,6 +1009,7 @@
 				DADA00000000000000000032 /* SwiftEntryKit in Frameworks */,
 				DADA00000000000000000042 /* LicensesViewController in Frameworks */,
 				DADA00000000000000000082 /* MKColorPicker in Frameworks */,
+				DADA00000000000000000092 /* RLBAlertsPickers in Frameworks */,
 				DADA00000000000000000052 /* DTCoreText in Frameworks */,
 				DADA00000000000000000062 /* SDCAlertView in Frameworks */,
 				DADA00000000000000000072 /* Alamofire in Frameworks */,
@@ -1858,7 +1860,6 @@
 				0984BE512114C9490091C2E1 /* Integrate Reveal Server */,
 				BE20853621588F3B00D8F33C /* Embed Watch Content */,
 				BE85916B221BC9A7009ACF9E /* ShellScript */,
-				BDF8985ECC061CEA9427169B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1887,6 +1888,7 @@
 				DADA00000000000000000031 /* SwiftEntryKit */,
 				DADA00000000000000000040 /* LicensesViewController */,
 				DADA00000000000000000080 /* MKColorPicker */,
+				DADA00000000000000000090 /* RLBAlertsPickers */,
 				DADA00000000000000000051 /* DTCoreText */,
 				DADA00000000000000000061 /* SDCAlertView */,
 				DADA00000000000000000071 /* Alamofire */,
@@ -2329,24 +2331,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BDF8985ECC061CEA9427169B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Slide for Reddit/Pods-Slide for Reddit-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/RLBAlertsPickers/RLBAlertsPickers.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RLBAlertsPickers.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Slide for Reddit/Pods-Slide for Reddit-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BE77470620366576006C72E8 /* Generate Credits.plist */ = {
@@ -3791,6 +3775,10 @@
 		DADA00000000000000000080 /* MKColorPicker */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MKColorPicker;
+		};
+		DADA00000000000000000090 /* RLBAlertsPickers */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RLBAlertsPickers;
 		};
 /* End XCSwiftPackageProductDependency section */
 

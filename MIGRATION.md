@@ -155,11 +155,28 @@ Migrated one dependency at a time (add SPM → drop pod → fix call sites → v
   - The custom `extension String: ParameterEncoding` still valid (protocol unchanged in AF5).
 - Verified after each step: `Slide for Reddit` BUILD SUCCEEDED. **Pods now 7 declared / 9 total.**
 
-### Phase 4 — Native replacements
-- MaterialComponents → `UIActivityIndicatorView` / `UIProgressView` (10 sites).
-- MKColorPicker → `UIColorPickerViewController` (6 sites).
-- OpalImagePicker + RLBAlertsPickers photo/media flows → `PHPickerViewController` (native).
-- Remove YoutubePlayer-in-WKWebView after confirming it's dead.
+### Phase 4 — Native replacements  ✅ DONE
+Reality differed from the plan in a few places; disposition chosen per the
+"replace where possible, vendor what has no native equivalent" rule:
+- ✅ **MaterialComponents** — only `MDCActivityIndicator` was used (ProgressView subspec
+  was dead). Replaced with a native UIKit shim at `Slide for Reddit/Compat/MDCActivityIndicator.swift`
+  (UIActivityIndicatorView + CAShapeLayer ring). Dropped MDF/Motion×2 transitively.
+- ✅ **MKColorPicker** — used as an *embedded swatch grid* (`ColorPickerView` in custom
+  alerts), not a modal, so `UIColorPickerViewController` is not a drop-in. **Vendored**
+  (6 files) into `VendoredUI`.
+- ✅ **OpalImagePicker** — only backed the iOS <14 fallback, dead at the iOS 15 floor.
+  **Removed** the else-branch + its `[PHAsset]` upload helpers; the existing
+  `PHPickerViewController` path is now always used.
+- ✅ **YoutubePlayer-in-WKWebView** — NOT dead (WKYTPlayerView used in VideoMediaViewController
+  via the bridging header). ObjC, no SPM → **vendored** WKYTPlayerView.h/.m + its HTML asset
+  directly into the app target (HTML added to Copy Bundle Resources).
+- ✅ **RLBAlertsPickers** — 81 pure-Swift files, no native equivalent for its custom
+  pickers → **vendored** into `VendoredUI` (compiled clean under Swift 5, no changes).
+- Verified after each step. **Only SwiftLint remains as a pod (1 total).**
+
+> Note: `UIColorPickerViewController`/`PHPickerViewController` full replacements were
+> reconsidered — the actual usage patterns (embedded grid; already-present PHPicker path)
+> made vendoring/dead-code-removal the correct, lower-risk calls.
 
 ### Phase 5 — Fix API breakage
 - Alamofire 4→5 call-site migration (request/response builders, validation, serialization changes) across the app **and** vendored reddift.

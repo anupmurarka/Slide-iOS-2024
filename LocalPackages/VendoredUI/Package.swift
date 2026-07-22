@@ -11,13 +11,15 @@ let package = Package(
         .library(name: "TGPControls", targets: ["TGPControls"]),
         .library(name: "MTColorDistance", targets: ["MTColorDistance"]),
         .library(name: "LicensesViewController", targets: ["LicensesViewController"]),
-        .library(name: "MKColorPicker", targets: ["MKColorPicker"])
+        .library(name: "MKColorPicker", targets: ["MKColorPicker"]),
+        .library(name: "RLBAlertsPickers", targets: ["RLBAlertsPickers"])
     ],
     targets: [
         .target(name: "SubtleVolume"),
         .target(name: "TGPControls"),
         .target(name: "MTColorDistance"),
         .target(name: "LicensesViewController"),
-        .target(name: "MKColorPicker")
+        .target(name: "MKColorPicker"),
+        .target(name: "RLBAlertsPickers")
     ]
 )

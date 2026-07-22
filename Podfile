@@ -19,7 +19,8 @@ target 'Slide for Reddit' do
   # SDCAlertView migrated to sberrevoets/SDCAlertView via SPM (Phase 3).
   # SwiftLinkPreview migrated to official LeonardoCardoso/SwiftLinkPreview via SPM (Phase 3).
   # DTCoreText migrated to Cocoanetics/DTCoreText via SPM (Phase 3).
-  pod 'RLBAlertsPickers', :git => 'https://github.com/ccrama/Alerts-Pickers'
+  # RLBAlertsPickers vendored to LocalPackages/VendoredUI (81 pure-Swift files,
+  # no native equivalent for its custom pickers) (see MIGRATION.md, Phase 4).
   # Alamofire migrated to 5.x via SPM (see MIGRATION.md, Phase 3).
   # SwiftyJSON migrated to the official SwiftyJSON via SPM (see MIGRATION.md, Phase 3).
   # YoutubePlayer-in-WKWebView (ObjC, unmaintained) vendored into the app target

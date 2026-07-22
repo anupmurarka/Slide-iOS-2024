@@ -1,28 +1,16 @@
 PODS:
-  - RLBAlertsPickers (1.1.1)
   - SwiftLint (0.42.0)
 
 DEPENDENCIES:
-  - RLBAlertsPickers (from `https://github.com/ccrama/Alerts-Pickers`)
   - SwiftLint
 
 SPEC REPOS:
   trunk:
     - SwiftLint
 
-EXTERNAL SOURCES:
-  RLBAlertsPickers:
-    :git: https://github.com/ccrama/Alerts-Pickers
-
-CHECKOUT OPTIONS:
-  RLBAlertsPickers:
-    :commit: a22003f93a803c2e14b193f636669c21358fb1d7
-    :git: https://github.com/ccrama/Alerts-Pickers
-
 SPEC CHECKSUMS:
-  RLBAlertsPickers: c93e83c13526a5840b67eb52f702d3f83eeaac6a
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
 
-PODFILE CHECKSUM: 38baf2e42f77b076897f32ebccb7538c8fbdde02
+PODFILE CHECKSUM: b93eb8d64b82a86125fb031325e1b0f3ec909255
 
 COCOAPODS: 1.17.0
