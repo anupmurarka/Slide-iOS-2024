@@ -413,6 +413,7 @@
 		DADA00000000000000000008 /* SubtleVolume in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000005 /* SubtleVolume */; };
 		DADA00000000000000000009 /* TGPControls in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000006 /* TGPControls */; };
 		DADA0000000000000000000A /* MTColorDistance in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000007 /* MTColorDistance */; };
+		DADA00000000000000000012 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000011 /* SwiftyJSON */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -988,6 +989,7 @@
 				DADA00000000000000000008 /* SubtleVolume in Frameworks */,
 				DADA00000000000000000009 /* TGPControls in Frameworks */,
 				DADA0000000000000000000A /* MTColorDistance in Frameworks */,
+				DADA00000000000000000012 /* SwiftyJSON in Frameworks */,
 				01BBE6AB1AC863FE2E897632 /* Pods_Slide_for_Reddit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1855,6 +1857,7 @@
 				DADA00000000000000000005 /* SubtleVolume */,
 				DADA00000000000000000006 /* TGPControls */,
 				DADA00000000000000000007 /* MTColorDistance */,
+				DADA00000000000000000011 /* SwiftyJSON */,
 			);
 			productName = "Slide for Reddit";
 			productReference = BE8FCA041E0C46090063B8EF /* Slide for Reddit.app */;
@@ -2027,6 +2030,7 @@
 				BE31454425674E03004A908C /* XCRemoteSwiftPackageReference "proton" */,
 				DADA00000000000000000001 /* XCLocalSwiftPackageReference "Reddift" */,
 				DADA00000000000000000004 /* XCLocalSwiftPackageReference "VendoredUI" */,
+				DADA00000000000000000010 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 			);
 			productRefGroup = BE8FCA051E0C46090063B8EF /* Products */;
 			projectDirPath = "";
@@ -2311,7 +2315,6 @@
 				"${BUILT_PRODUCTS_DIR}/SDCAlertView/SDCAlertView.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftEntryKit/SwiftEntryKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftLinkPreview/SwiftLinkPreview.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/YoutubePlayer-in-WKWebView/YoutubePlayer_in_WKWebView.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -2331,7 +2334,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDCAlertView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftEntryKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLinkPreview.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YoutubePlayer_in_WKWebView.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3635,6 +3637,14 @@
 				minimumVersion = 0.5.0;
 			};
 		};
+		DADA00000000000000000010 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -3693,6 +3703,11 @@
 		DADA00000000000000000007 /* MTColorDistance */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MTColorDistance;
+		};
+		DADA00000000000000000011 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DADA00000000000000000010 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
 		};
 /* End XCSwiftPackageProductDependency section */
 

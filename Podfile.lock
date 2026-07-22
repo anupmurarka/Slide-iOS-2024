@@ -43,7 +43,6 @@ PODS:
     - QuickLayout (= 3.0.0)
   - SwiftLinkPreview (3.0.1)
   - SwiftLint (0.42.0)
-  - SwiftyJSON (5.0.0)
   - YoutubePlayer-in-WKWebView (0.3.5)
 
 DEPENDENCIES:
@@ -59,7 +58,6 @@ DEPENDENCIES:
   - SwiftEntryKit (from `https://github.com/ccrama/SwiftEntryKit`)
   - SwiftLinkPreview (~> 3.0.1)
   - SwiftLint
-  - SwiftyJSON (from `https://github.com/ccrama/SwiftyJSON.git`, branch `hotfix-xcode12`)
   - YoutubePlayer-in-WKWebView (~> 0.3.0)
 
 SPEC REPOS:
@@ -87,9 +85,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/ccrama/Alerts-Pickers
   SwiftEntryKit:
     :git: https://github.com/ccrama/SwiftEntryKit
-  SwiftyJSON:
-    :branch: hotfix-xcode12
-    :git: https://github.com/ccrama/SwiftyJSON.git
 
 CHECKOUT OPTIONS:
   DTCoreText:
@@ -104,9 +99,6 @@ CHECKOUT OPTIONS:
   SwiftEntryKit:
     :commit: 4418c7bdda528b850483ea70a786003fce4f4a68
     :git: https://github.com/ccrama/SwiftEntryKit
-  SwiftyJSON:
-    :commit: 29ee46ee23593f08e33e0d4364aa4bb91e950847
-    :git: https://github.com/ccrama/SwiftyJSON.git
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
@@ -125,9 +117,8 @@ SPEC CHECKSUMS:
   SwiftEntryKit: 1661b766dd22b07679e6ebb326ccfbd81ceb0a20
   SwiftLinkPreview: 7524438c43bf63a5041615713777c3d8f19a9a31
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
-  SwiftyJSON: f0574c07d8ca1644050db687067209e3033a89a0
   YoutubePlayer-in-WKWebView: cfbf46da51d7370662a695a8f351e5fa1d3e1008
 
-PODFILE CHECKSUM: 76f65899714de1eb23bcb5c8eb0451f65a004f82
+PODFILE CHECKSUM: 932b6747143754ec077186b8144455552a7a945a
 
 COCOAPODS: 1.17.0
