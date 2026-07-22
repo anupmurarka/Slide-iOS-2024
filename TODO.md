@@ -1,5 +1,35 @@
 # TODO
 
+## Auth status (as of this session)
+
+**Working:** logged-in browsing. Login now completes and content renders on device.
+The chain that had to be fixed: (1) reddift now sends the User-Agent on OAuth token
+requests (`org.quantumbadger.redreader/1.25.2`); (2) the login web view now presents
+correctly (deferred one run-loop turn after `resetStack`). Credentials are RedReader's
+(matching Android/JRAW).
+
+**Broken / next up — require login (decision: option #2):** guest/not-logged-in
+browsing does NOT work, because modern Reddit 403s all unauthenticated API access and
+reddift has no userless (`installed_client`) token. We chose to **require login** rather
+than add a userless token. Still to implement:
+- In `AccountController.initialize()` and the launch path (`AppDelegate`), when
+  `!isLoggedIn`, do NOT create the anonymous `Session()` or kick off content loads;
+  instead route to the login flow (`doAddAccount` / `challengeWithScopes`) as a
+  non-dismissable onboarding step.
+- Remove/gate the GUEST fallbacks (e.g. `didRequestGuestAccount`, logout → GUEST) so the
+  app never lands in the broken anonymous state.
+- The background `forbidden(...)` HTML noise at launch is the doomed guest requests; it
+  goes away once guest sessions are eliminated.
+- Library note: no maintained Swift Reddit API lib exists to replace reddift; stay on the
+  vendored copy and patch as needed (Android parity comes from JRAW, Java-only).
+
+## Other issues to triage (new session)
+- Autolayout warning: `ExpandedHitButton` width 30 vs `NavigationButtonBar.ItemWrapperView`
+  width 36 (unsatisfiable constraint, non-fatal) — recurring in the nav bar.
+- App-group prefs warning `group.io.automationworks.redditslide.prefs` "only allowed for
+  System Containers" (see iCloud provisioning item below).
+- (User mentioned additional issues to tackle next session — capture them here as found.)
+
 ## Reddit API credentials — add a runtime override (settings)
 
 **Context.** After Reddit's 2023 API changes, new third-party API registrations
