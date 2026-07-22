@@ -6,7 +6,6 @@
 //  Copyright © 2016 Haptic Apps. All rights reserved.
 //
 
-import MaterialComponents.MaterialProgressView
 import reddift
 import SafariServices
 import SDWebImage

@@ -11,8 +11,8 @@ target 'Slide for Reddit' do
   pod 'MKColorPicker', :git => 'https://github.com/ccrama/MKColorPicker'
   # LicensesViewController vendored to LocalPackages/VendoredUI (Phase 3).
   pod 'OpalImagePicker'
-  pod 'MaterialComponents/ActivityIndicator'
-  pod 'MaterialComponents/ProgressView'
+  # MaterialComponents (archived by Google) replaced by a native UIKit
+  # MDCActivityIndicator shim at Slide for Reddit/Compat (see MIGRATION.md, Phase 4).
   # SwiftEntryKit migrated to upstream huri000/SwiftEntryKit 2.x via SPM (Phase 3).
   # SDCAlertView migrated to sberrevoets/SDCAlertView via SPM (Phase 3).
   # SwiftLinkPreview migrated to official LeonardoCardoso/SwiftLinkPreview via SPM (Phase 3).

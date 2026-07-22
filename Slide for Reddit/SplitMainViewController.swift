@@ -10,7 +10,6 @@ import Alamofire
 import Anchorage
 import AudioToolbox
 import BadgeSwift
-import MaterialComponents.MDCActivityIndicator
 import reddift
 import SDCAlertView
 import SDWebImage

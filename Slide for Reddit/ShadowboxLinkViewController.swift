@@ -10,7 +10,6 @@ import Anchorage
 import AVFoundation
 import AVKit
 import CoreData
-import MaterialComponents.MaterialProgressView
 import SDWebImage
 
 class ShadowboxLinkViewController: MediaViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate {

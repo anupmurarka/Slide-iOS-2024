@@ -9,7 +9,6 @@
 import Anchorage
 import AudioToolbox
 import AVKit
-import MaterialComponents
 import Photos
 import Proton
 import reddift

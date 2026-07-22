@@ -9,7 +9,6 @@
 import Anchorage
 import AudioToolbox.AudioServices
 import CoreData
-import MaterialComponents.MDCActivityIndicator
 import reddift
 import RLBAlertsPickers
 import SDCAlertView

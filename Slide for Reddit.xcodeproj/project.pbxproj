@@ -420,6 +420,7 @@
 		DADA00000000000000000052 /* DTCoreText in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000051 /* DTCoreText */; };
 		DADA00000000000000000062 /* SDCAlertView in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000061 /* SDCAlertView */; };
 		DADA00000000000000000072 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000071 /* Alamofire */; };
+		DADA000000000000000000F2 /* MDCActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADA000000000000000000F1 /* MDCActivityIndicator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -945,6 +946,7 @@
 		BEF7483120DD894100B6236B /* SettingsGestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGestures.swift; sourceTree = "<group>"; };
 		CF803995AF8B02E34D23A12C /* Pods_Slide_for_RedditUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Slide_for_RedditUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D395EF5D302CF84FB4950C1C /* Pods-Slide for RedditUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Slide for RedditUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Slide for RedditUITests/Pods-Slide for RedditUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		DADA000000000000000000F1 /* MDCActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compat/MDCActivityIndicator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1259,6 +1261,7 @@
 			isa = PBXGroup;
 			children = (
 				BE3E5C0B1E160D7000749C0C /* ColorUtil.swift */,
+				DADA000000000000000000F1 /* MDCActivityIndicator.swift */,
 				BEBF45E01E23EED800764BB8 /* SettingValues.swift */,
 				BE2B8A081E25EEDF0053D493 /* SettingsViewController.swift */,
 				BE2B8A0A1E2602CA0053D493 /* SubredditReorderViewController.swift */,
@@ -2323,22 +2326,14 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Slide for Reddit/Pods-Slide for Reddit-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/MDFInternationalization/MDFInternationalization.framework",
 				"${BUILT_PRODUCTS_DIR}/MKColorPicker/MKColorPicker.framework",
-				"${BUILT_PRODUCTS_DIR}/MaterialComponents/MaterialComponents.framework",
-				"${BUILT_PRODUCTS_DIR}/MotionAnimator/MotionAnimator.framework",
-				"${BUILT_PRODUCTS_DIR}/MotionInterchange/MotionInterchange.framework",
 				"${BUILT_PRODUCTS_DIR}/OpalImagePicker/OpalImagePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/RLBAlertsPickers/RLBAlertsPickers.framework",
 				"${BUILT_PRODUCTS_DIR}/YoutubePlayer-in-WKWebView/YoutubePlayer_in_WKWebView.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFInternationalization.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MKColorPicker.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialComponents.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MotionAnimator.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MotionInterchange.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpalImagePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RLBAlertsPickers.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YoutubePlayer_in_WKWebView.framework",
@@ -2432,6 +2427,7 @@
 				BE9428EA20C46B5600E1A33A /* PostActions.swift in Sources */,
 				BE25CAD624C3A65400736CA5 /* SwipeForwardAnimatedTransitioning.swift in Sources */,
 				BE3E5C0C1E160D7000749C0C /* ColorUtil.swift in Sources */,
+				DADA000000000000000000F2 /* MDCActivityIndicator.swift in Sources */,
 				BE325CB4257EFB5A00BD2468 /* ModLogObject.swift in Sources */,
 				BEEA03CD20E1B53E007A8928 /* HapticUtility.swift in Sources */,
 				BE080B1C2563528B00D12C4B /* UIResponder+Extensions.swift in Sources */,
