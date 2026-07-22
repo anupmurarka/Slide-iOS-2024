@@ -409,6 +409,7 @@
 		BEF3ACE21E15C101005848B6 /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3ACE11E15C101005848B6 /* ContentType.swift */; };
 		BEF6F5361E19B4A2002B03B6 /* adsources.txt in Resources */ = {isa = PBXBuildFile; fileRef = BEF6F5351E19B4A2002B03B6 /* adsources.txt */; };
 		BEF7483220DD894100B6236B /* SettingsGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF7483120DD894100B6236B /* SettingsGestures.swift */; };
+		DADA00000000000000000003 /* reddift in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000002 /* reddift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -980,6 +981,7 @@
 				BE2E9F0823492B4300FE07B4 /* CloudKit.framework in Frameworks */,
 				BE7BFB481F1997BA009CA2E1 /* MapKit.framework in Frameworks */,
 				B4F3349F251277B80032BB64 /* Starscream in Frameworks */,
+				DADA00000000000000000003 /* reddift in Frameworks */,
 				01BBE6AB1AC863FE2E897632 /* Pods_Slide_for_Reddit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1843,6 +1845,7 @@
 				B4F3354B25127BAB0032BB64 /* Anchorage */,
 				B4F3355525127BD20032BB64 /* Then */,
 				BE31454525674E03004A908C /* Proton */,
+				DADA00000000000000000002 /* reddift */,
 			);
 			productName = "Slide for Reddit";
 			productReference = BE8FCA041E0C46090063B8EF /* Slide for Reddit.app */;
@@ -2013,6 +2016,7 @@
 				B4F3354A25127BAB0032BB64 /* XCRemoteSwiftPackageReference "Anchorage" */,
 				B4F3355425127BD20032BB64 /* XCRemoteSwiftPackageReference "Then" */,
 				BE31454425674E03004A908C /* XCRemoteSwiftPackageReference "proton" */,
+				DADA00000000000000000001 /* XCLocalSwiftPackageReference "Reddift" */,
 			);
 			productRefGroup = BE8FCA051E0C46090063B8EF /* Products */;
 			projectDirPath = "";
@@ -2285,13 +2289,11 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/DTCoreText/DTCoreText.framework",
 				"${BUILT_PRODUCTS_DIR}/DTFoundation/DTFoundation.framework",
-				"${BUILT_PRODUCTS_DIR}/HTMLSpecialCharacters/HTMLSpecialCharacters.framework",
 				"${BUILT_PRODUCTS_DIR}/LicensesViewController/LicensesViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/MDFInternationalization/MDFInternationalization.framework",
 				"${BUILT_PRODUCTS_DIR}/MKColorPicker/MKColorPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/MTColorDistance/MTColorDistance.framework",
 				"${BUILT_PRODUCTS_DIR}/MaterialComponents/MaterialComponents.framework",
-				"${BUILT_PRODUCTS_DIR}/MiniKeychain/MiniKeychain.framework",
 				"${BUILT_PRODUCTS_DIR}/MotionAnimator/MotionAnimator.framework",
 				"${BUILT_PRODUCTS_DIR}/MotionInterchange/MotionInterchange.framework",
 				"${BUILT_PRODUCTS_DIR}/OpalImagePicker/OpalImagePicker.framework",
@@ -2304,20 +2306,17 @@
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/TGPControls/TGPControls.framework",
 				"${BUILT_PRODUCTS_DIR}/YoutubePlayer-in-WKWebView/YoutubePlayer_in_WKWebView.framework",
-				"${BUILT_PRODUCTS_DIR}/reddift/reddift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTCoreText.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTFoundation.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HTMLSpecialCharacters.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LicensesViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFInternationalization.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MKColorPicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MTColorDistance.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialComponents.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MiniKeychain.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MotionAnimator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MotionInterchange.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpalImagePicker.framework",
@@ -2330,7 +2329,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TGPControls.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YoutubePlayer_in_WKWebView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/reddift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3557,6 +3555,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		DADA00000000000000000001 /* XCLocalSwiftPackageReference "Reddift" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = LocalPackages/Reddift;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		B4F333DF251273AF0032BB64 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -3664,6 +3669,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BE31454425674E03004A908C /* XCRemoteSwiftPackageReference "proton" */;
 			productName = Proton;
+		};
+		DADA00000000000000000002 /* reddift */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = reddift;
 		};
 /* End XCSwiftPackageProductDependency section */
 

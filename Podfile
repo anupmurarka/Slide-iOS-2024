@@ -6,7 +6,8 @@ target 'Slide for Reddit' do
   use_frameworks!
   # Pods for Slide for Reddit
 
-  pod 'reddift', :git =>  'https://github.com/ccrama/reddift'
+  # reddift (+ its HTMLSpecialCharacters & MiniKeychain deps) migrated to a
+  # local Swift Package at LocalPackages/Reddift (see MIGRATION.md, Phase 2).
   pod 'MKColorPicker', :git => 'https://github.com/ccrama/MKColorPicker'
   pod 'LicensesViewController', '~> 0.7.0'
   pod 'OpalImagePicker'

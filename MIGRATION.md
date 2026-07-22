@@ -107,10 +107,24 @@ Net result: `LocalPackages/` will contain roughly `Reddift`, `AlertsPickers` (re
 - Left the `Podfile` `post_install` (forces pods to 12.0 / Swift 4.2) untouched — pods deploy below the app fine and are slated for removal in later phases.
 - **Verified:** `Slide for Reddit` scheme (app + widgets + WidgetConfigIntent + extensions) builds clean on iOS 17 simulator; `Slide for Apple Watch` scheme builds clean on watchOS simulator. Both BUILD SUCCEEDED.
 
-### Phase 2 — Vendor reddift (and residual forks)
-- Create `LocalPackages/Reddift/` with a `Package.swift`; move reddift source in; retarget its Alamofire dependency to 5.x; re-declare MiniKeychain/HTMLSpecialCharacters needs (native Keychain / native HTML unescape).
-- Vendor `SubtleVolume`, `TGPControls`, `MTColorDistance` as local packages.
-- Add all local packages to the app/extension/widget/watch targets as needed.
+### Phase 2 — Vendor reddift (and residual forks)  🚧 IN PROGRESS
+- ✅ **reddift vendored** as local Swift Package `LocalPackages/Reddift` with three
+  targets: `reddift` (62 files), `HTMLSpecialCharacters`, `MiniKeychain`.
+  - Discovery: reddift does **not** depend on Alamofire/Starscream/SwiftyJSON — only
+    on HTMLSpecialCharacters + MiniKeychain (both tiny, single-file). All three
+    compile clean under **Swift 5** (the old CocoaPods Swift-4.2 pin was unnecessary).
+  - Removed `pod 'reddift'` from the Podfile; `pod install` dropped reddift +
+    HTMLSpecialCharacters + MiniKeychain from `Pods/`.
+  - Wired the local package into the `Slide for Reddit` app target via a new
+    `XCLocalSwiftPackageReference` in the pbxproj. Only the main app links reddift.
+  - **Verified:** `Slide for Reddit` scheme BUILD SUCCEEDED with the SPM reddift.
+- ⬜ Remaining: vendor/replace `SubtleVolume`, `TGPControls`, `MTColorDistance`.
+
+> **Environment note (this machine):** CocoaPods was not installed; installed via
+> `brew install cocoapods` (1.17.0, Ruby 4.0). `pod` commands must run with
+> `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8` — otherwise CocoaPods on Ruby 4 throws
+> `Encoding::CompatibilityError` on the space-containing project path. Fold this into
+> `bootstrap.sh` in Phase 8 (or moot once CocoaPods is gone).
 
 ### Phase 3 — Add SPM remotes
 - Alamofire 5.x, SwiftyJSON 5.x (official), SDCAlertView, DTCoreText, SwiftLinkPreview, SwiftEntryKit (upstream), LicensesViewController.

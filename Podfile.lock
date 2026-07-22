@@ -17,7 +17,6 @@ PODS:
     - DTFoundation/Core
   - DTFoundation/UIKit (1.7.16):
     - DTFoundation/Core
-  - HTMLSpecialCharacters (1.3.6)
   - LicensesViewController (0.7.0)
   - MaterialComponents/ActivityIndicator (119.5.0):
     - MaterialComponents/Palettes
@@ -32,7 +31,6 @@ PODS:
     - MaterialComponents/private/Math
     - MDFInternationalization
   - MDFInternationalization (2.0.0)
-  - MiniKeychain (1.0.8)
   - MKColorPicker (1.2)
   - MotionAnimator (2.8.1):
     - MotionInterchange (~> 1.6)
@@ -40,9 +38,6 @@ PODS:
   - MTColorDistance (0.0.3)
   - OpalImagePicker (3.0.0)
   - QuickLayout (3.0.0)
-  - reddift (2.0.3):
-    - HTMLSpecialCharacters
-    - MiniKeychain
   - RLBAlertsPickers (1.1.1)
   - SDCAlertView (12.0.5)
   - SubtleVolume (1.1.0)
@@ -63,7 +58,6 @@ DEPENDENCIES:
   - MKColorPicker (from `https://github.com/ccrama/MKColorPicker`)
   - MTColorDistance
   - OpalImagePicker
-  - reddift (from `https://github.com/ccrama/reddift`)
   - RLBAlertsPickers (from `https://github.com/ccrama/Alerts-Pickers`)
   - SDCAlertView (~> 12.0)
   - SubtleVolume
@@ -78,11 +72,9 @@ SPEC REPOS:
   trunk:
     - Alamofire
     - DTFoundation
-    - HTMLSpecialCharacters
     - LicensesViewController
     - MaterialComponents
     - MDFInternationalization
-    - MiniKeychain
     - MotionAnimator
     - MotionInterchange
     - MTColorDistance
@@ -100,8 +92,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/Cocoanetics/DTCoreText
   MKColorPicker:
     :git: https://github.com/ccrama/MKColorPicker
-  reddift:
-    :git: https://github.com/ccrama/reddift
   RLBAlertsPickers:
     :git: https://github.com/ccrama/Alerts-Pickers
   SwiftEntryKit:
@@ -117,9 +107,6 @@ CHECKOUT OPTIONS:
   MKColorPicker:
     :commit: e76cd225ff60f12f8ec0052e39e5e307a32c0762
     :git: https://github.com/ccrama/MKColorPicker
-  reddift:
-    :commit: 79d54d0d00a3b888f766d413ef4a191c4e4c99f7
-    :git: https://github.com/ccrama/reddift
   RLBAlertsPickers:
     :commit: a22003f93a803c2e14b193f636669c21358fb1d7
     :git: https://github.com/ccrama/Alerts-Pickers
@@ -134,18 +121,15 @@ SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   DTCoreText: ec749e013f2e1f76de5e7c7634642e600a7467ce
   DTFoundation: e7781d9fd2f202bfd451fbbf8cab71ce83b46498
-  HTMLSpecialCharacters: edc707cc4bcdc92eb3b9551de8cff94c1e6f9a19
   LicensesViewController: 2f7bba13b3cec7516d4990e41df297720fdbaaab
   MaterialComponents: 2cdc12c16528ed7e6f1d5bd6d6927c47f9f4e90f
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
-  MiniKeychain: 5d424fcd50fb8ab4cc946db2c3415dc391ffffdc
   MKColorPicker: 8998b2ab977e4f240fdf254db27a18b810da3cfc
   MotionAnimator: ee16aa30567c5bae0fb2750c132915829cfaaf8a
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   MTColorDistance: 5ab8708eb88bc22d4d88e309d09eb912f3a6e27b
   OpalImagePicker: 38e772dd93a54431fc516b33e1f337c50f745834
   QuickLayout: 07b45a72b10083fee3f095990cfed1c1e7b27f0a
-  reddift: 8fd60c2b94def78a3d6a2511b15a79a47e720b81
   RLBAlertsPickers: c93e83c13526a5840b67eb52f702d3f83eeaac6a
   SDCAlertView: c9042ba201897da46d833193b8462a186f79c47c
   SubtleVolume: 101038d203018736bcd1df3ac95bcc0f6b8640ce
@@ -156,6 +140,6 @@ SPEC CHECKSUMS:
   TGPControls: 52c0770bee9c9aee364f1559cc627fc01ea5e8b2
   YoutubePlayer-in-WKWebView: cfbf46da51d7370662a695a8f351e5fa1d3e1008
 
-PODFILE CHECKSUM: 6d3fa27c6fd1296e42b198cf93758e707ddc1a84
+PODFILE CHECKSUM: a03d52fca0fb4a36d826f811081b8efd61d3bcb3
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.17.0
