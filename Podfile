@@ -9,14 +9,14 @@ target 'Slide for Reddit' do
   # reddift (+ its HTMLSpecialCharacters & MiniKeychain deps) migrated to a
   # local Swift Package at LocalPackages/Reddift (see MIGRATION.md, Phase 2).
   pod 'MKColorPicker', :git => 'https://github.com/ccrama/MKColorPicker'
-  pod 'LicensesViewController', '~> 0.7.0'
+  # LicensesViewController vendored to LocalPackages/VendoredUI (Phase 3).
   pod 'OpalImagePicker'
   pod 'MaterialComponents/ActivityIndicator'
   pod 'MaterialComponents/ProgressView'
   # SwiftEntryKit migrated to upstream huri000/SwiftEntryKit 2.x via SPM (Phase 3).
   pod 'SDCAlertView', '~> 12.0'
   # SwiftLinkPreview migrated to official LeonardoCardoso/SwiftLinkPreview via SPM (Phase 3).
-  pod 'DTCoreText', :git => 'https://github.com/Cocoanetics/DTCoreText'
+  # DTCoreText migrated to Cocoanetics/DTCoreText via SPM (Phase 3).
   pod 'RLBAlertsPickers', :git => 'https://github.com/ccrama/Alerts-Pickers'
   pod 'Alamofire', '~> 4.3'
   # SwiftyJSON migrated to the official SwiftyJSON via SPM (see MIGRATION.md, Phase 3).

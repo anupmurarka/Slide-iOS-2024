@@ -416,6 +416,8 @@
 		DADA00000000000000000012 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000011 /* SwiftyJSON */; };
 		DADA00000000000000000022 /* SwiftLinkPreview in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000021 /* SwiftLinkPreview */; };
 		DADA00000000000000000032 /* SwiftEntryKit in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000031 /* SwiftEntryKit */; };
+		DADA00000000000000000042 /* LicensesViewController in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000040 /* LicensesViewController */; };
+		DADA00000000000000000052 /* DTCoreText in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000051 /* DTCoreText */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -994,6 +996,8 @@
 				DADA00000000000000000012 /* SwiftyJSON in Frameworks */,
 				DADA00000000000000000022 /* SwiftLinkPreview in Frameworks */,
 				DADA00000000000000000032 /* SwiftEntryKit in Frameworks */,
+				DADA00000000000000000042 /* LicensesViewController in Frameworks */,
+				DADA00000000000000000052 /* DTCoreText in Frameworks */,
 				01BBE6AB1AC863FE2E897632 /* Pods_Slide_for_Reddit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1864,6 +1868,8 @@
 				DADA00000000000000000011 /* SwiftyJSON */,
 				DADA00000000000000000021 /* SwiftLinkPreview */,
 				DADA00000000000000000031 /* SwiftEntryKit */,
+				DADA00000000000000000040 /* LicensesViewController */,
+				DADA00000000000000000051 /* DTCoreText */,
 			);
 			productName = "Slide for Reddit";
 			productReference = BE8FCA041E0C46090063B8EF /* Slide for Reddit.app */;
@@ -2039,6 +2045,7 @@
 				DADA00000000000000000010 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				DADA00000000000000000020 /* XCRemoteSwiftPackageReference "SwiftLinkPreview" */,
 				DADA00000000000000000030 /* XCRemoteSwiftPackageReference "SwiftEntryKit" */,
+				DADA00000000000000000050 /* XCRemoteSwiftPackageReference "DTCoreText" */,
 			);
 			productRefGroup = BE8FCA051E0C46090063B8EF /* Products */;
 			projectDirPath = "";
@@ -2309,9 +2316,6 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Slide for Reddit/Pods-Slide for Reddit-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/DTCoreText/DTCoreText.framework",
-				"${BUILT_PRODUCTS_DIR}/DTFoundation/DTFoundation.framework",
-				"${BUILT_PRODUCTS_DIR}/LicensesViewController/LicensesViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/MDFInternationalization/MDFInternationalization.framework",
 				"${BUILT_PRODUCTS_DIR}/MKColorPicker/MKColorPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/MaterialComponents/MaterialComponents.framework",
@@ -2325,9 +2329,6 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTCoreText.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTFoundation.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LicensesViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFInternationalization.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MKColorPicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialComponents.framework",
@@ -3663,6 +3664,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		DADA00000000000000000050 /* XCRemoteSwiftPackageReference "DTCoreText" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Cocoanetics/DTCoreText";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.26;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -3736,6 +3745,15 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DADA00000000000000000030 /* XCRemoteSwiftPackageReference "SwiftEntryKit" */;
 			productName = SwiftEntryKit;
+		};
+		DADA00000000000000000040 /* LicensesViewController */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LicensesViewController;
+		};
+		DADA00000000000000000051 /* DTCoreText */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DADA00000000000000000050 /* XCRemoteSwiftPackageReference "DTCoreText" */;
+			productName = DTCoreText;
 		};
 /* End XCSwiftPackageProductDependency section */
 

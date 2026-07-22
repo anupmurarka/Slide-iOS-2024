@@ -1,23 +1,5 @@
 PODS:
   - Alamofire (4.9.1)
-  - DTCoreText (1.6.26):
-    - DTCoreText/Core (= 1.6.26)
-    - DTFoundation/Core (~> 1.7.5)
-    - DTFoundation/DTAnimatedGIF (~> 1.7.5)
-    - DTFoundation/DTHTMLParser (~> 1.7.5)
-    - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Core (1.6.26):
-    - DTFoundation/Core (~> 1.7.5)
-    - DTFoundation/DTAnimatedGIF (~> 1.7.5)
-    - DTFoundation/DTHTMLParser (~> 1.7.5)
-    - DTFoundation/UIKit (~> 1.7.5)
-  - DTFoundation/Core (1.7.16)
-  - DTFoundation/DTAnimatedGIF (1.7.16)
-  - DTFoundation/DTHTMLParser (1.7.16):
-    - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.16):
-    - DTFoundation/Core
-  - LicensesViewController (0.7.0)
   - MaterialComponents/ActivityIndicator (119.5.0):
     - MaterialComponents/Palettes
     - MaterialComponents/private/Application
@@ -43,8 +25,6 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.3)
-  - DTCoreText (from `https://github.com/Cocoanetics/DTCoreText`)
-  - LicensesViewController (~> 0.7.0)
   - MaterialComponents/ActivityIndicator
   - MaterialComponents/ProgressView
   - MKColorPicker (from `https://github.com/ccrama/MKColorPicker`)
@@ -57,8 +37,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
-    - DTFoundation
-    - LicensesViewController
     - MaterialComponents
     - MDFInternationalization
     - MotionAnimator
@@ -69,17 +47,12 @@ SPEC REPOS:
     - YoutubePlayer-in-WKWebView
 
 EXTERNAL SOURCES:
-  DTCoreText:
-    :git: https://github.com/Cocoanetics/DTCoreText
   MKColorPicker:
     :git: https://github.com/ccrama/MKColorPicker
   RLBAlertsPickers:
     :git: https://github.com/ccrama/Alerts-Pickers
 
 CHECKOUT OPTIONS:
-  DTCoreText:
-    :commit: 24823e50ec7496b80bd9dd346459136511cfa9d5
-    :git: https://github.com/Cocoanetics/DTCoreText
   MKColorPicker:
     :commit: e76cd225ff60f12f8ec0052e39e5e307a32c0762
     :git: https://github.com/ccrama/MKColorPicker
@@ -89,9 +62,6 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
-  DTCoreText: ec749e013f2e1f76de5e7c7634642e600a7467ce
-  DTFoundation: e7781d9fd2f202bfd451fbbf8cab71ce83b46498
-  LicensesViewController: 2f7bba13b3cec7516d4990e41df297720fdbaaab
   MaterialComponents: 2cdc12c16528ed7e6f1d5bd6d6927c47f9f4e90f
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   MKColorPicker: 8998b2ab977e4f240fdf254db27a18b810da3cfc
@@ -103,6 +73,6 @@ SPEC CHECKSUMS:
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
   YoutubePlayer-in-WKWebView: cfbf46da51d7370662a695a8f351e5fa1d3e1008
 
-PODFILE CHECKSUM: d0954faeaa779df0f11dceb4a30a904561300d53
+PODFILE CHECKSUM: 83326ecaaf1a53b9860c4f09dd423a3113af219e
 
 COCOAPODS: 1.17.0

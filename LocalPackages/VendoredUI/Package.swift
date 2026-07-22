@@ -9,11 +9,13 @@ let package = Package(
     products: [
         .library(name: "SubtleVolume", targets: ["SubtleVolume"]),
         .library(name: "TGPControls", targets: ["TGPControls"]),
-        .library(name: "MTColorDistance", targets: ["MTColorDistance"])
+        .library(name: "MTColorDistance", targets: ["MTColorDistance"]),
+        .library(name: "LicensesViewController", targets: ["LicensesViewController"])
     ],
     targets: [
         .target(name: "SubtleVolume"),
         .target(name: "TGPControls"),
-        .target(name: "MTColorDistance")
+        .target(name: "MTColorDistance"),
+        .target(name: "LicensesViewController")
     ]
 )
