@@ -1942,7 +1942,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1200;
-				LastUpgradeCheck = 1110;
+				LastUpgradeCheck = 1620;
 				ORGANIZATIONNAME = "Haptic Apps";
 				TargetAttributes = {
 					BE0334AB25294B8400B8C6B6 = {
