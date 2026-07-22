@@ -8,7 +8,6 @@
 
 import Anchorage
 import Embassy
-import MaterialComponents.MDCActivityIndicator
 import MKColorPicker
 
 import reddift

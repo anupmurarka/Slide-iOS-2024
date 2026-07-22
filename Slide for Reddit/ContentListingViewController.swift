@@ -203,14 +203,14 @@ class ContentListingViewController: MediaViewController, UICollectionViewDelegat
         
         tableView.alwaysBounceVertical = true
         
-        self.tableView.register(BannerLinkCellView.classForCoder(), forCellWithReuseIdentifier: "banner")
-        self.tableView.register(AutoplayBannerLinkCellView.classForCoder(), forCellWithReuseIdentifier: "autoplay")
-        self.tableView.register(ThumbnailLinkCellView.classForCoder(), forCellWithReuseIdentifier: "thumb")
-        self.tableView.register(TextLinkCellView.classForCoder(), forCellWithReuseIdentifier: "text")
-        self.tableView.register(CommentCellView.classForCoder(), forCellWithReuseIdentifier: "comment")
-        self.tableView.register(MessageCellView.classForCoder(), forCellWithReuseIdentifier: "message")
-        self.tableView.register(ModlogCellView.classForCoder(), forCellWithReuseIdentifier: "modlog")
-        self.tableView.register(FriendCellView.classForCoder(), forCellWithReuseIdentifier: "friend")
+        self.tableView.register(BannerLinkCellView.self, forCellWithReuseIdentifier: "banner")
+        self.tableView.register(AutoplayBannerLinkCellView.self, forCellWithReuseIdentifier: "autoplay")
+        self.tableView.register(ThumbnailLinkCellView.self, forCellWithReuseIdentifier: "thumb")
+        self.tableView.register(TextLinkCellView.self, forCellWithReuseIdentifier: "text")
+        self.tableView.register(CommentCellView.self, forCellWithReuseIdentifier: "comment")
+        self.tableView.register(MessageCellView.self, forCellWithReuseIdentifier: "message")
+        self.tableView.register(ModlogCellView.self, forCellWithReuseIdentifier: "modlog")
+        self.tableView.register(FriendCellView.self, forCellWithReuseIdentifier: "friend")
         tableView.backgroundColor = UIColor.backgroundColor
         
         var top = 0

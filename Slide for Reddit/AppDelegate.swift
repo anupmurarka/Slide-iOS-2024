@@ -857,20 +857,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             topLock.modalPresentationStyle = .overFullScreen
             UIApplication.shared.keyWindow?.topViewController()?.present(topLock, animated: false, completion: nil)
         }
-        fetchFromiCloud("readlater", dictionaryToAppend: ReadLater.readLaterIDs) { (record) in
-            self.readLaterRecord = record
-        }
-        fetchFromiCloud("collections", dictionaryToAppend: Collections.collectionIDs) { (record) in
-            self.collectionRecord = record
-            let removeDict = NSMutableDictionary()
-            self.fetchFromiCloud("removed", dictionaryToAppend: removeDict) { (record) in
-                self.deletedRecord = record
-                let removeKeys = removeDict.allKeys as! [String]
-                for item in removeKeys {
-                    Collections.collectionIDs.removeObject(forKey: item)
-                    ReadLater.readLaterIDs.removeObject(forKey: item)
+        // Only attempt iCloud sync if CloudKit is available and properly configured
+        if isCloudKitAvailable() {
+            fetchFromiCloud("readlater", dictionaryToAppend: ReadLater.readLaterIDs) { (record) in
+                self.readLaterRecord = record
+            }
+            fetchFromiCloud("collections", dictionaryToAppend: Collections.collectionIDs) { (record) in
+                self.collectionRecord = record
+                let removeDict = NSMutableDictionary()
+                self.fetchFromiCloud("removed", dictionaryToAppend: removeDict) { (record) in
+                    self.deletedRecord = record
+                    let removeKeys = removeDict.allKeys as! [String]
+                    for item in removeKeys {
+                        Collections.collectionIDs.removeObject(forKey: item)
+                        ReadLater.readLaterIDs.removeObject(forKey: item)
+                    }
                 }
             }
+        } else {
+            print("CloudKit not available - skipping iCloud sync")
         }
     }
 
@@ -900,6 +905,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var readLaterRecord: CKRecord?
     var collectionRecord: CKRecord?
     var deletedRecord: CKRecord?
+    
+    func isCloudKitAvailable() -> Bool {
+        // Check if CloudKit is available and the container can be accessed
+        guard FileManager.default.ubiquityIdentityToken != nil else {
+            return false
+        }
+        
+        // Try to access the CloudKit container
+        let container = CKContainer(identifier: "iCloud.\(USR_DOMAIN).redditslide")
+        var isAvailable = false
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        container.accountStatus { (status, error) in
+            switch status {
+            case .available:
+                isAvailable = true
+            case .noAccount, .restricted, .couldNotDetermine:
+                isAvailable = false
+            @unknown default:
+                isAvailable = false
+            }
+            semaphore.signal()
+        }
+        
+        // Wait for the async call to complete (with timeout)
+        _ = semaphore.wait(timeout: .now() + 2.0)
+        return isAvailable
+    }
     
     func saveToiCloud(_ dictionary: NSDictionary, _ key: String, _ record: CKRecord?) {
         let collectionsRecord: CKRecord
@@ -975,9 +1008,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Subscriptions.subIcons.write(toFile: iconsFile!, atomically: true)
         Subscriptions.subColors.write(toFile: colorsFile!, atomically: true)
 
-        saveToiCloud(Collections.collectionIDs, "collections", self.collectionRecord)
-        saveToiCloud(ReadLater.readLaterIDs, "readlater", self.readLaterRecord)
-        saveToiCloud(AppDelegate.removeDict, "removed", self.deletedRecord)
+        // Only save to iCloud if CloudKit is available
+        if isCloudKitAvailable() {
+            saveToiCloud(Collections.collectionIDs, "collections", self.collectionRecord)
+            saveToiCloud(ReadLater.readLaterIDs, "readlater", self.readLaterRecord)
+            saveToiCloud(AppDelegate.removeDict, "removed", self.deletedRecord)
+        }
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }

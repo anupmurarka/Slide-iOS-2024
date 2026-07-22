@@ -41,7 +41,7 @@ jobs:
       - name: Install dependencies
         run: |
           sh ./bootstrap.sh
-          pod install
+          # CocoaPods removed — Swift Package Manager resolves deps at build time.
       - name: Run code validation
         uses: actions/checkout@v1
         with:

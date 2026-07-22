@@ -29,19 +29,15 @@ If you're interested in sponsoring our work, check out the sponsor slots for Sli
 
 ## Getting started
 
-To get started with Slide iOS development, you need to set up CocoaPods integration and open the Coacoapods workspace, not the default xcworkspace. **NOTE: You must open the .xcworkspace file instead of the .xcodeproj file for dependencies to load. If you are having issues with Pods or are setting up the Slide repository for the first time, try the steps below.**
+Slide uses **Swift Package Manager** for its dependencies (CocoaPods was removed — see [MIGRATION.md](MIGRATION.md)). There is no `pod install` step: Xcode resolves the Swift packages automatically on first open. Some dependencies live in-repo under [`LocalPackages/`](LocalPackages/) (vendored) and the rest are fetched from their upstream repositories.
 
 Below are the steps to getting started:
 
-1. Clone this repo and open the Terminal
-2. In Terminal, run `pod install`
-3. Open "Slide for Reddit.xcworkspace" through Finder
-4. Modify [/scripts/install-filter.sh](/scripts/install-filter.sh) with the information it asks for, then run it from the repo root directory (`sh scripts/install-filter.sh`). Once done, your developer info will automatically replace the defaults (even if you change branches!), and you can't accidentally overwrite the defaults. (If you don't want to do this, just put a new value in the USR_DOMAIN variable in the main target's Build Settings, then modify the signing info yourself. Make sure you don't commit changes to the signing info.)
+1. Clone this repo (min: **iOS 15**, and a current Xcode / Swift 5 toolchain).
+2. Open "Slide for Reddit.xcworkspace" (or "Slide for Reddit.xcodeproj" — either works now) and let Swift Package Manager finish resolving packages.
+3. Modify [/scripts/install-filter.sh](/scripts/install-filter.sh) with the information it asks for, then run it from the repo root directory (`sh scripts/install-filter.sh`). Once done, your developer info will automatically replace the defaults (even if you change branches!), and you can't accidentally overwrite the defaults. (If you don't want to do this, just put a new value in the USR_DOMAIN variable in the main target's Build Settings, then modify the signing info yourself. Make sure you don't commit changes to the signing info.)
 
-### If you are having trouble building on XCode 10 or MacOS Mojave
-
-Try running `chmod 666 Pods/Realm/include/RLMPlatform.h` from Terminal in the project root directory.
-
+Linting uses [SwiftLint](https://github.com/realm/SwiftLint) as a build phase; install it with `brew install swiftlint` (or `mint bootstrap`). It's optional — the build only warns if it's missing.
 
 ### If you don't have a paid Apple Developer account and you get warnings about iCloud entitlements
 

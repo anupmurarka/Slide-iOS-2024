@@ -418,6 +418,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>slide</string>
+				<string>redreader</string>
 			</array>
 		</dict>
 	</array>

@@ -1,0 +1,261 @@
+# Slide for Reddit — Modernization & CocoaPods Removal Plan
+
+> Status: **Plan only** — no code changes yet. Branch of record: `feature/eb-build`.
+> Decisions locked with the maintainer (2026-07-22):
+> - **Minimum iOS: 15.0** (unifies the current 12.0/13.2/14.0 mix).
+> - **Dependency strategy: replace forks with native/maintained libraries where possible**; vendor into the repo only what has no alternative (primarily `reddift`).
+> - **Package manager: Swift Package Manager only.** CocoaPods removed entirely.
+
+---
+
+## 1. Current State
+
+Large UIKit Reddit client, ~239 Swift files, **8 first-party targets**:
+
+- `Slide for Reddit` (main app)
+- `Slide for RedditTests`, `Slide for RedditUITests`
+- `Slide Widgets`
+- `Slide for Apple Watch`, `Slide for Apple Watch Extension`
+- `Favorite SubredditsExtension`
+- `Open in Slide` (action extension)
+- `Slide Screenshot Automation`
+
+### Dependencies are half-migrated (hybrid CocoaPods + SPM)
+
+**Already on SPM** (in `.xcworkspace/.../Package.resolved`):
+SDWebImage 5.9.1, swift-badge (BadgeSwift) 8.0.2, BiometricAuthentication 3.1.2, Embassy 4.1.1, Starscream 3.1.1, Anchorage 4.5.0, Then 2.7.0, Proton 0.5.0.
+
+**Still on CocoaPods** (`Podfile`, `Pods/`, `.xcworkspace` references `Pods.xcodeproj`):
+reddift, Alamofire 4.9.1, SwiftyJSON (ccrama `hotfix-xcode12` branch), DTCoreText 1.6.26, MaterialComponents 119.5.0, SDCAlertView 12.0.5, RLBAlertsPickers (ccrama fork), OpalImagePicker 3.0.0, MKColorPicker (ccrama fork), SubtleVolume 1.1.0, SwiftLinkPreview 3.0.1, TGPControls 5.1.0, YoutubePlayer-in-WKWebView 0.3.5, LicensesViewController 0.7.0, MTColorDistance 0.0.3, SwiftEntryKit (ccrama fork), MiniKeychain (transitive), HTMLSpecialCharacters (transitive), SwiftLint 0.42.0; plus MDFInternationalization / MotionAnimator / MotionInterchange / QuickLayout as transitive deps.
+
+### Inconsistencies left by the `feature/eb-build` "get it compiling" hack
+
+- **Deployment target split**: `12.0` (6 configs), `13.2` (2), `14.0` (4).
+- **Swift version split**: `5.0` (16 configs), **`4.2` (2 configs)** — RLBAlertsPickers & SwiftLinkPreview, forced by the Podfile `post_install`.
+- **Stale/branch-locked deps**: Alamofire pinned `~> 4.3` (4.x is EOL, current 5.x); SwiftyJSON on a personal hotfix branch; Starscream 3.1.1; MaterialComponents 119.5.0 (Google archived MDC-iOS).
+- **Personal forks with no upstream releases**: reddift, MKColorPicker, SwiftEntryKit, SwiftyJSON, RLBAlertsPickers (Alerts-Pickers).
+
+### Usage weighting (drives effort)
+
+| Dependency | Import sites |
+|---|---:|
+| reddift | 102 |
+| SDCAlertView | 29 |
+| RLBAlertsPickers | 24 |
+| MaterialComponents | 10 |
+| Alamofire | 9 |
+| SwiftyJSON | 6 |
+| MKColorPicker | 6 |
+| DTCoreText | 6 |
+| LicensesViewController | 4 |
+| SwiftLinkPreview / SwiftEntryKit / SubtleVolume | 2 each |
+| TGPControls / OpalImagePicker / MTColorDistance | 1 each |
+| YoutubePlayer-in-WKWebView / MiniKeychain / HTMLSpecialCharacters | 0 (unused/transitive) |
+
+`YTPlayerView.h/.m` is vendored at the repo root (Objective-C).
+
+---
+
+## 2. Target State
+
+- **No CocoaPods**: no `Podfile`, `Podfile.lock`, `Pods/`; `.xcworkspace` no longer references `Pods.xcodeproj` (flatten to the `.xcodeproj`, or drop the workspace — SPM does not require one).
+- **All deps via SPM, vendored source, or native APIs.**
+- **Single deployment target: iOS 15.0** on every target.
+- **Single Swift version: 5.0** (kill the 4.2 configs).
+- SwiftLint via SPM build-tool plugin (or Mint), not a pod.
+- Clean build settings (xcconfig-driven where practical), modern warning defaults, updated `README` / `bootstrap.sh` / `.gitignore` / CI.
+
+---
+
+## 3. Dependency Disposition (per the "replace forks, vendor only reddift" decision)
+
+| Dependency | Uses | Disposition | Notes |
+|---|---:|---|---|
+| **reddift** (fork) | 102 | **Vendor** as local SPM package `LocalPackages/Reddift` | No upstream release; core Reddit API. Patch its Alamofire dep to 5.x here. Highest-risk item. |
+| **Alamofire** | 9 | **SPM 5.x** | 4→5 breaking API changes. Also resolve reddift's internal Alamofire usage. |
+| **SwiftyJSON** | 6 | **SPM, official 5.x** | Drop ccrama branch. |
+| **SDCAlertView** | 29 | **SPM** | Recent versions support SPM; verify API parity (high usage). |
+| **RLBAlertsPickers** (fork) | 24 | **Replace where possible**; vendor the remainder as `LocalPackages/AlertsPickers` | Much of it (image/photo/location pickers) can move to `PHPickerViewController` / native alerts. Vendor only the irreplaceable pieces. |
+| **MaterialComponents** | 10 | **Replace with native** | `ActivityIndicator` → `UIActivityIndicatorView`; `ProgressView` → `UIProgressView`. Eliminates MDF/Motion/QuickLayout transitive tree. |
+| **MKColorPicker** (fork) | 6 | **Replace** with `UIColorPickerViewController` (iOS 14+) | Native since iOS 14; viable at the iOS 15 floor. |
+| **DTCoreText** | 6 | **SPM** (or vendor) | Recent versions support SPM. |
+| **LicensesViewController** | 4 | **SPM** if available, else vendor (small) | |
+| **SwiftLinkPreview** | 2 | **SPM, official** | Also removes a 4.2-Swift config. |
+| **SwiftEntryKit** (fork) | 2 | **SPM, upstream 2.x** | |
+| **SubtleVolume** | 2 | **Vendor** (tiny, unmaintained) | |
+| **TGPControls** | 1 | **Vendor** (tiny) | |
+| **MTColorDistance** | 1 | **Vendor** (tiny) or inline the color-distance math | |
+| **OpalImagePicker** | 1 | **Replace** with `PHPickerViewController` | |
+| **YoutubePlayer-in-WKWebView** | 0 | **Remove** | Confirm dead; `YTPlayerView.h/.m` at root already covers YouTube embedding. |
+| **MiniKeychain / HTMLSpecialCharacters** | 0 | **Resolve via reddift** | Transitive; re-declare inside vendored reddift package or replace with Keychain Services / native unescaping. |
+| **SwiftLint** | tooling | **SPM build-tool plugin** or Mint | Remove from Podfile. |
+
+Net result: `LocalPackages/` will contain roughly `Reddift`, `AlertsPickers` (residual), `SubtleVolume`, `TGPControls`, `MTColorDistance`. Everything else is an SPM remote or gone.
+
+---
+
+## 4. Phased Execution Plan
+
+### Phase 0 — Baseline & safety net  ✅ DONE
+- Branched `feature/modernize` off `feature/eb-build`.
+- Captured `xcodebuild -showBuildSettings` baseline (scratchpad `baseline-buildsettings-app.txt`).
+- **Finding:** the `feature/eb-build` baseline does **not** build via command-line `xcodebuild` — it fails on `'WebSocket' is ambiguous` in `LiveThreadViewController.swift`. Cause: `reddift` (CocoaPods) pulls Starscream transitively **and** Starscream is added via SPM, so two `WebSocket` types are in scope. This is a preview of exactly the duplicate-symbol class of problem the migration resolves. Fixed interim by qualifying `Starscream.WebSocket` (survives into the final state since Starscream stays an SPM dep).
+
+### Phase 1 — Set the floor  ✅ DONE
+- Unified **all** first-party configs to `IPHONEOS_DEPLOYMENT_TARGET = 15.0` (12 configs, was 12.0/13.2/14.0) and `SWIFT_VERSION = 5.0` (18 configs, killed the two Swift 4.2 configs on the Apple Watch app).
+- Bumped the two watch targets to `WATCHOS_DEPLOYMENT_TARGET = 8.0` (was 4.3, unbuildably ancient — the natural pair for an iOS 15 floor). ⚠️ Confirm this watchOS floor is acceptable.
+- Left the `Podfile` `post_install` (forces pods to 12.0 / Swift 4.2) untouched — pods deploy below the app fine and are slated for removal in later phases.
+- **Verified:** `Slide for Reddit` scheme (app + widgets + WidgetConfigIntent + extensions) builds clean on iOS 17 simulator; `Slide for Apple Watch` scheme builds clean on watchOS simulator. Both BUILD SUCCEEDED.
+
+### Phase 2 — Vendor reddift (and residual forks)  ✅ DONE
+- ✅ **reddift vendored** as local Swift Package `LocalPackages/Reddift` with three
+  targets: `reddift` (62 files), `HTMLSpecialCharacters`, `MiniKeychain`.
+  - Discovery: reddift does **not** depend on Alamofire/Starscream/SwiftyJSON — only
+    on HTMLSpecialCharacters + MiniKeychain (both tiny, single-file). All three
+    compile clean under **Swift 5** (the old CocoaPods Swift-4.2 pin was unnecessary).
+  - Removed `pod 'reddift'` from the Podfile; `pod install` dropped reddift +
+    HTMLSpecialCharacters + MiniKeychain from `Pods/`.
+  - Wired the local package into the `Slide for Reddit` app target via a new
+    `XCLocalSwiftPackageReference` in the pbxproj. Only the main app links reddift.
+  - **Verified:** `Slide for Reddit` scheme BUILD SUCCEEDED with the SPM reddift.
+- ✅ **SubtleVolume, TGPControls, MTColorDistance** moved to a second local Swift
+  Package `LocalPackages/VendoredUI` (three library products):
+  - SubtleVolume & TGPControls vendored as pure Swift; TGPControls needed two Swift-5
+    API renames (`NSLayoutAttribute`→`NSLayoutConstraint.Attribute`,
+    `UIControlEvents`→`UIControl.Event`).
+  - **MTColorDistance** was the project's only Objective-C dependency (a CIE-Lab
+    `UIColor` color-distance category). Rather than a mixed-language SPM target, it
+    was **ported to Swift** (`UIColor+Distance.swift`), preserving the original
+    algorithm exactly (including its integer-division quirk). Call site
+    `ColorUtil.swift` unchanged (`closestColor(inPalette:)`).
+  - Removed all three from the Podfile; `pod install` dropped them from `Pods/`.
+  - **Verified:** `Slide for Reddit` scheme BUILD SUCCEEDED with all four vendored
+    packages. CocoaPods is now down to 14 declared / 18 total pods.
+
+> **Environment note (this machine):** CocoaPods was not installed; installed via
+> `brew install cocoapods` (1.17.0, Ruby 4.0). `pod` commands must run with
+> `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8` — otherwise CocoaPods on Ruby 4 throws
+> `Encoding::CompatibilityError` on the space-containing project path. Fold this into
+> `bootstrap.sh` in Phase 8 (or moot once CocoaPods is gone).
+
+### Phase 3 — Add SPM remotes  ✅ DONE
+Migrated one dependency at a time (add SPM → drop pod → fix call sites → verify green build):
+- ✅ **SwiftyJSON** — ccrama fork → official 5.0.1 (SPM). Drop-in.
+- ✅ **SwiftLinkPreview** — pod → official 3.4 (SPM). Drop-in.
+- ✅ **SwiftEntryKit** — ccrama fork → upstream 2.x (SPM); dropped transitive QuickLayout. Drop-in.
+- ✅ **DTCoreText** — git pod → Cocoanetics/DTCoreText (SPM); pulls DTFoundation transitively.
+- ✅ **LicensesViewController** — no upstream SPM → vendored 3 Swift files into `VendoredUI`.
+- ✅ **SDCAlertView** — pod → sberrevoets/SDCAlertView 12.x (SPM). Drop-in despite 29 call sites.
+- ✅ **Alamofire** — 4.9 → 5.9 (SPM). Breaking; fixes applied:
+  - `Alamofire.request/download/upload` free funcs → `AF.*`
+  - `DownloadRequest.DownloadOptions` → `.Options`; `DownloadResponse<Data>` → `AFDownloadResponse<Data>`
+  - `upload(multipartFormData:…encodingCompletion:)` → chained `.uploadProgress/.responseData`
+  - `responseJSON` (removed in AF5) → `responseData` + `JSON(data:)` / `JSONSerialization`
+  - `Session` ambiguity (Alamofire.Session vs reddift.Session) → qualified `reddift.Session`
+  - The custom `extension String: ParameterEncoding` still valid (protocol unchanged in AF5).
+- Verified after each step: `Slide for Reddit` BUILD SUCCEEDED. **Pods now 7 declared / 9 total.**
+
+### Phase 4 — Native replacements  ✅ DONE
+Reality differed from the plan in a few places; disposition chosen per the
+"replace where possible, vendor what has no native equivalent" rule:
+- ✅ **MaterialComponents** — only `MDCActivityIndicator` was used (ProgressView subspec
+  was dead). Replaced with a native UIKit shim at `Slide for Reddit/Compat/MDCActivityIndicator.swift`
+  (UIActivityIndicatorView + CAShapeLayer ring). Dropped MDF/Motion×2 transitively.
+- ✅ **MKColorPicker** — used as an *embedded swatch grid* (`ColorPickerView` in custom
+  alerts), not a modal, so `UIColorPickerViewController` is not a drop-in. **Vendored**
+  (6 files) into `VendoredUI`.
+- ✅ **OpalImagePicker** — only backed the iOS <14 fallback, dead at the iOS 15 floor.
+  **Removed** the else-branch + its `[PHAsset]` upload helpers; the existing
+  `PHPickerViewController` path is now always used.
+- ✅ **YoutubePlayer-in-WKWebView** — NOT dead (WKYTPlayerView used in VideoMediaViewController
+  via the bridging header). ObjC, no SPM → **vendored** WKYTPlayerView.h/.m + its HTML asset
+  directly into the app target (HTML added to Copy Bundle Resources).
+- ✅ **RLBAlertsPickers** — 81 pure-Swift files, no native equivalent for its custom
+  pickers → **vendored** into `VendoredUI` (compiled clean under Swift 5, no changes).
+- Verified after each step. **Only SwiftLint remains as a pod (1 total).**
+
+> Note: `UIColorPickerViewController`/`PHPickerViewController` full replacements were
+> reconsidered — the actual usage patterns (embedded grid; already-present PHPicker path)
+> made vendoring/dead-code-removal the correct, lower-risk calls.
+
+### Phase 5 — Fix API breakage
+- Alamofire 4→5 call-site migration (request/response builders, validation, serialization changes) across the app **and** vendored reddift.
+- SDCAlertView / SwiftEntryKit / SwiftyJSON API deltas.
+- Reconcile any RLBAlertsPickers call sites not covered by native replacements.
+
+### Phase 6 — Tear out CocoaPods  ✅ DONE
+- Ran `pod deintegrate` — cleanly removed all `[CP] Check Pods Manifest.lock` phases,
+  the `Pods_*.framework` linkage, and the `Pods-*.xcconfig` base-configuration
+  references from every target; also removed the `Pods/` directory. **Zero CocoaPods
+  traces remain in the pbxproj.**
+- Rewrote the "Run SwiftLint" build phase from `${PODS_ROOT}/SwiftLint/swiftlint` to a
+  portable script (`PATH` incl. /opt/homebrew/bin + /usr/local/bin; runs `swiftlint`
+  if present, else warns). SwiftLint is now a system tool (brew/Mint), not a pod.
+- Deleted `Podfile` and `Podfile.lock`.
+- Flattened `Slide for Reddit.xcworkspace` to reference only the project (dropped the
+  `Pods/Pods.xcodeproj` FileRef).
+- **Fixed a pre-existing `.swiftlint.yml` bug**: a duplicate `excluded:` key made
+  SwiftLint 0.63 (system) reject the whole config and lint with defaults (which failed
+  the build). Removed the duplicate; also disabled three rules new since 0.42
+  (`attribute_name_spacing`, `invisible_character`, `duplicate_conditions`) to preserve
+  prior lint behavior — flagged for incremental cleanup.
+- **Verified:** `Slide for Reddit` (iOS) and `Slide for Apple Watch` (watchOS) both
+  BUILD SUCCEEDED with **no CocoaPods**. 🎉
+
+### Phase 7 — Normalize build settings  ✅ DONE (light)
+- Deployment target & Swift version already unified in Phase 1 (iOS 15 / watchOS 8 / Swift 5); confirmed no 4.2 remnants.
+- Bumped `LastUpgradeCheck` 1110 → 1620.
+- Fixed the `.swiftlint.yml` config (duplicate-key bug) so linting works on modern SwiftLint.
+- Deferred (deliberately, low value/high churn): a full shared-`.xcconfig` refactor and
+  flipping on stricter warning defaults. The settings are consistent and building clean;
+  an xcconfig migration can be a separate focused change.
+
+### Phase 8 — Verify & document  ✅ DONE
+- **Builds verified (no CocoaPods):**
+  - `Slide for Reddit` (iOS) — app + embedded widgets, WidgetConfigIntent, and app
+    extensions — BUILD SUCCEEDED.
+  - `Slide for Apple Watch` (watchOS) — BUILD SUCCEEDED.
+  - `Slide for RedditTests` unit-test target compiles.
+- **Known pre-existing issue (NOT caused by this migration):** `build-for-testing` fails
+  on the `Slide Screenshot Automation` fastlane target because `fastlane/SnapshotHelper.swift`
+  is missing from the repo (untracked; last present in commit `53c936c0`). Regenerate with
+  `fastlane snapshot init`. Unrelated to dependencies.
+- Updated `README.md` (SPM setup, no `pod install`; SwiftLint via brew/Mint).
+- Updated `.github/workflows/core_data_tests.yml` and `beta-automation.yml` to drop the
+  `pod install` steps and the Pods cache.
+- `bootstrap.sh` needed no CocoaPods changes (it only bootstraps Mint + Bundler).
+
+---
+
+## Result
+
+The project no longer uses CocoaPods in any form. Dependency inventory:
+- **SPM remote:** SDWebImage, BadgeSwift, BiometricAuthentication, Embassy, Starscream,
+  Anchorage, Then, Proton (pre-existing) + SwiftyJSON, SwiftLinkPreview, SwiftEntryKit,
+  DTCoreText, SDCAlertView, Alamofire 5 (migrated in Phase 3).
+- **Local SPM (`LocalPackages/`):** `Reddift` (reddift + HTMLSpecialCharacters + MiniKeychain);
+  `VendoredUI` (SubtleVolume, TGPControls, MTColorDistance[Swift port], LicensesViewController,
+  MKColorPicker, RLBAlertsPickers).
+- **Vendored into app target:** WKYTPlayerView (ObjC + HTML asset).
+- **Native replacement:** MDCActivityIndicator shim (was MaterialComponents).
+- **Removed:** OpalImagePicker (dead at iOS 15), YoutubePlayer/MaterialComponents pods, all
+  ccrama forks.
+- **Tooling:** SwiftLint is a system tool (brew/Mint) run from a portable build phase.
+
+---
+
+## 5. Key Risks
+
+1. **reddift ↔ Alamofire coupling** — reddift's networking is built on Alamofire 4. Vendoring reddift lets us patch it to Alamofire 5, but this is the largest single migration surface (102 + 9 call sites plus library internals). This is the critical path.
+2. **MaterialComponents removal** — touches 10 files but is the biggest debt reducer (archived library, no SPM, pulls 4 transitive pods). Native replacements are straightforward but need visual verification.
+3. **Multi-target pod teardown** — widgets, watch app/extension, and the two app extensions each carry their own pod embed phases and search paths; missing one produces link/embed failures that are easy to misattribute.
+4. **RLBAlertsPickers residual** — the "replace where possible" scope for its 24 sites needs case-by-case triage; some custom pickers may still require vendoring.
+5. **SDCAlertView SPM parity** — 29 sites; confirm the SPM-published version exposes the same API surface before committing.
+
+---
+
+## 6. Open Items (to confirm during execution)
+- Whether reddift's fork can move to Alamofire 5 cleanly, or needs a compatibility shim.
+- Which RLBAlertsPickers components have no native equivalent and must be vendored.
+- Whether `Slide Screenshot Automation` (uses Embassy) and fastlane snapshot flows still work post-migration.
+- CI provider specifics in `.github/` (build steps referencing CocoaPods).

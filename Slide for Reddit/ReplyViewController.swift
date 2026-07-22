@@ -576,7 +576,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
                     })
                     
                     let requestString = "https://oauth.reddit.com/r/\(subreddit)/api/link_flair_v2.json"
-                    Alamofire.request(requestString, method: .get, headers: ["Authorization": "bearer \(token.accessToken)"]).responseString { [weak self] response in
+                    AF.request(requestString, method: .get, headers: ["Authorization": "bearer \(token.accessToken)"]).responseString { [weak self] response in
                         guard let self = self else { return }
                         do {
                             guard let data = response.data else {
@@ -1292,7 +1292,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
     }
 
     var alertController: UIAlertController?
-    var session: Session?
+    var session: reddift.Session?
 
     func getSubmissionEdited(_ name: String) {
         DispatchQueue.main.async {
@@ -1410,7 +1410,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
                     } else {
                         token = try OAuth2TokenRepository.token(of: name)
                     }
-                    session = Session(token: token)
+                    session = reddift.Session(token: token)
                 } catch {
                     let alert = UIAlertController(title: "Something went wrong", message: "There was an error loading this account. Please try again later.", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { (_) in
@@ -1610,7 +1610,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
                 } else {
                     token = try OAuth2TokenRepository.token(of: name)
                 }
-                session = Session(token: token)
+                session = reddift.Session(token: token)
             } catch {
                 let alert = UIAlertController(title: "Something went wrong", message: "There was an error loading this account. Please try again later.", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { (_) in

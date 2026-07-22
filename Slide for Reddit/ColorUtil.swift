@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import MaterialComponents
 import MTColorDistance
 
 extension UIColor {

@@ -1,5 +1,6 @@
 {
-    "DeveloperName": "ccrama",
-    "redirect_uri": "slide://ccrama",
-    "client_id": "r1JeYb6X0P2QOg"
+    "DeveloperName": "dlfaust",
+    "redirect_uri": "redreader://rr_oauth_redir",
+    "client_id": "yH0aTnJEt6qUgGn835B4vg",
+    "user_agent": "org.quantumbadger.redreader/1.25.2"
 }

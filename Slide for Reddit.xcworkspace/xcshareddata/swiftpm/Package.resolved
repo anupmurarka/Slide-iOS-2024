@@ -1,88 +1,150 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "Anchorage",
-        "repositoryURL": "https://github.com/Rightpoint/Anchorage",
-        "state": {
-          "branch": null,
-          "revision": "23a6dd0ccf9529d2750d8679a2e74a161cff2f16",
-          "version": "4.5.0"
-        }
-      },
-      {
-        "package": "BiometricAuthentication",
-        "repositoryURL": "https://github.com/rushisangani/BiometricAuthentication",
-        "state": {
-          "branch": null,
-          "revision": "085569f12692a964ef580d4ec6e04956e879929a",
-          "version": "3.1.2"
-        }
-      },
-      {
-        "package": "Embassy",
-        "repositoryURL": "https://github.com/envoy/Embassy",
-        "state": {
-          "branch": null,
-          "revision": "189436100c00efbf5fb2653fe7972a9371db0a91",
-          "version": "4.1.1"
-        }
-      },
-      {
-        "package": "Proton",
-        "repositoryURL": "https://github.com/rajdeep/proton",
-        "state": {
-          "branch": null,
-          "revision": "e9257e11ff2a708f6b6ea98a9d593ab3bef7ea1b",
-          "version": "0.5.0"
-        }
-      },
-      {
-        "package": "SDWebImage",
-        "repositoryURL": "https://github.com/SDWebImage/SDWebImage",
-        "state": {
-          "branch": null,
-          "revision": "7a21432a370a34925046244462281bd36ebab73d",
-          "version": "5.9.1"
-        }
-      },
-      {
-        "package": "Starscream",
-        "repositoryURL": "https://github.com/daltoniam/Starscream",
-        "state": {
-          "branch": null,
-          "revision": "e6b65c6d9077ea48b4a7bdda8994a1d3c6969c8d",
-          "version": "3.1.1"
-        }
-      },
-      {
-        "package": "BadgeSwift",
-        "repositoryURL": "https://github.com/evgenyneu/swift-badge",
-        "state": {
-          "branch": null,
-          "revision": "f6cd330ed423556e909b7126b710c13ee23ccf45",
-          "version": "8.0.2"
-        }
-      },
-      {
-        "package": "swift-nio-zlib-support",
-        "repositoryURL": "https://github.com/apple/swift-nio-zlib-support.git",
-        "state": {
-          "branch": null,
-          "revision": "37760e9a52030bb9011972c5213c3350fa9d41fd",
-          "version": "1.0.0"
-        }
-      },
-      {
-        "package": "Then",
-        "repositoryURL": "https://github.com/devxoul/Then",
-        "state": {
-          "branch": null,
-          "revision": "e421a7b3440a271834337694e6050133a3958bc7",
-          "version": "2.7.0"
-        }
+  "originHash" : "6bf412528f3d2cf6253b0f794f2c0702b283507fcee696a879136f1fb5752328",
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire",
+      "state" : {
+        "revision" : "7595cbcf59809f9977c5f6378500de2ad73b7ddb",
+        "version" : "5.12.0"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "anchorage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Rightpoint/Anchorage",
+      "state" : {
+        "revision" : "23a6dd0ccf9529d2750d8679a2e74a161cff2f16",
+        "version" : "4.5.0"
+      }
+    },
+    {
+      "identity" : "biometricauthentication",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rushisangani/BiometricAuthentication",
+      "state" : {
+        "revision" : "085569f12692a964ef580d4ec6e04956e879929a",
+        "version" : "3.1.2"
+      }
+    },
+    {
+      "identity" : "dtcoretext",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Cocoanetics/DTCoreText",
+      "state" : {
+        "revision" : "c0fe041c87c773321785d68a10c63c29a9c763e8",
+        "version" : "1.6.28"
+      }
+    },
+    {
+      "identity" : "dtfoundation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Cocoanetics/DTFoundation.git",
+      "state" : {
+        "revision" : "a61be65dd7d5b2cde3acabd13bf320b71f2907a5",
+        "version" : "1.7.19"
+      }
+    },
+    {
+      "identity" : "embassy",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/envoy/Embassy",
+      "state" : {
+        "revision" : "189436100c00efbf5fb2653fe7972a9371db0a91",
+        "version" : "4.1.1"
+      }
+    },
+    {
+      "identity" : "proton",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rajdeep/proton",
+      "state" : {
+        "revision" : "e9257e11ff2a708f6b6ea98a9d593ab3bef7ea1b",
+        "version" : "0.5.0"
+      }
+    },
+    {
+      "identity" : "sdcalertview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sberrevoets/SDCAlertView",
+      "state" : {
+        "revision" : "eda84764885b55b30c334384afee5f8f06ac48de",
+        "version" : "12.0.5"
+      }
+    },
+    {
+      "identity" : "sdwebimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImage",
+      "state" : {
+        "revision" : "7a21432a370a34925046244462281bd36ebab73d",
+        "version" : "5.9.1"
+      }
+    },
+    {
+      "identity" : "starscream",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/daltoniam/Starscream",
+      "state" : {
+        "revision" : "e6b65c6d9077ea48b4a7bdda8994a1d3c6969c8d",
+        "version" : "3.1.1"
+      }
+    },
+    {
+      "identity" : "swift-badge",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/evgenyneu/swift-badge",
+      "state" : {
+        "revision" : "f6cd330ed423556e909b7126b710c13ee23ccf45",
+        "version" : "8.0.2"
+      }
+    },
+    {
+      "identity" : "swift-nio-zlib-support",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-nio-zlib-support.git",
+      "state" : {
+        "revision" : "37760e9a52030bb9011972c5213c3350fa9d41fd",
+        "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "swiftentrykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/huri000/SwiftEntryKit",
+      "state" : {
+        "revision" : "5ad36cccf0c4b9fea32f4e9b17a8e38f07563ef0",
+        "version" : "2.0.0"
+      }
+    },
+    {
+      "identity" : "swiftlinkpreview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/LeonardoCardoso/SwiftLinkPreview",
+      "state" : {
+        "revision" : "3eb30b1832a9cf0eaeec3e2cf6cfc0ed18ef763f",
+        "version" : "3.4.0"
+      }
+    },
+    {
+      "identity" : "swiftyjson",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftyJSON/SwiftyJSON",
+      "state" : {
+        "revision" : "af76cf3ef710b6ca5f8c05f3a31307d44a3c5828",
+        "version" : "5.0.2"
+      }
+    },
+    {
+      "identity" : "then",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/devxoul/Then",
+      "state" : {
+        "revision" : "e421a7b3440a271834337694e6050133a3958bc7",
+        "version" : "2.7.0"
+      }
+    }
+  ],
+  "version" : 3
 }
