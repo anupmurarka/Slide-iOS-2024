@@ -183,11 +183,24 @@ Reality differed from the plan in a few places; disposition chosen per the
 - SDCAlertView / SwiftEntryKit / SwiftyJSON API deltas.
 - Reconcile any RLBAlertsPickers call sites not covered by native replacements.
 
-### Phase 6 — Tear out CocoaPods
-- Delete `Podfile`, `Podfile.lock`, `Pods/`, `Pods.xcodeproj`.
-- Remove `[CP]` build phases (Check Pods Manifest, Copy Pods Resources, Embed Pods Frameworks) from **every** target — including widgets, watch, and extensions.
-- Strip `${PODS_ROOT}` / `${PODS_CONFIGURATION_BUILD_DIR}` from `FRAMEWORK_SEARCH_PATHS`, `HEADER_SEARCH_PATHS`, `OTHER_LDFLAGS`, and any pod-generated `.xcconfig` includes.
-- Flatten `.xcworkspace` to reference only the project, or delete the workspace.
+### Phase 6 — Tear out CocoaPods  ✅ DONE
+- Ran `pod deintegrate` — cleanly removed all `[CP] Check Pods Manifest.lock` phases,
+  the `Pods_*.framework` linkage, and the `Pods-*.xcconfig` base-configuration
+  references from every target; also removed the `Pods/` directory. **Zero CocoaPods
+  traces remain in the pbxproj.**
+- Rewrote the "Run SwiftLint" build phase from `${PODS_ROOT}/SwiftLint/swiftlint` to a
+  portable script (`PATH` incl. /opt/homebrew/bin + /usr/local/bin; runs `swiftlint`
+  if present, else warns). SwiftLint is now a system tool (brew/Mint), not a pod.
+- Deleted `Podfile` and `Podfile.lock`.
+- Flattened `Slide for Reddit.xcworkspace` to reference only the project (dropped the
+  `Pods/Pods.xcodeproj` FileRef).
+- **Fixed a pre-existing `.swiftlint.yml` bug**: a duplicate `excluded:` key made
+  SwiftLint 0.63 (system) reject the whole config and lint with defaults (which failed
+  the build). Removed the duplicate; also disabled three rules new since 0.42
+  (`attribute_name_spacing`, `invisible_character`, `duplicate_conditions`) to preserve
+  prior lint behavior — flagged for incremental cleanup.
+- **Verified:** `Slide for Reddit` (iOS) and `Slide for Apple Watch` (watchOS) both
+  BUILD SUCCEEDED with **no CocoaPods**. 🎉
 
 ### Phase 7 — Normalize build settings
 - Confirm single deployment target & Swift version everywhere (no 4.2 remnants).

@@ -17,6 +17,12 @@ disabled_rules:
 - force_cast
 - type_name
 - force_try
+# Rules added in newer SwiftLint (>0.42) that surface pre-existing style issues.
+# Disabled to preserve prior lint behavior after the CocoaPods->SPM migration;
+# re-enable and fix incrementally.
+- attribute_name_spacing
+- invisible_character
+- duplicate_conditions
 
 opt_in_rules:
   - array_init
@@ -64,7 +70,3 @@ custom_rules:
     regex: "\\/\\/ Helper function inserted by Swift \\d(.\\d)* migrator."
     message: "Function left over from automatic Swift version migrator. Refactor or eliminate."
     severity: warning
-
-
-excluded:
-- Pods
