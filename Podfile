@@ -21,7 +21,8 @@ target 'Slide for Reddit' do
   pod 'RLBAlertsPickers', :git => 'https://github.com/ccrama/Alerts-Pickers'
   # Alamofire migrated to 5.x via SPM (see MIGRATION.md, Phase 3).
   # SwiftyJSON migrated to the official SwiftyJSON via SPM (see MIGRATION.md, Phase 3).
-  pod "YoutubePlayer-in-WKWebView", "~> 0.3.0"
+  # YoutubePlayer-in-WKWebView (ObjC, unmaintained) vendored into the app target
+  # (WKYTPlayerView.h/.m + HTML asset) via the bridging header (MIGRATION.md, Phase 4).
   # SubtleVolume, TGPControls and MTColorDistance (Swift port) migrated to the
   # local Swift Package at LocalPackages/VendoredUI (see MIGRATION.md, Phase 2).
 

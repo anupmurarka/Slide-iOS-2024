@@ -421,6 +421,8 @@
 		DADA00000000000000000062 /* SDCAlertView in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000061 /* SDCAlertView */; };
 		DADA00000000000000000072 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000071 /* Alamofire */; };
 		DADA00000000000000000082 /* MKColorPicker in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000080 /* MKColorPicker */; };
+		DADA000000000000000000E2 /* WKYTPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DADA000000000000000000E1 /* WKYTPlayerView.m */; };
+		DADA000000000000000000E5 /* YTPlayerView-iframe-player.html in Resources */ = {isa = PBXBuildFile; fileRef = DADA000000000000000000E4 /* YTPlayerView-iframe-player.html */; };
 		DADA000000000000000000F2 /* MDCActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADA000000000000000000F1 /* MDCActivityIndicator.swift */; };
 /* End PBXBuildFile section */
 
@@ -947,6 +949,9 @@
 		BEF7483120DD894100B6236B /* SettingsGestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGestures.swift; sourceTree = "<group>"; };
 		CF803995AF8B02E34D23A12C /* Pods_Slide_for_RedditUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Slide_for_RedditUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D395EF5D302CF84FB4950C1C /* Pods-Slide for RedditUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Slide for RedditUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Slide for RedditUITests/Pods-Slide for RedditUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		DADA000000000000000000E1 /* WKYTPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKYTPlayerView.m; sourceTree = "<group>"; };
+		DADA000000000000000000E3 /* WKYTPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKYTPlayerView.h; sourceTree = "<group>"; };
+		DADA000000000000000000E4 /* YTPlayerView-iframe-player.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "YTPlayerView-iframe-player.html"; sourceTree = "<group>"; };
 		DADA000000000000000000F1 /* MDCActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compat/MDCActivityIndicator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1264,6 +1269,9 @@
 			children = (
 				BE3E5C0B1E160D7000749C0C /* ColorUtil.swift */,
 				DADA000000000000000000F1 /* MDCActivityIndicator.swift */,
+				DADA000000000000000000E1 /* WKYTPlayerView.m */,
+				DADA000000000000000000E3 /* WKYTPlayerView.h */,
+				DADA000000000000000000E4 /* YTPlayerView-iframe-player.html */,
 				BEBF45E01E23EED800764BB8 /* SettingValues.swift */,
 				BE2B8A081E25EEDF0053D493 /* SettingsViewController.swift */,
 				BE2B8A0A1E2602CA0053D493 /* SubredditReorderViewController.swift */,
@@ -2162,6 +2170,7 @@
 				BE1DA5D82208AC80001C7DB4 /* ic_stars@2x~ipad.png in Resources */,
 				BEF6F5361E19B4A2002B03B6 /* adsources.txt in Resources */,
 				B422D252252270AD00A168BB /* ic_garbage@3x.png in Resources */,
+				DADA000000000000000000E5 /* YTPlayerView-iframe-player.html in Resources */,
 				BE8833F3251FB66900131DEB /* ic_space@3x.png in Resources */,
 				BE0C4F9521BCBE83006C54FF /* ic_purple@2x.png in Resources */,
 				BE1B57EB21DED23000FF6F98 /* ic_stars@3x.png in Resources */,
@@ -2331,13 +2340,11 @@
 				"${PODS_ROOT}/Target Support Files/Pods-Slide for Reddit/Pods-Slide for Reddit-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/OpalImagePicker/OpalImagePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/RLBAlertsPickers/RLBAlertsPickers.framework",
-				"${BUILT_PRODUCTS_DIR}/YoutubePlayer-in-WKWebView/YoutubePlayer_in_WKWebView.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpalImagePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RLBAlertsPickers.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YoutubePlayer_in_WKWebView.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2429,6 +2436,7 @@
 				BE25CAD624C3A65400736CA5 /* SwipeForwardAnimatedTransitioning.swift in Sources */,
 				BE3E5C0C1E160D7000749C0C /* ColorUtil.swift in Sources */,
 				DADA000000000000000000F2 /* MDCActivityIndicator.swift in Sources */,
+				DADA000000000000000000E2 /* WKYTPlayerView.m in Sources */,
 				BE325CB4257EFB5A00BD2468 /* ModLogObject.swift in Sources */,
 				BEEA03CD20E1B53E007A8928 /* HapticUtility.swift in Sources */,
 				BE080B1C2563528B00D12C4B /* UIResponder+Extensions.swift in Sources */,

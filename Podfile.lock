@@ -2,19 +2,16 @@ PODS:
   - OpalImagePicker (3.0.0)
   - RLBAlertsPickers (1.1.1)
   - SwiftLint (0.42.0)
-  - YoutubePlayer-in-WKWebView (0.3.5)
 
 DEPENDENCIES:
   - OpalImagePicker
   - RLBAlertsPickers (from `https://github.com/ccrama/Alerts-Pickers`)
   - SwiftLint
-  - YoutubePlayer-in-WKWebView (~> 0.3.0)
 
 SPEC REPOS:
   trunk:
     - OpalImagePicker
     - SwiftLint
-    - YoutubePlayer-in-WKWebView
 
 EXTERNAL SOURCES:
   RLBAlertsPickers:
@@ -29,8 +26,7 @@ SPEC CHECKSUMS:
   OpalImagePicker: 38e772dd93a54431fc516b33e1f337c50f745834
   RLBAlertsPickers: c93e83c13526a5840b67eb52f702d3f83eeaac6a
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
-  YoutubePlayer-in-WKWebView: cfbf46da51d7370662a695a8f351e5fa1d3e1008
 
-PODFILE CHECKSUM: 687b4ee5569f067c11736d708c948fdf040b2a49
+PODFILE CHECKSUM: 55c217c4664f3dd04206585491f95245817d9668
 
 COCOAPODS: 1.17.0
