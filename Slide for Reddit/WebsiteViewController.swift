@@ -328,7 +328,7 @@ class WebsiteViewController: MediaViewController, WKNavigationDelegate {
         let url = request.url
         
         if url != nil {
-            if (URLComponents(url: url!, resolvingAgainstBaseURL: false))?.scheme == "slide" {
+            if (URLComponents(url: url!, resolvingAgainstBaseURL: false))?.scheme == Config.sharedInstance.redirectURIScheme {
                 webView.endEditing(true)
                 self.navigationController?.dismiss(animated: true) {
                     _ = OAuth2Authorizer.sharedInstance.receiveRedirect(url!, completion: { (result) -> Void in

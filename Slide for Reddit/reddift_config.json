@@ -1,5 +1,6 @@
 {
     "DeveloperName": "dlfaust",
-    "redirect_uri": "slide://dlfaust",
-    "client_id": "H5HfqJVhOvFSZYwHc7I5hHCPoiw"
+    "redirect_uri": "redreader://rr_oauth_redir",
+    "client_id": "yH0aTnJEt6qUgGn835B4vg",
+    "user_agent": "org.quantumbadger.redreader/1.25.2"
 }

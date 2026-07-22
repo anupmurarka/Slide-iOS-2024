@@ -154,7 +154,7 @@ class AccountController {
             let ptr = UnsafeMutablePointer<UInt8>(a)
             _ = SecRandomCopyBytes(kSecRandomDefault, length, ptr)
             OAuth2Authorizer.sharedInstance.state = data.base64EncodedString(options: .endLineWithLineFeed)
-            guard let authorizationURL = URL(string: "https://www.reddit.com/api/v1/authorize.compact?client_id=r1JeYb6X0P2QOg&response_type=code&state=" + OAuth2Authorizer.sharedInstance.state + "&redirect_uri=slide://ccrama&duration=permanent&scope=" + commaSeparatedScopeString)
+            guard let authorizationURL = URL(string: "https://www.reddit.com/api/v1/authorize.compact?client_id=" + Config.sharedInstance.clientID + "&response_type=code&state=" + OAuth2Authorizer.sharedInstance.state + "&redirect_uri=" + Config.sharedInstance.redirectURI + "&duration=permanent&scope=" + commaSeparatedScopeString)
                 else { throw ReddiftError.canNotCreateURLRequestForOAuth2Page as NSError }
             let vc: UIViewController
             let web = WebsiteViewController(url: authorizationURL, subreddit: "")
