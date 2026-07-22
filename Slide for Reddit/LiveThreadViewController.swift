@@ -233,9 +233,9 @@ class LiveThreadViewController: MediaViewController, UICollectionViewDelegate, W
         }
     }
     
-    var socket: WebSocket?
+    var socket: Starscream.WebSocket?
     func setupWatcher(websocketUrl: String) {
-        socket = WebSocket(url: URL(string: websocketUrl)!)
+        socket = Starscream.WebSocket(url: URL(string: websocketUrl)!)
         // websocketDidConnect
         socket!.onConnect = {
             print("websocket is connected")
