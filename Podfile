@@ -8,7 +8,8 @@ target 'Slide for Reddit' do
 
   # reddift (+ its HTMLSpecialCharacters & MiniKeychain deps) migrated to a
   # local Swift Package at LocalPackages/Reddift (see MIGRATION.md, Phase 2).
-  pod 'MKColorPicker', :git => 'https://github.com/ccrama/MKColorPicker'
+  # MKColorPicker (embedded swatch grid, no native equivalent) vendored to
+  # LocalPackages/VendoredUI (see MIGRATION.md, Phase 4).
   # LicensesViewController vendored to LocalPackages/VendoredUI (Phase 3).
   pod 'OpalImagePicker'
   # MaterialComponents (archived by Google) replaced by a native UIKit

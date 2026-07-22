@@ -1,12 +1,10 @@
 PODS:
-  - MKColorPicker (1.2)
   - OpalImagePicker (3.0.0)
   - RLBAlertsPickers (1.1.1)
   - SwiftLint (0.42.0)
   - YoutubePlayer-in-WKWebView (0.3.5)
 
 DEPENDENCIES:
-  - MKColorPicker (from `https://github.com/ccrama/MKColorPicker`)
   - OpalImagePicker
   - RLBAlertsPickers (from `https://github.com/ccrama/Alerts-Pickers`)
   - SwiftLint
@@ -19,26 +17,20 @@ SPEC REPOS:
     - YoutubePlayer-in-WKWebView
 
 EXTERNAL SOURCES:
-  MKColorPicker:
-    :git: https://github.com/ccrama/MKColorPicker
   RLBAlertsPickers:
     :git: https://github.com/ccrama/Alerts-Pickers
 
 CHECKOUT OPTIONS:
-  MKColorPicker:
-    :commit: e76cd225ff60f12f8ec0052e39e5e307a32c0762
-    :git: https://github.com/ccrama/MKColorPicker
   RLBAlertsPickers:
     :commit: a22003f93a803c2e14b193f636669c21358fb1d7
     :git: https://github.com/ccrama/Alerts-Pickers
 
 SPEC CHECKSUMS:
-  MKColorPicker: 8998b2ab977e4f240fdf254db27a18b810da3cfc
   OpalImagePicker: 38e772dd93a54431fc516b33e1f337c50f745834
   RLBAlertsPickers: c93e83c13526a5840b67eb52f702d3f83eeaac6a
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
   YoutubePlayer-in-WKWebView: cfbf46da51d7370662a695a8f351e5fa1d3e1008
 
-PODFILE CHECKSUM: c1c8b251c5209184c70574d2c347ba877beaccf0
+PODFILE CHECKSUM: 687b4ee5569f067c11736d708c948fdf040b2a49
 
 COCOAPODS: 1.17.0

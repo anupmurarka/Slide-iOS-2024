@@ -420,6 +420,7 @@
 		DADA00000000000000000052 /* DTCoreText in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000051 /* DTCoreText */; };
 		DADA00000000000000000062 /* SDCAlertView in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000061 /* SDCAlertView */; };
 		DADA00000000000000000072 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000071 /* Alamofire */; };
+		DADA00000000000000000082 /* MKColorPicker in Frameworks */ = {isa = PBXBuildFile; productRef = DADA00000000000000000080 /* MKColorPicker */; };
 		DADA000000000000000000F2 /* MDCActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADA000000000000000000F1 /* MDCActivityIndicator.swift */; };
 /* End PBXBuildFile section */
 
@@ -1001,6 +1002,7 @@
 				DADA00000000000000000022 /* SwiftLinkPreview in Frameworks */,
 				DADA00000000000000000032 /* SwiftEntryKit in Frameworks */,
 				DADA00000000000000000042 /* LicensesViewController in Frameworks */,
+				DADA00000000000000000082 /* MKColorPicker in Frameworks */,
 				DADA00000000000000000052 /* DTCoreText in Frameworks */,
 				DADA00000000000000000062 /* SDCAlertView in Frameworks */,
 				DADA00000000000000000072 /* Alamofire in Frameworks */,
@@ -1876,6 +1878,7 @@
 				DADA00000000000000000021 /* SwiftLinkPreview */,
 				DADA00000000000000000031 /* SwiftEntryKit */,
 				DADA00000000000000000040 /* LicensesViewController */,
+				DADA00000000000000000080 /* MKColorPicker */,
 				DADA00000000000000000051 /* DTCoreText */,
 				DADA00000000000000000061 /* SDCAlertView */,
 				DADA00000000000000000071 /* Alamofire */,
@@ -2326,14 +2329,12 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Slide for Reddit/Pods-Slide for Reddit-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/MKColorPicker/MKColorPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/OpalImagePicker/OpalImagePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/RLBAlertsPickers/RLBAlertsPickers.framework",
 				"${BUILT_PRODUCTS_DIR}/YoutubePlayer-in-WKWebView/YoutubePlayer_in_WKWebView.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MKColorPicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpalImagePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RLBAlertsPickers.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YoutubePlayer_in_WKWebView.framework",
@@ -3780,6 +3781,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DADA00000000000000000070 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		DADA00000000000000000080 /* MKColorPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MKColorPicker;
 		};
 /* End XCSwiftPackageProductDependency section */
 
