@@ -75,8 +75,16 @@ public class PagingTitleCollectionView: UIView, UICollectionViewDataSource, UICo
     }
     
     public override var intrinsicContentSize: CGSize {
-        return CGSize(width: UIView.layoutFittingExpandedSize.width, height: UIView.layoutFittingExpandedSize.height)
+        // Width is left flexible so the bar fills the available navigation-bar
+        // space. The height must be a concrete value: returning
+        // layoutFittingExpandedSize.height (~10,000,000) here breaks title-view
+        // layout on iOS 16+, pushing the collection view's content outside the
+        // visible navigation bar so the tabs render nothing.
+        return CGSize(width: UIView.layoutFittingExpandedSize.width, height: contentHeight)
     }
+
+    // Matches the cell/content height used by WrappingHeaderFlowLayout.
+    private let contentHeight: CGFloat = 40
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
