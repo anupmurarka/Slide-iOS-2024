@@ -1,5 +1,29 @@
 # TODO
 
+## Multi-account fixes (in progress — needs device retest)
+
+Symptoms with 2+ accounts: (a) "Add a new account" reused the current account's Reddit
+cookies and re-authorized the same user; (b) after a new login, content/subs didn't
+switch; (c) the new account wasn't listed in the switcher. Implemented:
+- **(a)** `WebsiteViewController` now uses an ephemeral `.nonPersistent()`
+  `WKWebsiteDataStore` when `isLoginFlow` (set in `AccountController.challengeWithScopes`),
+  so the OAuth page never reuses an existing `reddit_session` cookie → always a fresh
+  login. Replaces the old, ineffective `HTTPCookieStorage.shared` wipe (WK uses its own
+  store).
+- **(c)** The OAuth-success callback now also calls `LocalKeystore.save` (writes
+  `SAVED_TOKENS`) alongside the keychain save, so `AccountController.names` includes the
+  new account immediately and `initialize()` reads the fresh valid token via the migrated
+  branch.
+- **(b)** Gated the "Subscribe to r/slide_ios?" onboarding modal in
+  `MainViewController.complete` to first-account-only, so adding a 2nd+ account runs
+  straight through `finalizeSetup → hardReset` without racing an extra alert against the
+  stack rebuild.
+- **Could not verify on simulator:** the OAuth web view does not present after
+  `resetStack` on this simulator (a present-after-reset quirk; it presents fine on
+  device). So (a)/(b)/(c) are code-complete and compile, but **need a device retest**.
+  If (b) persists on device, capture the runtime log around login → `syncColors` →
+  `complete` → `finalizeSetup` → `hardReset`.
+
 ## Auth status (as of this session)
 
 **Working:** logged-in browsing. Login now completes and content renders on device.
@@ -8,20 +32,32 @@ requests (`org.quantumbadger.redreader/1.25.2`); (2) the login web view now pres
 correctly (deferred one run-loop turn after `resetStack`). Credentials are RedReader's
 (matching Android/JRAW).
 
-**Broken / next up — require login (decision: option #2):** guest/not-logged-in
-browsing does NOT work, because modern Reddit 403s all unauthenticated API access and
-reddift has no userless (`installed_client`) token. We chose to **require login** rather
-than add a userless token. Still to implement:
-- In `AccountController.initialize()` and the launch path (`AppDelegate`), when
-  `!isLoggedIn`, do NOT create the anonymous `Session()` or kick off content loads;
-  instead route to the login flow (`doAddAccount` / `challengeWithScopes`) as a
-  non-dismissable onboarding step.
-- Remove/gate the GUEST fallbacks (e.g. `didRequestGuestAccount`, logout → GUEST) so the
-  app never lands in the broken anonymous state.
-- The background `forbidden(...)` HTML noise at launch is the doomed guest requests; it
-  goes away once guest sessions are eliminated.
+**DONE — require login (decision: option #2):** guest/not-logged-in browsing is removed
+because modern Reddit 403s all unauthenticated API access and reddift has no userless
+(`installed_client`) token. Implemented:
+- `AccountController.initialize()` and `AppDelegate.reloadSession()` now treat a
+  missing/legacy token — including a corrupt record that parses to an **empty
+  `accessToken`** (the old-Slide-app migration case) — as a failed login: the stale
+  account is purged (`purgeAccount`) and `requireLogin()` posts `.onRequireLogin`
+  instead of silently creating an anonymous session.
+- `SplitMainViewController.viewDidAppear` gates on `isLoggedIn` and presents the login
+  flow (`presentLoginIfNeeded` → `doAddAccount`), guarded by a static
+  `isPresentingLogin` flag so the stack-rebuild doesn't loop. Verified on simulator: a
+  fresh launch shows the Reddit Log In web view, not a guest feed.
+- Removed GUEST fallbacks: `didRequestGuestAccount` (protocol + impl) and the "Browse as
+  Guest" menu item deleted; logout now switches to another saved account or requires
+  login; `AccountController.delete` typo fixed (`"GUEST"` key → `"name"`). The
+  `.onAccountChangedToGuest` notification was replaced with `.onRequireLogin`. Widget
+  `"Guest"` display fallbacks → `"Sign in"`.
+- The background `forbidden(...)` HTML noise at launch (doomed guest requests) should be
+  gone now that guest sessions are eliminated.
 - Library note: no maintained Swift Reddit API lib exists to replace reddift; stay on the
   vendored copy and patch as needed (Android parity comes from JRAW, Java-only).
+
+**Minor follow-up:** the login web view still has an `X` close button; dismissing it lands
+on an empty feed until re-triggered from the sidebar. Consider re-presenting on dismiss
+for a strictly non-dismissable gate. Also `WatchSessionManager` still has `?? Session()`
+fallbacks (harmless, ungated) if the watch messages while logged out.
 
 ## Other issues to triage (new session)
 - Autolayout warning: `ExpandedHitButton` width 30 vs `NavigationButtonBar.ItemWrapperView`

@@ -339,7 +339,12 @@ class MainViewController: ColorMuxPagingViewController, UINavigationControllerDe
     
     func complete(subs: [String]) {
         var finalSubs = subs
-        if !subs.contains("slide_ios") {
+        // Only offer the r/slide_ios onboarding subscription during first-time setup
+        // (no other accounts yet). When adding a 2nd+ account, skip the modal so the
+        // post-login refresh runs straight through to finalizeSetup → hardReset instead
+        // of racing an extra alert against the stack rebuild.
+        let isFirstAccount = AccountController.names.filter({ $0 != tempToken?.name }).isEmpty
+        if !subs.contains("slide_ios") && isFirstAccount {
             self.alertController?.dismiss(animated: true, completion: {
                 let alert = UIAlertController.init(title: "Subscribe to r/slide_ios?", message: "Would you like to subscribe to the Slide for Reddit iOS community and receive news and updates first?", preferredStyle: .alert)
                 alert.addAction(UIAlertAction.init(title: "No.", style: .cancel, handler: {(_) in

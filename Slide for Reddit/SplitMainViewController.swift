@@ -263,7 +263,7 @@ class SplitMainViewController: MainViewController {
         requestReviewIfAppropriate()
         
         NotificationCenter.default.addObserver(self, selector: #selector(onAccountRefreshRequested), name: .accountRefreshRequested, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onAccountChangedNotificationPosted), name: .onAccountChangedToGuest, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onRequireLoginNotificationPosted), name: .onRequireLogin, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onAccountChangedNotificationPosted), name: .onAccountChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onThemeChanged), name: .onThemeChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(doReAppearToolbar), name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -474,10 +474,18 @@ class SplitMainViewController: MainViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if AccountController.isLoggedIn && !MainViewController.first {
+        // Reddit no longer serves unauthenticated API access, so login is required.
+        // If there is no valid account, present the login flow instead of a broken feed.
+        if !AccountController.isLoggedIn {
+            presentLoginIfNeeded()
+            return
+        }
+        SplitMainViewController.isPresentingLogin = false
+
+        if !MainViewController.first {
             checkForMail()
         }
-        
+
         if #available(iOS 13, *) { } else {
             (self.navigationController as? SwipeForwardNavigationController)?.pushCompletion?()
             (self.navigationController as? SwipeForwardNavigationController)?.pushCompletion = nil
@@ -492,10 +500,28 @@ class SplitMainViewController: MainViewController {
         }
     }
 
+    /// Guards against re-presenting the required-login flow while it is already on screen.
+    /// `doAddAccount` rebuilds the view stack, so this is static to survive the new instance.
+    static var isPresentingLogin = false
+
+    /// Presents the login flow when there is no valid account. No-op if already logged in
+    /// or a login presentation is already in flight.
+    func presentLoginIfNeeded() {
+        guard !AccountController.isLoggedIn, !SplitMainViewController.isPresentingLogin else { return }
+        SplitMainViewController.isPresentingLogin = true
+        doAddAccount(register: false)
+    }
+
+    @objc func onRequireLoginNotificationPosted() {
+        DispatchQueue.main.async { [weak self] in
+            self?.presentLoginIfNeeded()
+        }
+    }
+
     override func addAccount(register: Bool) {
         doLogin(token: nil, register: register)
     }
-    
+
     override func doAddAccount(register: Bool) {
         var keyWindow = UIApplication.shared.keyWindow
         if keyWindow == nil {
@@ -854,7 +880,7 @@ extension SplitMainViewController: NavigationHomeDelegate {
     }
     
     func navigation(_ homeViewController: NavigationHomeViewController, didRequestSwitchAccountMenu: Void) {
-        let optionMenu = DragDownAlertMenu(title: "Accounts", subtitle: "Currently signed in as \(AccountController.isLoggedIn ? AccountController.currentName : "Guest")", icon: nil)
+        let optionMenu = DragDownAlertMenu(title: "Accounts", subtitle: AccountController.isLoggedIn ? "Currently signed in as \(AccountController.currentName)" : "Not signed in", icon: nil)
 
         for accountName in AccountController.names.unique().sorted() {
             if accountName != AccountController.currentName {
@@ -870,11 +896,6 @@ extension SplitMainViewController: NavigationHomeDelegate {
         }
         
         if AccountController.isLoggedIn {
-            optionMenu.addAction(title: "Browse as Guest", icon: UIImage(sfString: SFSymbol.xmark, overrideString: "hide")!.menuIcon()) {
-                homeViewController.accountHeader?.setEmptyState(true, animate: false)
-                self.navigation(homeViewController, didRequestGuestAccount: ())
-            }
-
             optionMenu.addAction(title: "Log out of u/\(AccountController.currentName)", icon: UIImage(sfString: SFSymbol.trashFill, overrideString: "delete")!.menuIcon().getCopy(withColor: GMColor.red500Color())) {
                 homeViewController.accountHeader?.setEmptyState(true, animate: false)
                 self.navigation(homeViewController, didRequestLogOut: ())
@@ -1020,13 +1041,6 @@ extension SplitMainViewController: NavigationHomeDelegate {
         }
     }
 
-    func navigation(_ homeViewController: NavigationHomeViewController, didRequestGuestAccount: Void) {
-        AccountController.switchAccount(name: "GUEST")
-        Subscriptions.sync(name: "GUEST", completion: { [weak self] in
-            self?.hardReset(soft: true)
-        })
-    }
-
     func navigation(_ homeViewController: NavigationHomeViewController, didRequestLogOut: Void) {
         let name: String
         if AccountController.current != nil {
@@ -1035,10 +1049,16 @@ extension SplitMainViewController: NavigationHomeDelegate {
             name = AccountController.currentName
         }
         AccountController.delete(name: name)
-        AccountController.switchAccount(name: "GUEST")
-        Subscriptions.sync(name: "GUEST", completion: { [weak self] in
-            self?.hardReset(soft: true)
-        })
+        // If other accounts remain, switch to one; otherwise require a fresh login.
+        if let next = AccountController.names.first {
+            AccountController.switchAccount(name: next)
+            Subscriptions.sync(name: next, completion: { [weak self] in
+                self?.hardReset(soft: true)
+            })
+        } else {
+            AccountController.requireLogin()
+            self.doAddAccount(register: false)
+        }
     }
 
     func navigation(_ homeViewController: NavigationHomeViewController, didRequestNewAccount: Void) {

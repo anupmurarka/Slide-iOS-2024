@@ -36,7 +36,7 @@ struct AccountTimeline: TimelineProvider {
 
     func placeholder(in context: Context) -> AccountEntry {
         let shared = UserDefaults(suiteName: "group.\(USR_DOMAIN()).redditslide.prefs")
-        let currentAccount = shared?.string(forKey: "current_account") ?? "Guest"
+        let currentAccount = shared?.string(forKey: "current_account") ?? "Sign in"
         let karma = shared?.integer(forKey: "karma") ?? 0
         let inbox = shared?.integer(forKey: "inbox") ?? 0
         let image = shared?.data(forKey: "profile_icon") ?? Data()
@@ -47,7 +47,7 @@ struct AccountTimeline: TimelineProvider {
     
     func getSnapshot(in context: Context, completion: @escaping (AccountEntry) -> Void) {
         let shared = UserDefaults(suiteName: "group.\(USR_DOMAIN()).redditslide.prefs")
-        let currentAccount = shared?.string(forKey: "current_account") ?? "Guest"
+        let currentAccount = shared?.string(forKey: "current_account") ?? "Sign in"
         let karma = shared?.integer(forKey: "karma") ?? 0
         let inbox = shared?.integer(forKey: "inbox") ?? 0
         let image = shared?.data(forKey: "profile_icon") ?? Data()
@@ -59,7 +59,7 @@ struct AccountTimeline: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping (Timeline<AccountEntry>) -> Void) {
         let shared = UserDefaults(suiteName: "group.\(USR_DOMAIN()).redditslide.prefs")
 
-        let currentAccount = shared?.string(forKey: "current_account") ?? "Guest"
+        let currentAccount = shared?.string(forKey: "current_account") ?? "Sign in"
         let karma = shared?.integer(forKey: "karma") ?? 0
         let inbox = shared?.integer(forKey: "inbox") ?? 0
         let image = shared?.data(forKey: "profile_icon") ?? Data()

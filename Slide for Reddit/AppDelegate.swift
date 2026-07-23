@@ -837,7 +837,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func didBecomeActive() {
-        if AccountController.current == nil && UserDefaults.standard.string(forKey: "name") != "GUEST" {
+        if AccountController.current == nil {
             AccountController.initialize()
         }
         
@@ -1048,7 +1048,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func reloadSession() {
         // reddit username is save NSUserDefaults using "currentName" key.
         // create an authenticated or anonymous session object
-        if let currentName = UserDefaults.standard.object(forKey: "name") as? String {
+        if let currentName = UserDefaults.standard.object(forKey: "name") as? String, currentName != "GUEST", !currentName.isEmpty {
             do {
                 let token: OAuth2Token
                 if AccountController.isMigrated(currentName) {
@@ -1056,13 +1056,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 } else {
                     token = try OAuth2TokenRepository.token(of: currentName)
                 }
+                if token.accessToken.isEmpty {
+                    throw NSError(domain: "AppDelegate", code: -1, userInfo: [NSLocalizedDescriptionKey: "Stored token for \(currentName) is missing an access token"])
+                }
                 self.session = Session(token: token)
                 self.refreshSession()
             } catch {
                 print(error)
+                AccountController.requireLogin()
             }
         } else {
-            self.session = Session()
+            AccountController.requireLogin()
         }
 
         NotificationCenter.default.post(name: OAuth2TokenRepositoryDidSaveTokenName, object: nil, userInfo: nil)

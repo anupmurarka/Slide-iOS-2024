@@ -93,7 +93,7 @@ private struct AccountView: View {
                         .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
                 }
                 Spacer()
-                if name != "Guest" {
+                if name != "Sign in" {
                     HStack(alignment: .center) {
                         getKarmaImage().foregroundColor(colorScheme == .light ? .primary : .white).font(Font.system(.headline).bold())
                         Text(karma.delimiter)

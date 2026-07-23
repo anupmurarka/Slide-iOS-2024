@@ -46,8 +46,14 @@ class AccountController {
             try LocalKeystore.removeToken(of: name)
             try OAuth2TokenRepository.removeToken(of: name)
 
-            names.remove(at: names.firstIndex(of: name)!)
-            UserDefaults.standard.set(name, forKey: "GUEST")
+            if let index = names.firstIndex(of: name) {
+                names.remove(at: index)
+            }
+            // Clear the current-account selection if we just deleted it, so the app
+            // routes to login instead of re-selecting a now-tokenless account.
+            if UserDefaults.standard.string(forKey: "name") == name {
+                UserDefaults.standard.removeObject(forKey: "name")
+            }
             UserDefaults.standard.synchronize()
 
         } catch {
@@ -55,65 +61,90 @@ class AccountController {
         }
     }
 
-    static var currentName = "GUEST"
+    static var currentName = ""
+
+    /// Removes all persisted state for a stale/corrupt account so the app stops
+    /// re-selecting a login that can no longer authenticate.
+    static func purgeAccount(_ name: String) {
+        do { try LocalKeystore.removeToken(of: name) } catch { print(error) }
+        do { try OAuth2TokenRepository.removeToken(of: name) } catch { print(error) }
+        names.removeAll { $0 == name }
+        UserDefaults.standard.removeObject(forKey: "AUTH+\(name)")
+        if UserDefaults.standard.string(forKey: "name") == name {
+            UserDefaults.standard.removeObject(forKey: "name")
+        }
+        UserDefaults.standard.synchronize()
+    }
+
+    /// Reddit no longer serves unauthenticated API access, so there is no guest/anonymous
+    /// browsing. When there is no valid logged-in account we clear auth state and ask the
+    /// UI to present the login flow. A tokenless `Session()` is still assigned to preserve
+    /// the non-nil `session` invariant callers rely on; content is gated on `isLoggedIn`.
+    static func requireLogin() {
+        AccountController.isLoggedIn = false
+        AccountController.isGold = false
+        AccountController.current = nil
+        AccountController.currentName = ""
+        (UIApplication.shared.delegate as! AppDelegate).session = Session()
+        NotificationCenter.default.post(name: .onRequireLogin, object: nil)
+    }
 
     static func initialize() {
         names.removeAll(keepingCapacity: false)
         names += LocalKeystore.savedNames
-        
+
         names = names.unique()
 
         NotificationCenter.default.addObserver(self, selector: #selector(AccountController.didSaveToken(_:)), name: OAuth2TokenRepositoryDidSaveTokenName, object: nil)
-        if let name = UserDefaults.standard.string(forKey: "name") {
+        let storedName = UserDefaults.standard.string(forKey: "name")
+        if let name = storedName, name != "GUEST", !name.isEmpty {
             print("Name is \(name)")
-            if name == "GUEST" {
-                AccountController.isLoggedIn = false
-                AccountController.isGold = false
-                AccountController.current = nil
-                AccountController.currentName = name
-                (UIApplication.shared.delegate as! AppDelegate).session = Session()
-                NotificationCenter.default.post(name: .onAccountChangedToGuest, object: nil)
-            } else {
-                do {
-                    AccountController.isLoggedIn = true
-                    AccountController.currentName = name
-                    let token: OAuth2Token
-                    if !isMigrated(name) {
-                        token = try OAuth2TokenRepository.token(of: name)
-                        try LocalKeystore.save(token: token, of: name)
-                    } else {
-                        token = try LocalKeystore.token(of: name)
-                    }
-                    
-                    let session = Session(token: token)
-                    (UIApplication.shared.delegate as! AppDelegate).session = session
-                    try session.getUserProfile(name, completion: { (result) in
-                        switch result {
-                        case .failure(let error):
-                            print(error)
-                        case .success(let account):
-                            AccountController.current = account
-                            NotificationCenter.default.post(name: .onAccountChanged, object: nil, userInfo: [
-                                "Account": account,
-                                ])
-                            if AccountController.currentName == name {
-                                AccountController.isGold = account.isGold
-                            }
-                        }
-                    })
-                    UserDefaults.standard.set(name, forKey: "name")
-                    UserDefaults.standard.synchronize()
-                } catch {
-                    print(error)
-                    (UIApplication.shared.delegate as! AppDelegate).session = Session()
-                    AccountController.isLoggedIn = false
-                    AccountController.isGold = false
+            do {
+                let token: OAuth2Token
+                if !isMigrated(name) {
+                    token = try OAuth2TokenRepository.token(of: name)
+                    try LocalKeystore.save(token: token, of: name)
+                } else {
+                    token = try LocalKeystore.token(of: name)
                 }
+
+                // A legacy/corrupt record (e.g. migrated from the old Slide app) parses
+                // without throwing but yields an empty access token. Treat that as a
+                // failed login rather than sending an empty bearer token.
+                if token.accessToken.isEmpty {
+                    throw NSError(domain: "AccountController", code: -1, userInfo: [NSLocalizedDescriptionKey: "Stored token for \(name) is missing an access token"])
+                }
+
+                AccountController.isLoggedIn = true
+                AccountController.currentName = name
+
+                let session = Session(token: token)
+                (UIApplication.shared.delegate as! AppDelegate).session = session
+                try session.getUserProfile(name, completion: { (result) in
+                    switch result {
+                    case .failure(let error):
+                        print(error)
+                    case .success(let account):
+                        AccountController.current = account
+                        NotificationCenter.default.post(name: .onAccountChanged, object: nil, userInfo: [
+                            "Account": account,
+                            ])
+                        if AccountController.currentName == name {
+                            AccountController.isGold = account.isGold
+                        }
+                    }
+                })
+                UserDefaults.standard.set(name, forKey: "name")
+                UserDefaults.standard.synchronize()
+            } catch {
+                print("Token load failed for \(name): \(error)")
+                // Drop the stale/corrupt account so we don't keep re-selecting it, then
+                // require a fresh login.
+                purgeAccount(name)
+                requireLogin()
             }
         } else {
-            (UIApplication.shared.delegate as! AppDelegate).session = Session()
-            AccountController.isLoggedIn = false
-            AccountController.isGold = false
+            requireLogin()
         }
         NotificationCenter.default.post(name: OAuth2TokenRepositoryDidSaveTokenName, object: nil, userInfo: nil)
     }
@@ -158,6 +189,7 @@ class AccountController {
                 else { throw ReddiftError.canNotCreateURLRequestForOAuth2Page as NSError }
             let vc: UIViewController
             let web = WebsiteViewController(url: authorizationURL, subreddit: "")
+            web.isLoginFlow = true
             web.reloadCallback = {
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                     AccountController.addAccount(context: context, register: false)
@@ -255,7 +287,7 @@ extension Sequence where Iterator.Element: Hashable {
 }
 
 extension Notification.Name {
-    static let onAccountChangedToGuest = Notification.Name("on-account-changed-to-guest")
+    static let onRequireLogin = Notification.Name("on-require-login")
     static let onAccountChanged = Notification.Name("on-account-changed")
     static let onAccountMailCountChanged = Notification.Name("on-account-mail-count-changed")
     static let accountRefreshRequested = Notification.Name("account-refresh-requested")

@@ -22,6 +22,10 @@ class WebsiteViewController: MediaViewController, WKNavigationDelegate {
     var blocking11 = false
     var needsReload = false
     var completionFound = false
+    /// When true this web view is the Reddit OAuth login flow and must use an ephemeral
+    /// (non-persistent) data store, so an already-signed-in Reddit session cookie is not
+    /// reused — otherwise "Add a new account" silently re-authorizes the current account.
+    var isLoginFlow = false
     var csrfToken = ""
     var progressObservation: NSKeyValueObservation?
 
@@ -178,7 +182,15 @@ class WebsiteViewController: MediaViewController, WKNavigationDelegate {
         navigationController?.setToolbarHidden(true, animated: false)
 
         self.navigationController?.navigationBar.backItem?.title = ""
-        webView = WKWebView(frame: self.view.frame)
+        if isLoginFlow {
+            // Fresh, isolated cookie jar for the OAuth login so Reddit does not reuse the
+            // currently-signed-in account's session and re-authorize the same user.
+            let config = WKWebViewConfiguration()
+            config.websiteDataStore = .nonPersistent()
+            webView = WKWebView(frame: self.view.frame, configuration: config)
+        } else {
+            webView = WKWebView(frame: self.view.frame)
+        }
 
         webView.navigationDelegate = self
         webView.allowsBackForwardNavigationGestures = false
@@ -341,6 +353,10 @@ class WebsiteViewController: MediaViewController, WKNavigationDelegate {
                             DispatchQueue.main.async(execute: { () -> Void in
                                 do {
                                     try OAuth2TokenRepository.save(token: token, of: token.name)
+                                    // Also persist into the current UserDefaults store (SAVED_TOKENS)
+                                    // immediately, so AccountController.names includes the new account
+                                    // right away and the account switcher lists it.
+                                    try? LocalKeystore.save(token: token, of: token.name)
                                     (UIApplication.shared.delegate as! AppDelegate).login?.setToken(token: token)
                                     NotificationCenter.default.post(name: OAuth2TokenRepositoryDidSaveTokenName, object: nil, userInfo: nil)
                                 } catch {

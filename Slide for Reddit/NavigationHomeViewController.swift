@@ -835,7 +835,6 @@ extension NavigationHomeViewController {
 protocol NavigationHomeDelegate: AnyObject {
     func navigation(_ homeViewController: NavigationHomeViewController, didRequestSettingsMenu: Void)
     func navigation(_ homeViewController: NavigationHomeViewController?, didRequestAccountChangeToName accountName: String)
-    func navigation(_ homeViewController: NavigationHomeViewController, didRequestGuestAccount: Void)
     func navigation(_ homeViewController: NavigationHomeViewController, didRequestLogOut: Void)
     func navigation(_ homeViewController: NavigationHomeViewController, didRequestNewAccount: Void)
     func navigation(_ homeViewController: NavigationHomeViewController, goToMultireddit multireddit: String)
@@ -1008,7 +1007,7 @@ class CurrentAccountHeaderView: UIView {
             parent.toolbarItems = [leftItem, space, rightItem, forwardItem]
         }
         NotificationCenter.default.addObserver(self, selector: #selector(onAccountChangedNotificationPosted), name: .onAccountChanged, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onAccountChangedToGuestNotificationPosted), name: .onAccountChangedToGuest, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onRequireLoginNotificationPosted), name: .onRequireLogin, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onAccountMailCountChanged), name: .onAccountMailCountChanged, object: nil)
         
         configureForCurrentAccount()
@@ -1287,7 +1286,7 @@ extension CurrentAccountHeaderView {
         }
     }
     
-    @objc func onAccountChangedToGuestNotificationPosted(_ notification: NSNotification) {
+    @objc func onRequireLoginNotificationPosted(_ notification: NSNotification) {
         DispatchQueue.main.async {
             self.configureForCurrentAccount()
         }
