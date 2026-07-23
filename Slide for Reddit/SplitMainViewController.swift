@@ -98,6 +98,11 @@ class SplitMainViewController: MainViewController {
         accountB.accessibilityIdentifier = "Account button"
         accountB.accessibilityLabel = "Account"
         accountB.accessibilityHint = "Open account page"
+        // Drop the iOS 26 shared "glass" circle behind the item — the avatar is a
+        // rounded rect, so the system circle around it looks off. Show just the icon.
+        if #available(iOS 26.0, *) {
+            accountB.hidesSharedBackground = true
+        }
         if #available(iOS 13, *) {
             let interaction = UIContextMenuInteraction(delegate: self)
             self.accountB.customView?.addInteraction(interaction)
@@ -161,7 +166,10 @@ class SplitMainViewController: MainViewController {
         accountB.accessibilityIdentifier = "Account button"
         accountB.accessibilityLabel = "Account"
         accountB.accessibilityHint = "Open account page"
-        
+        // Drop the iOS 26 shared "glass" circle behind the item (see doProfileIcon).
+        if #available(iOS 26.0, *) {
+            accountB.hidesSharedBackground = true
+        }
         if #available(iOS 13, *) {
             let interaction = UIContextMenuInteraction(delegate: self)
             self.accountB.customView?.addInteraction(interaction)
@@ -190,6 +198,19 @@ class SplitMainViewController: MainViewController {
         if MainViewController.isOffline {
             toolbarItems = [settingsB, accountB, flexButton, offlineB]
         }
+
+        // Top-right search button (replaces the old sort button there; sorting still lives
+        // in the bottom "…" menu). No iOS 26 glass circle behind it, matching the avatar.
+        let searchNav = ExpandedHitButton(type: .custom)
+        searchNav.setImage(UIImage(sfString: SFSymbol.magnifyingglass, overrideString: "search")?.navIcon(), for: UIControl.State.normal)
+        searchNav.addTarget(self, action: #selector(self.search), for: UIControl.Event.touchUpInside)
+        searchNav.frame = CGRect.init(x: 0, y: 0, width: 30, height: 44)
+        searchNav.sizeAnchors /==/ CGSize.square(size: 30)
+        searchNavB = UIBarButtonItem(customView: searchNav)
+        if #available(iOS 26.0, *) {
+            searchNavB?.hidesSharedBackground = true
+        }
+
         didUpdate()
     }
     

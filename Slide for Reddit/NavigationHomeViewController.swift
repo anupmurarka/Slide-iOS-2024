@@ -235,6 +235,16 @@ class NavigationHomeViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        // The drawer opens at the very top of the screen with content extending under the
+        // status bar (edgesForExtendedLayout = .all), which clipped the account header's
+        // top (avatar + username). Push the content down so it clears the status bar.
+        // The drawer's own view reports a zero top safe-area inset, so its table (pinned to
+        // safeTopAnchor) sits under the status bar and the account header gets clipped.
+        // Adopt the window's top inset so the whole layout starts below the status bar.
+        let windowTop = view.window?.safeAreaInsets.top ?? 0
+        if windowTop > 0.5 && abs(additionalSafeAreaInsets.top - windowTop) > 0.5 {
+            additionalSafeAreaInsets.top = windowTop
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

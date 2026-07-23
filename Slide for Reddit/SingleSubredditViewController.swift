@@ -957,7 +957,8 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
         let flexButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
         
         if parent is SplitMainViewController {
-            parent!.toolbarItems = [searchB, flexButton, moreB]
+            // Search moved to the top-right nav bar; bottom bar keeps only the "…" menu.
+            parent!.toolbarItems = [flexButton, moreB]
         } else {
             toolbarItems = [searchB, flexButton, moreB]
         }

@@ -50,6 +50,9 @@ class MainViewController: ColorMuxPagingViewController, UINavigationControllerDe
         $0.accessibilityLabel = "Change Post Sorting Order"
     }
     var sortButton: UIButton = UIButton()
+    /// Search button shown at the top-right of the main nav bar (replaces the old sort
+    /// button there; sorting is available from the bottom "…" menu).
+    var searchNavB: UIBarButtonItem?
     var inHeadView = UIView()
 
     var readLater = UIButton().then {
@@ -151,11 +154,11 @@ class MainViewController: ColorMuxPagingViewController, UINavigationControllerDe
 
             readLaterB = UIBarButtonItem.init(customView: readLater)
             
-            navigationItem.rightBarButtonItems = [sortB]
+            navigationItem.rightBarButtonItems = searchNavB.map { [$0] } ?? [sortB]
             doLeftItem()
 
         } else {
-            navigationItem.rightBarButtonItems = [sortB]
+            navigationItem.rightBarButtonItems = searchNavB.map { [$0] } ?? [sortB]
             doLeftItem()
         }
     }
@@ -625,6 +628,11 @@ class MainViewController: ColorMuxPagingViewController, UINavigationControllerDe
         accountB.accessibilityIdentifier = "Account button"
         accountB.accessibilityLabel = "Account"
         accountB.accessibilityHint = "Open account page"
+        // Drop the iOS 26 shared "glass" circle behind the item — the avatar is a
+        // rounded rect, so the system circle around it looks off. Show just the icon.
+        if #available(iOS 26.0, *) {
+            accountB.hidesSharedBackground = true
+        }
         if #available(iOS 13, *), self is SplitMainViewController {
             let interaction = UIContextMenuInteraction(delegate: self as! SplitMainViewController)
             self.accountB.customView?.addInteraction(interaction)
