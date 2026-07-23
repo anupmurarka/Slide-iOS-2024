@@ -92,16 +92,18 @@ tested**. Still to verify:
   save/read in `AppDelegate` (readLater/collections/deleted records) on a real device
   signed into iCloud. Confirm no `CKContainer` trap and that data round-trips.
 
-## Missing bundled font — googleicon.ttf
+## Missing bundled font — googleicon.ttf  ✅ RESOLVED
 
-At launch the console logs:
+At launch the console logged:
 `FontParser could not open filePath …/Slide for Reddit.app/googleicon.ttf: [2: No such file or directory]`
 and `GSFont: file doesn't exist … googleicon.ttf`.
 
-The app references a `googleicon.ttf` font that isn't present in the app bundle
-(not copied as a resource / not in the target's Copy Bundle Resources, or the file is
-missing from the repo). Non-fatal, but any UI relying on that icon font won't render.
-To fix: locate where `googleicon` is registered/used (Info.plist `UIAppFonts`, or a
-`UIFont(name: "googleicon", …)` / icon-font helper), then either add the missing
-`googleicon.ttf` to the repo + Copy Bundle Resources, or migrate those glyphs to the
-SF Symbols the app already uses elsewhere.
+Investigation: `googleicon.ttf` was listed in `UIAppFonts` in `Slide for Reddit/Info.plist`
+since the initial commit, but the file was never present in the repo and was **not
+referenced by any code** — `git grep googleicon` matched only the Info.plist entry (no
+`UIFont(name: "googleicon", …)`, no icon-font helper; the font picker uses
+`UIFont.familyNames`). It was a dead reference inherited from upstream Slide; nothing ever
+rendered with it, so no glyph migration was needed.
+
+Fix: removed the stale `googleicon.ttf` entry from `UIAppFonts`. Silences the launch
+warnings with no functional impact. The 11 Roboto faces remain correctly declared/bundled.
