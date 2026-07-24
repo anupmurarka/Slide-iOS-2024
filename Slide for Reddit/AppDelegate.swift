@@ -948,7 +948,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if record != nil {
             collectionsRecord = record!
         } else {
-            collectionsRecord = CKRecord(recordType: key)
+            // One singleton record per type, addressed by a deterministic recordID so
+            // save/fetch is a proper upsert (no duplicate records) and fetch can read it
+            // directly without a query (which would require a recordName Queryable index).
+            collectionsRecord = CKRecord(recordType: key, recordID: CKRecord.ID(recordName: key))
         }
         do {
             let data: NSData = try PropertyListSerialization.data(fromPropertyList: dictionary, format: PropertyListSerialization.PropertyListFormat.xml, options: 0) as NSData
@@ -972,32 +975,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func fetchFromiCloud(_ key: String, dictionaryToAppend: NSMutableDictionary, completion: ((_ record: CKRecord) -> Void)? = nil) {
         let privateDatabase = CKContainer(identifier: "iCloud.\(USR_DOMAIN).redditslide").privateCloudDatabase
-        
-        let query = CKQuery(recordType: CKRecord.RecordType(stringLiteral: key), predicate: NSPredicate(value: true))
+
+        // Read the singleton record for this type directly by its deterministic recordID.
+        // Avoids a CKQuery, which would require a Queryable index on the `recordName` field.
+        let recordID = CKRecord.ID(recordName: key)
         slideLog("Reading from iCloud")
-        privateDatabase.perform(query, inZoneWith: nil) { (records, error) in
-            if error != nil {
-                slideLog("Error fetching records...")
-                slideLog(error?.localizedDescription ?? "")
-            } else {
-                if let unwrappedRecord = records?[0] {
-                    if let object = unwrappedRecord.object(forKey: "data_xml") as? String {
-                        if let data = object.data(using: String.Encoding.utf8) {
-                            do {
-                                let dict = try PropertyListSerialization.propertyList(from: data, options: PropertyListSerialization.ReadOptions.mutableContainersAndLeaves, format: nil) as? NSMutableDictionary
-                                for item in dict ?? [:] {
-                                    dictionaryToAppend[item.key] = item.value
-                                }
-                                completion?(unwrappedRecord)
-                                return
-                            } catch {
-                                slideLog("Could not de-serialize list")
-                            }
-                        }
-                    }
-                } else {
+        privateDatabase.fetch(withRecordID: recordID) { (record, error) in
+            if let error = error {
+                if let ckError = error as? CKError, ckError.code == .unknownItem {
+                    // Nothing saved for this type yet (first run / nothing to restore).
                     slideLog("No record found!")
+                } else {
+                    slideLog("Error fetching records...")
+                    slideLog(error.localizedDescription)
                 }
+                return
+            }
+            guard let unwrappedRecord = record,
+                  let object = unwrappedRecord.object(forKey: "data_xml") as? String,
+                  let data = object.data(using: String.Encoding.utf8) else {
+                slideLog("No record found!")
+                return
+            }
+            do {
+                let dict = try PropertyListSerialization.propertyList(from: data, options: PropertyListSerialization.ReadOptions.mutableContainersAndLeaves, format: nil) as? NSMutableDictionary
+                for item in dict ?? [:] {
+                    dictionaryToAppend[item.key] = item.value
+                }
+                completion?(unwrappedRecord)
+            } catch {
+                slideLog("Could not de-serialize list")
             }
         }
     }
@@ -1036,6 +1043,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func refreshSession() {
+        // Nothing to refresh until an authenticated session exists — e.g. during launch
+        // before the account's token is loaded, or when logged out. Skipping this avoids a
+        // pointless refresh attempt that throws `tokenIsNotAvailable`.
+        guard session?.token != nil else { return }
         // refresh current session token
         do {
             try self.session?.refreshTokenLocal({ (result) -> Void in
