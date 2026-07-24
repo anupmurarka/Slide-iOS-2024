@@ -18,6 +18,7 @@ import UIKit
 class SettingsViewController: MediaTableViewController, MFMailComposeViewControllerDelegate {
     var goPro: UITableViewCell = InsetCell()
 
+    var accountsCell: UITableViewCell = InsetCell(style: .subtitle, reuseIdentifier: "accounts")
     var general: UITableViewCell = InsetCell(style: .subtitle, reuseIdentifier: "general")
     var manageSubs: UITableViewCell = InsetCell(style: .subtitle, reuseIdentifier: "managesubs")
     var mainTheme: UITableViewCell = InsetCell()
@@ -186,6 +187,17 @@ class SettingsViewController: MediaTableViewController, MFMailComposeViewControl
         
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 200
+
+        self.accountsCell.textLabel?.text = "Accounts"
+        self.accountsCell.accessoryType = .disclosureIndicator
+        self.accountsCell.backgroundColor = UIColor.foregroundColor
+        self.accountsCell.textLabel?.textColor = UIColor.fontColor
+        self.accountsCell.imageView?.image = UIImage(sfString: SFSymbol.personFill, overrideString: "profile")?.toolbarIcon()
+        self.accountsCell.imageView?.tintColor = UIColor.fontColor
+        self.accountsCell.detailTextLabel?.textColor = UIColor.fontColor
+        self.accountsCell.detailTextLabel?.text = "Switch, add, or remove signed-in accounts"
+        self.accountsCell.detailTextLabel?.numberOfLines = 0
+        self.accountsCell.detailTextLabel?.lineBreakMode = .byWordWrapping
 
         self.general.textLabel?.text = "General"
         self.general.accessoryType = .disclosureIndicator
@@ -507,7 +519,7 @@ class SettingsViewController: MediaTableViewController, MFMailComposeViewControl
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 4
+        return 5
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -600,6 +612,8 @@ class SettingsViewController: MediaTableViewController, MFMailComposeViewControl
             case 4: cell = self.licenseCell
             default: fatalError("Unknown row in section 3")
             }
+        case 4:
+            cell = self.accountsCell
         default: fatalError("Unknown section")
         }
         return cell
@@ -848,6 +862,8 @@ class SettingsViewController: MediaTableViewController, MFMailComposeViewControl
             default:
                 break
             }
+        case 4:
+            ch = ManageAccountsViewController()
         default:
             break
         }
@@ -868,6 +884,7 @@ class SettingsViewController: MediaTableViewController, MFMailComposeViewControl
         case 1: label.text = "Appearance"
         case 2: label.text = "Content"
         case 3: label.text = "About"
+        case 4: label.text = "Accounts"
         default: label.text = ""
         }
         return toReturn
@@ -883,6 +900,7 @@ class SettingsViewController: MediaTableViewController, MFMailComposeViewControl
         case 1: return 10
         case 2: return 9
         case 3: return 5
+        case 4: return 1
         default: fatalError("Unknown number of sections")
         }
     }
@@ -909,5 +927,119 @@ extension Bundle {
             return UIImage(named: lastIcon)
         }
         return nil
+    }
+}
+
+// MARK: - Accounts management
+
+/// Settings home for account management (switch / add / remove). The quick switcher also
+/// lives on the top-bar profile icon; this is the durable management screen.
+class ManageAccountsViewController: UITableViewController {
+
+    /// Saved account names, current one first.
+    private var accounts: [String] {
+        AccountController.names.unique().sorted().sorted(by: { a, _ in a == AccountController.currentName })
+    }
+
+    init() {
+        super.init(style: .grouped)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = "Accounts"
+        tableView.backgroundColor = UIColor.backgroundColor
+        tableView.separatorStyle = .none
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "accountcell")
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+
+    override func numberOfSections(in tableView: UITableView) -> Int { return 2 }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return section == 0 ? accounts.count : 1
+    }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return section == 0 ? "Signed-in accounts" : nil
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "accountcell", for: indexPath)
+        cell.backgroundColor = UIColor.foregroundColor
+        cell.textLabel?.textColor = UIColor.fontColor
+
+        if indexPath.section == 0 {
+            let name = accounts[indexPath.row]
+            cell.textLabel?.text = name
+            let isCurrent = name == AccountController.currentName
+            cell.accessoryType = isCurrent ? .checkmark : .none
+            cell.imageView?.image = UIImage(sfString: SFSymbol.personFill, overrideString: "profile")?.menuIcon().getCopy(withColor: UIColor.fontColor)
+        } else {
+            cell.textLabel?.text = "Add a new account"
+            cell.textLabel?.textColor = ColorUtil.baseAccent
+            cell.accessoryType = .disclosureIndicator
+            cell.imageView?.image = UIImage(sfString: SFSymbol.plusCircleFill, overrideString: "add")?.menuIcon().getCopy(withColor: ColorUtil.baseAccent)
+        }
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if indexPath.section == 0 {
+            switchTo(accounts[indexPath.row])
+        } else {
+            AccountController.addAccount(context: self, register: false)
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.section == 0
+    }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete, indexPath.section == 0 else { return }
+        removeAccount(accounts[indexPath.row])
+    }
+
+    override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "Log out"
+    }
+
+    private func switchTo(_ name: String) {
+        guard name != AccountController.currentName else { return }
+        AccountController.switchAccount(name: name)
+        Subscriptions.sync(name: name, completion: { [weak self] in
+            self?.rebuildApp()
+        })
+    }
+
+    private func removeAccount(_ name: String) {
+        let wasCurrent = name == AccountController.currentName
+        AccountController.delete(name: name)
+        if wasCurrent {
+            if let next = AccountController.names.first {
+                switchTo(next)
+            } else {
+                AccountController.requireLogin()
+                rebuildApp()
+            }
+        } else {
+            tableView.reloadData()
+        }
+    }
+
+    /// Rebuilds the app UI so the whole app reflects the account change.
+    private func rebuildApp() {
+        let window = view.window ?? UIApplication.shared.keyWindow
+        _ = (UIApplication.shared.delegate as? AppDelegate)?.resetStack(window: window)
     }
 }

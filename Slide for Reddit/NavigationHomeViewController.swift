@@ -925,12 +925,6 @@ class CurrentAccountHeaderView: UIView {
         $0.contentEdgeInsets = UIEdgeInsets(top: 7, left: 8, bottom: 7, right: 8)
         $0.accessibilityLabel = "Inbox"
     }
-    var switchAccountsButton = UIButton(type: .custom).then {
-        $0.setImage(UIImage(sfString: SFSymbol.person2Fill, overrideString: "user")!.getCopy(withSize: .square(size: 30), withColor: ColorUtil.baseAccent), for: UIControl.State.normal)
-        $0.contentEdgeInsets = UIEdgeInsets(top: 7, left: 8, bottom: 7, right: 8)
-        $0.accessibilityLabel = "Switch Accounts"
-    }
-    
     var mailBadge = BadgeSwift().then {
         $0.insets = CGSize(width: 3, height: 3)
         $0.font = UIFont.systemFont(ofSize: 11)
@@ -1032,7 +1026,7 @@ class CurrentAccountHeaderView: UIView {
 extension CurrentAccountHeaderView {
     func setupViews() {
         
-        upperButtonStack.addArrangedSubviews(mailButton, modButton, switchAccountsButton)
+        upperButtonStack.addArrangedSubviews(mailButton, modButton)
         
         mailButton.addSubview(mailBadge)
         modButton.addSubview(modBadge)
@@ -1096,7 +1090,6 @@ extension CurrentAccountHeaderView {
 
         mailButton.addTarget(self, action: #selector(mailButtonPressed), for: .touchUpInside)
         modButton.addTarget(self, action: #selector(modButtonPressed), for: .touchUpInside)
-        switchAccountsButton.addTarget(self, action: #selector(switchAccountsButtonPressed), for: .touchUpInside)
         
         let emptyStateLabelTap = UITapGestureRecognizer(target: self, action: #selector(emptyStateLabelTapped))
         emptyStateLabel.addGestureRecognizer(emptyStateLabelTap)
@@ -1181,11 +1174,9 @@ extension CurrentAccountHeaderView {
         func animationBlock() {
             self.mailButton.alpha = isOn ? 0 : 1
             self.modButton.alpha = isOn ? 0 : 1
-            self.switchAccountsButton.alpha = isOn ? 0 : 1
 
             self.mailButton.isUserInteractionEnabled = !isOn
             self.modButton.isUserInteractionEnabled = !isOn
-            self.switchAccountsButton.isUserInteractionEnabled = !isOn
             
             self.accountNameLabel.alpha = isOn ? 0 : 1
             self.accountAgeLabel.alpha = isOn ? 0 : 1
@@ -1277,10 +1268,6 @@ extension CurrentAccountHeaderView {
 
     @objc func modButtonPressed(_ sender: UIButton) {
         self.delegate?.navigation(self.parent!, didRequestModMenu: ())
-    }
-    
-    @objc func switchAccountsButtonPressed(_ sender: UIButton) {
-        self.delegate?.navigation(self.parent!, didRequestSwitchAccountMenu: ())
     }
     
     @objc func emptyStateLabelTapped() {

@@ -84,7 +84,8 @@ class SplitMainViewController: MainViewController {
         account.clipsToBounds = true
         account.contentMode = .scaleAspectFill
         account.frame = CGRect.init(x: 0, y: 0, width: 30, height: 30)
-        account.addTarget(self, action: #selector(self.openDrawer(_:)), for: .touchUpInside)
+        account.showsMenuAsPrimaryAction = true
+        account.menu = accountPullDownMenu()
         var not13 = true
         if #available(iOS 13.0, *) {
             not13 = false
@@ -102,10 +103,6 @@ class SplitMainViewController: MainViewController {
         // rounded rect, so the system circle around it looks off. Show just the icon.
         if #available(iOS 26.0, *) {
             accountB.hidesSharedBackground = true
-        }
-        if #available(iOS 13, *) {
-            let interaction = UIContextMenuInteraction(delegate: self)
-            self.accountB.customView?.addInteraction(interaction)
         }
         self.autoCacheProgress = nil
 
@@ -152,7 +149,8 @@ class SplitMainViewController: MainViewController {
         account.contentMode = .scaleAspectFill
         account.frame = CGRect.init(x: 0, y: 0, width: 30, height: 30)
         account.sizeAnchors /==/ CGSize.square(size: 30)
-        account.addTarget(self, action: #selector(self.openDrawer(_:)), for: .touchUpInside)
+        account.showsMenuAsPrimaryAction = true
+        account.menu = accountPullDownMenu()
         
         var not13 = true
         if #available(iOS 13.0, *) {
@@ -169,10 +167,6 @@ class SplitMainViewController: MainViewController {
         // Drop the iOS 26 shared "glass" circle behind the item (see doProfileIcon).
         if #available(iOS 26.0, *) {
             accountB.hidesSharedBackground = true
-        }
-        if #available(iOS 13, *) {
-            let interaction = UIContextMenuInteraction(delegate: self)
-            self.accountB.customView?.addInteraction(interaction)
         }
 
         let settings = ExpandedHitButton(type: .custom)
@@ -901,12 +895,20 @@ extension SplitMainViewController: NavigationHomeDelegate {
     }
     
     func navigation(_ homeViewController: NavigationHomeViewController, didRequestSwitchAccountMenu: Void) {
+        let optionMenu = buildAccountSwitcherMenu(homeViewController: homeViewController)
+        doOpen(OpenState.POPOVER_ANY, homeViewController, toExecute: nil, toPresent: optionMenu)
+    }
+
+    /// Builds the "Accounts" switcher menu. `homeViewController` (the sidebar) is used only
+    /// for cosmetic loading/empty state on the account header; when it's nil (e.g. opened
+    /// from the top-bar profile icon while the sidebar is closed) those updates are skipped.
+    func buildAccountSwitcherMenu(homeViewController: NavigationHomeViewController?) -> DragDownAlertMenu {
         let optionMenu = DragDownAlertMenu(title: "Accounts", subtitle: AccountController.isLoggedIn ? "Currently signed in as \(AccountController.currentName)" : "Not signed in", icon: nil)
 
         for accountName in AccountController.names.unique().sorted() {
             if accountName != AccountController.currentName {
                 optionMenu.addAction(title: accountName, icon: UIImage(sfString: SFSymbol.personFill, overrideString: "profile")!.menuIcon()) {
-                    homeViewController.accountHeader?.setLoadingState(true)
+                    homeViewController?.accountHeader?.setLoadingState(true)
                     self.navigation(homeViewController, didRequestAccountChangeToName: accountName)
                 }
             } else {
@@ -915,21 +917,88 @@ extension SplitMainViewController: NavigationHomeDelegate {
                 }
             }
         }
-        
+
         if AccountController.isLoggedIn {
             optionMenu.addAction(title: "Log out of u/\(AccountController.currentName)", icon: UIImage(sfString: SFSymbol.trashFill, overrideString: "delete")!.menuIcon().getCopy(withColor: GMColor.red500Color())) {
-                homeViewController.accountHeader?.setEmptyState(true, animate: false)
-                self.navigation(homeViewController, didRequestLogOut: ())
+                homeViewController?.accountHeader?.setEmptyState(true, animate: false)
+                if let homeViewController = homeViewController {
+                    self.navigation(homeViewController, didRequestLogOut: ())
+                } else {
+                    self.doLogOut()
+                }
             }
         }
-        
+
         optionMenu.addAction(title: "Add a new account", icon: UIImage(sfString: SFSymbol.plusCircleFill, overrideString: "add")!.menuIcon().getCopy(withColor: ColorUtil.baseColor)) {
             HTTPCookieStorage.shared.cookies?.forEach(HTTPCookieStorage.shared.deleteCookie)
-
-            self.navigation(homeViewController, didRequestNewAccount: ())
+            self.doAddAccount(register: false)
         }
-        
-        doOpen(OpenState.POPOVER_ANY, homeViewController, toExecute: nil, toPresent: optionMenu)
+
+        return optionMenu
+    }
+
+    /// The sidebar (NavigationHomeViewController) living in the split's primary column.
+    var navigationHomeViewController: NavigationHomeViewController? {
+        var candidates: [UIViewController] = []
+        if #available(iOS 14.0, *), let primary = splitViewController?.viewController(for: .primary) {
+            candidates.append(primary)
+        }
+        candidates.append(contentsOf: splitViewController?.viewControllers ?? [])
+        for vc in candidates {
+            if let home = vc as? NavigationHomeViewController { return home }
+            if let nav = vc as? UINavigationController {
+                for child in nav.viewControllers where child is NavigationHomeViewController {
+                    return child as? NavigationHomeViewController
+                }
+            }
+        }
+        return nil
+    }
+
+    /// Native pull-down menu shown from the top-bar profile icon. Rebuilt on each open
+    /// (via an uncached deferred element) so the account list stays current.
+    func accountPullDownMenu() -> UIMenu {
+        return UIMenu(title: "", children: [
+            UIDeferredMenuElement.uncached { [weak self] completion in
+                completion(self?.accountMenuElements() ?? [])
+            },
+        ])
+    }
+
+    func accountMenuElements() -> [UIMenuElement] {
+        var switchActions: [UIAction] = []
+        for name in AccountController.names.unique().sorted() {
+            let isCurrent = name == AccountController.currentName
+            let action = UIAction(title: name,
+                                  image: UIImage(sfString: SFSymbol.personFill, overrideString: "profile"),
+                                  state: isCurrent ? .on : .off) { [weak self] _ in
+                guard let self = self, !isCurrent else { return }
+                self.navigation(self.navigationHomeViewController, didRequestAccountChangeToName: name)
+            }
+            switchActions.append(action)
+        }
+
+        var manageActions: [UIMenuElement] = []
+        manageActions.append(UIAction(title: "Add a new account",
+                                      image: UIImage(sfString: SFSymbol.plusCircleFill, overrideString: "add")) { [weak self] _ in
+            HTTPCookieStorage.shared.cookies?.forEach(HTTPCookieStorage.shared.deleteCookie)
+            self?.doAddAccount(register: false)
+        })
+        if AccountController.isLoggedIn {
+            manageActions.append(UIAction(title: "Log out of u/\(AccountController.currentName)",
+                                          image: UIImage(sfString: SFSymbol.trashFill, overrideString: "delete"),
+                                          attributes: .destructive) { [weak self] _ in
+                self?.doLogOut()
+            })
+        }
+
+        var sections: [UIMenuElement] = []
+        if !switchActions.isEmpty {
+            let title = AccountController.isLoggedIn ? "Signed in as \(AccountController.currentName)" : "Accounts"
+            sections.append(UIMenu(title: title, options: .displayInline, children: switchActions))
+        }
+        sections.append(UIMenu(title: "", options: .displayInline, children: manageActions))
+        return sections
     }
     
     func navigation(_ homeViewController: NavigationHomeViewController, didRequestModMenu: Void) {
@@ -1063,6 +1132,10 @@ extension SplitMainViewController: NavigationHomeDelegate {
     }
 
     func navigation(_ homeViewController: NavigationHomeViewController, didRequestLogOut: Void) {
+        doLogOut()
+    }
+
+    func doLogOut() {
         let name: String
         if AccountController.current != nil {
             name = AccountController.current!.name
