@@ -1,5 +1,43 @@
 # TODO
 
+## Remove all Pro / subscription requirements (make every feature free)
+
+The upstream project is abandoned and its IAP products (`me.ccrama.pro.base`,
+`me.ccrama.pro.donate`) can't be purchased anymore. Since our fork is clean from upstream
+and pro-gating was never modified here (it only turns on via upstream's `#if DEBUG` block
+in `AppDelegate` — so Release builds would gate features and pro is unobtainable), we want
+to unconditionally enable all pro features.
+
+**Approach (pick the simplest that's clean):**
+- Make `SettingValues.isPro` always `true` at the source of truth rather than relying on
+  the debug accident. Options, in order of preference:
+  1. Force it in the settings load: change `SettingValues.swift:628`
+     (`SettingValues.isPro = settings.bool(forKey: pref_pro)`) to always set `true`
+     (and keep the `= true` default at `SettingValues.swift:245`). This makes every
+     `if SettingValues.isPro` guard pass in **all** build configurations.
+  2. Then remove the `#if DEBUG` force-enable in `AppDelegate.swift:349-354` (no longer
+     needed) — but keep the `isIdleTimerDisabled` debug line if still wanted.
+
+**Then clean up the now-dead pro UI/flows (optional but tidy):**
+- The pro guard sites (all currently gate on `isPro`, will become always-true):
+  `SettingsViewController.swift` (135, 540, 667–681, 809, 882),
+  `SettingsViewMode.swift` (176, 197), `VCPresenter.proDialogShown` (170),
+  `WatchSessionManager.swift:145`.
+- `VCPresenter.proDialogShown` will always return false (never show the paywall) — verify
+  callers behave when pro is free, and consider deleting the paywall path entirely.
+- Remove/neutralize the purchase UI: `SettingsPro.swift` (buy/restore buttons +
+  `IAPHandler`/`IAPHandlerTip` StoreKit calls), and the "Go Pro" entry points in
+  `SettingsViewController` / `SettingsDonate` / `SettingsIcon`. Keep a donate link if
+  desired, but drop the StoreKit purchase machinery (`IAPHandler.swift`,
+  `IAPHandlerTip.swift`) since the product IDs are dead.
+- Sanity-check `SettingsViewController` section/row counts that branch on `isPro`
+  (e.g. `:882 return isPro ? 6 : 7`) so the settings table renders correctly when pro is
+  always on.
+
+**Verify:** Release build (not just Debug) shows all pro features enabled, no paywall
+dialog appears anywhere, settings screens render correctly, and no StoreKit product
+lookups run at launch.
+
 ## Port from upstream 7.1 (Haptic-Apps/Slide-iOS)
 
 Fork diverged from upstream at `5494fd25` (2021-02-27), before 7.0.2/7.1. The 7.1 infra
