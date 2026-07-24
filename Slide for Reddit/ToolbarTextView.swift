@@ -109,7 +109,7 @@ public class ToolbarTextView: NSObject {
     }
 
     @objc func openDrafts(_ sender: AnyObject) {
-        print("Opening drafts")
+        slideLog("Opening drafts")
         parent?.view.endEditing(true)
         let alert = AlertController(title: "Drafts", message: "", preferredStyle: .alert)
         
@@ -231,19 +231,19 @@ public class ToolbarTextView: NSObject {
         if results.count > 1 {
             AF.request("https://api.imgur.com/3/album", method: .post, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": "Client-ID bef87913eb202e9"])
                     .responseData { response in
-                        print(response)
+                        slideLog(response)
                         if let status = response.response?.statusCode {
                             switch status {
                             case 201:
-                                print("example success")
+                                slideLog("example success")
                             default:
-                                print("error with response status: \(status)")
+                                slideLog("error with response status: \(status)")
                             }
                         }
 
                         if let result = response.value {
                             let json = (try? JSON(data: result)) ?? JSON()
-                            print(json)
+                            slideLog(json)
                             let album = json["data"]["deletehash"].stringValue
                             let url = "https://imgur.com/a/" + json["data"]["id"].stringValue
                             self.uploadImages(results, album: album, completion: { (last, success) in
@@ -406,7 +406,7 @@ public class ToolbarTextView: NSObject {
                     }, to: "https://api.imgur.com/3/image", method: .post, headers: ["Authorization": "Client-ID bef87913eb202e9"])
                         .uploadProgress { progress in
                             DispatchQueue.main.async {
-                                print(progress.fractionCompleted)
+                                slideLog(progress.fractionCompleted)
                                 self.progressBar.setProgress(Float(progress.fractionCompleted), animated: true)
                             }
                         }
@@ -423,7 +423,7 @@ public class ToolbarTextView: NSObject {
                                     return
                                 }
                             }
-                            print("Link is \(link)")
+                            slideLog("Link is \(link)")
                             if count == results.count {
                                 completion(link, true)
                             }

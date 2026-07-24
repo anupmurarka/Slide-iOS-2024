@@ -178,7 +178,7 @@ class MainViewController: ColorMuxPagingViewController, UINavigationControllerDe
             UserDefaults.standard.set(getVersion(), forKey: "lastReviewed")
             UserDefaults.standard.synchronize()
         } else {
-            print("SKStoreReviewController not available")
+            slideLog("SKStoreReviewController not available")
         }
     }
 
@@ -258,7 +258,7 @@ class MainViewController: ColorMuxPagingViewController, UINavigationControllerDe
                 try session?.getProfile({ (result) in
                     switch result {
                     case .failure(let error):
-                        print(error)
+                        slideLog(error)
                     case .success(let profile):
                         AccountController.current = profile
                         SettingValues.nsfwEnabled = profile.over18
@@ -276,7 +276,7 @@ class MainViewController: ColorMuxPagingViewController, UINavigationControllerDe
                         let unread = profile.inboxCount
                         let diff = unread - lastMail
                         if profile.isMod && AccountController.modSubs.isEmpty {
-                            print("Getting mod subs")
+                            slideLog("Getting mod subs")
                             AccountController.doModOf()
                         }
                         DispatchQueue.main.async {
@@ -310,7 +310,7 @@ class MainViewController: ColorMuxPagingViewController, UINavigationControllerDe
     }
 
     func setToken(token: OAuth2Token) {
-        print("Setting token")
+        slideLog("Setting token")
         alertController?.dismiss(animated: false, completion: nil)
         // Do any additional setup after loading the view.
         

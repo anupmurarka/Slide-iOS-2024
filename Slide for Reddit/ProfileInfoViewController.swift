@@ -227,7 +227,7 @@ extension ProfileInfoViewController {
             try (UIApplication.shared.delegate as! AppDelegate).session?.getTrophies(user.name, completion: { (result) in
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                 case .success(let trophies):
                     var i = 0
                     DispatchQueue.main.async {
@@ -319,7 +319,7 @@ extension ProfileInfoViewController {
                             self.header.setAccount(account)
                             self.setLoadingState(false)
                         } else {
-                            print("No account to show!")
+                            slideLog("No account to show!")
                         }
                     }
                 }
@@ -378,7 +378,7 @@ extension ProfileInfoViewController: ProfileHeaderViewDelegate {
         do {
             try (UIApplication.shared.delegate as! AppDelegate).session?.friend(user!.name, completion: { (result) in
                 if result.error != nil {
-                    print(result.error!)
+                    slideLog(result.error!)
                 }
                 DispatchQueue.main.async {
                     BannerUtil.makeBanner(text: "Friended u/\(self.user!.name)", seconds: 3, context: self)

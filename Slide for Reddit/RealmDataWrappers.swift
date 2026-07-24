@@ -42,7 +42,7 @@ extension String {
             let attributedString = try NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil)
             self = attributedString.string
         } catch {
-            print("Error: \(error)")
+            slideLog("Error: \(error)")
             self = htmlEncodedString
         }
     }
@@ -56,7 +56,7 @@ extension String {
                 let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String: AnyObject]
                 return json ?? [:]
             } catch {
-                print("Error converting to JSON")
+                slideLog("Error converting to JSON")
             }
         }
         return NSDictionary() as! [String: AnyObject]

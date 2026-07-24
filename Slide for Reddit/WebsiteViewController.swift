@@ -208,7 +208,7 @@ class WebsiteViewController: MediaViewController, WKNavigationDelegate {
                 WKContentRuleListStore.default().lookUpContentRuleList(forIdentifier: "slide-ad-blocking") { [weak self] (contentRuleList, error) in
                     guard let strongSelf = self else { return }
                     if let error = error {
-                        print(error.localizedDescription)
+                        slideLog(error.localizedDescription)
                         UserDefaults.standard.set(false, forKey: "adblock-loaded")
                         strongSelf.setupBlocking()
                         return
@@ -233,7 +233,7 @@ class WebsiteViewController: MediaViewController, WKNavigationDelegate {
                 guard let strongSelf = self else { return }
                 if let error = error {
                     strongSelf.blocking11 = false
-                    print(error.localizedDescription)
+                    slideLog(error.localizedDescription)
                     return
                 }
                 if let list = contentRuleList {
@@ -344,11 +344,11 @@ class WebsiteViewController: MediaViewController, WKNavigationDelegate {
                 webView.endEditing(true)
                 self.navigationController?.dismiss(animated: true) {
                     _ = OAuth2Authorizer.sharedInstance.receiveRedirect(url!, completion: { (result) -> Void in
-                        print(result)
+                        slideLog(result)
                         switch result {
                             
                         case .failure(let error):
-                            print(error)
+                            slideLog(error)
                         case .success(let token):
                             DispatchQueue.main.async(execute: { () -> Void in
                                 do {
@@ -361,7 +361,7 @@ class WebsiteViewController: MediaViewController, WKNavigationDelegate {
                                     NotificationCenter.default.post(name: OAuth2TokenRepositoryDidSaveTokenName, object: nil, userInfo: nil)
                                 } catch {
                                     NotificationCenter.default.post(name: OAuth2TokenRepositoryDidFailToSaveTokenName, object: nil, userInfo: nil)
-                                    print(error)
+                                    slideLog(error)
                                 }
                             })
                         }
@@ -395,13 +395,13 @@ class WebsiteViewController: MediaViewController, WKNavigationDelegate {
                             let jsonObject = try? JSONSerialization.jsonObject(with: data)
                             let token = (jsonObject as? [String: Any])?["token"] as? String ?? ""
                             // New token generated, new reddit_session Cookie should exist now
-                            print("TOKEN IS \(token)")
+                            slideLog("TOKEN IS \(token)")
                             
                             // Force reload page
                             self.webView.load(URLRequest(url: URL(string: base)!))
                             self.needsReload = true
                         case .failure(let error):
-                            print(error)
+                            slideLog(error)
                         }
                     }
                 } else {
@@ -564,7 +564,7 @@ extension WKWebView {
 extension WebsiteViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == "logHandler" {
-            print("LOG: \(message.body)")
+            slideLog("LOG: \(message.body)")
         }
     }
 }

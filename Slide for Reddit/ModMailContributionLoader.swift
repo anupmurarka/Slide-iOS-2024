@@ -44,7 +44,7 @@ class ModMailContributionLoader: ContributionLoader {
                 try delegate?.session?.getModMail(paginator, unread, completion: { (result) in
                     switch result {
                     case .failure(let error):
-                        print(error)
+                        slideLog(error)
                     case .success(let listing):
                         if reload {
                             self.content = []
@@ -71,7 +71,7 @@ class ModMailContributionLoader: ContributionLoader {
                     }
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
             
         }

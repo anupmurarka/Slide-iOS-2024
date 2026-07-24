@@ -49,7 +49,7 @@ class HistoryContributionLoader: ContributionLoader {
                         if id.contains("_") {
                             id = id.substring(3, length: id.length - 3)
                         }
-                        print(id)
+                        slideLog(id)
                         return Link(id: id)
                     })
                 }
@@ -79,7 +79,7 @@ class HistoryContributionLoader: ContributionLoader {
                     }
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
             
         }

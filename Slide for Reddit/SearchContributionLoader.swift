@@ -45,7 +45,7 @@ class SearchContributionLoader: ContributionLoader {
                 try delegate?.session?.getSearch(Subreddit.init(subreddit: sub), accountName: AccountController.currentName, query: query, paginator: paginator, sort: sorting, time: time, nsfw: SettingValues.nsfwEnabled, completion: { (result) in
                     switch result {
                     case .failure:
-                        print(result.error!)
+                        slideLog(result.error!)
                         self.delegate?.failed(error: result.error!)
                     case .success(let listing):
                         if reload {
@@ -67,7 +67,7 @@ class SearchContributionLoader: ContributionLoader {
                     }
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
             
         }

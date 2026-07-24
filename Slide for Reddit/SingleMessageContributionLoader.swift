@@ -44,7 +44,7 @@ class SingleMessageContributionLoader {
                 try session.getMessage(self.paginator, .messages, limit: 1, completion: { result in
                     switch result {
                     case .failure(let error):
-                        print(error)
+                        slideLog(error)
                         DispatchQueue.main.async {
                             self.delegate?.failedLoading()
                         }
@@ -92,7 +92,7 @@ class SingleMessageContributionLoader {
                 })
             }
         } catch {
-            print(error)
+            slideLog(error)
         }
     }
 }

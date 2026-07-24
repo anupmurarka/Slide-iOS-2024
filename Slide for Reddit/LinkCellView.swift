@@ -845,7 +845,7 @@ class LinkCellView: UICollectionViewCell, UIViewControllerPreviewingDelegate, UI
             if direction == 0 {
                 if xVelocity > 0 {
                     direction = 1
-                    print("Direction change to 1")
+                    slideLog("Direction change to 1")
                     diff = self.innerView.frame.width - diff
                     action = getFirstAction(left: true)
                     if action == .NONE {
@@ -858,7 +858,7 @@ class LinkCellView: UICollectionViewCell, UIViewControllerPreviewingDelegate, UI
                         self.backgroundColor = UIColor.fontColor.withAlphaComponent(0.5)
                     }
                 } else {
-                    print("Direction change to -1")
+                    slideLog("Direction change to -1")
                     direction = -1
                     action = getFirstAction(left: false)
                     diff = self.innerView.frame.width - originalLocation
@@ -885,7 +885,7 @@ class LinkCellView: UICollectionViewCell, UIViewControllerPreviewingDelegate, UI
             } else if typeImage.superview == nil {
                 self.addSubviews(typeImage)
                 self.bringSubviewToFront(typeImage)
-                print(direction)
+                slideLog(direction)
                 if direction == 1 {
                     tiConstraints = batch {
                         typeImage.leftAnchor /==/ self.leftAnchor + 4
@@ -902,7 +902,7 @@ class LinkCellView: UICollectionViewCell, UIViewControllerPreviewingDelegate, UI
             }
             
             let progress = Float(min(abs(currentTranslation) / (self.innerView.bounds.width), 1))
-            print(progress)
+            slideLog(progress)
             if progress > 0.1 && previousProgress <= 0.1 {
                 typeImage.alpha = 0
                 UIView.animate(withDuration: 0.2) {
@@ -2461,7 +2461,7 @@ class LinkCellView: UICollectionViewCell, UIViewControllerPreviewingDelegate, UI
             try (UIApplication.shared.delegate as! AppDelegate).session?.flairList(link!.subreddit, link: link!.id, completion: { (result) in
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                     DispatchQueue.main.async {
                         BannerUtil.makeBanner(text: "No subreddit flairs found", seconds: 3, context: self.parentViewController)
                     }
@@ -2527,12 +2527,12 @@ class LinkCellView: UICollectionViewCell, UIViewControllerPreviewingDelegate, UI
             try (UIApplication.shared.delegate as! AppDelegate).session?.flairSubmission(link!.subreddit, flairId: flair.id, submissionFullname: link!.id, text: text ?? "") { result in
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                     DispatchQueue.main.async {
                         BannerUtil.makeBanner(text: "Flair not set", color: GMColor.red500Color(), seconds: 3, context: self.parentViewController)
                     }
                 case .success(let success):
-                    print(success)
+                    slideLog(success)
                     DispatchQueue.main.async {
                         BannerUtil.makeBanner(text: "Flair set successfully!", seconds: 3, context: self.parentViewController)
                         let flairDictionary = NSMutableDictionary()

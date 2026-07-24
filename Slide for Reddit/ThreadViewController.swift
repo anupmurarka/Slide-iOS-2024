@@ -56,7 +56,7 @@ class ThreadViewControler: MediaViewController, UICollectionViewDelegate, Wrappi
     }
     
     func failed(error: Error) {
-        print(error.localizedDescription)
+        slideLog(error.localizedDescription)
         loaded = true
         loading = false
         DispatchQueue.main.async {
@@ -430,7 +430,7 @@ extension ThreadViewControler: MessageCellViewDelegate {
             do {
                 try session?.markMessagesAsRead([message.name.contains("_") ? message.name : (message.wasComment ? "t1_" : "t4_") + message.name], completion: { (result) in
                     if result.error != nil {
-                        print(result.error!.description)
+                        slideLog(result.error!.description)
                     } else {
                         NotificationCenter.default.post(name: .accountRefreshRequested, object: nil, userInfo: nil)
                     }
@@ -474,7 +474,7 @@ extension ThreadViewControler: MessageCellViewDelegate {
                 do {
                     try session?.markMessagesAsUnread([message.name.contains("_") ? message.name : (message.wasComment ? "t1_" : "t4_") + message.name], completion: { (result) in
                         if result.error != nil {
-                            print(result.error!.description)
+                            slideLog(result.error!.description)
                         }
                     })
                 } catch {
@@ -489,7 +489,7 @@ extension ThreadViewControler: MessageCellViewDelegate {
                 do {
                     try session?.markMessagesAsRead([message.name.contains("_") ? message.name : (message.wasComment ? "t1_" : "t4_") + message.name], completion: { (result) in
                         if result.error != nil {
-                            print(result.error!.description)
+                            slideLog(result.error!.description)
                         }
                     })
                 } catch {

@@ -114,7 +114,7 @@ class SettingsGeneral: BubbleSettingTableViewController {
             if changed.isOn, #available(iOS 10.0, *) {
                 UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
                     if let error = error {
-                        print(error.localizedDescription)
+                        slideLog(error.localizedDescription)
                     } else {
                         DispatchQueue.main.async {
                             self.notificationsSwitch.isOn = granted
@@ -123,11 +123,11 @@ class SettingsGeneral: BubbleSettingTableViewController {
                             
                             if SettingValues.notifications {
                                 UIApplication.shared.setMinimumBackgroundFetchInterval(60 * 10) // 10 minute interval
-                                print("Application background refresh minimum interval: \(60 * 10) seconds")
-                                print("Application background refresh status: \(UIApplication.shared.backgroundRefreshStatus.rawValue)")
+                                slideLog("Application background refresh minimum interval: \(60 * 10) seconds")
+                                slideLog("Application background refresh status: \(UIApplication.shared.backgroundRefreshStatus.rawValue)")
                             } else {
                                 UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalNever)
-                                print("Application background refresh minimum set to never")
+                                slideLog("Application background refresh minimum set to never")
                             }
                         }
                     }

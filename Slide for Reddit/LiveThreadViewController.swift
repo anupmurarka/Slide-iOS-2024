@@ -165,7 +165,7 @@ class LiveThreadViewController: MediaViewController, UICollectionViewDelegate, W
             var imageHeight = 0
             if data["mobile_embeds"] != nil && !(data["mobile_embeds"] as? JSONArray)!.isEmpty {
                 if let embedsB = data["mobile_embeds"] as? JSONArray, let embeds = embedsB[0] as? JSONDictionary, let height = embeds["height"] as? Int, let width = embeds["width"] as? Int {
-                    print(embedsB)
+                    slideLog(embedsB)
                     let ratio = Double(height) / Double(width)
                     let width = Double(itemWidth)
                     imageHeight = Int(width * ratio)
@@ -185,7 +185,7 @@ class LiveThreadViewController: MediaViewController, UICollectionViewDelegate, W
             try session?.getLiveThreadDetails(id, completion: { (result) in
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                 case .success(let rawdetails):
                     self.getOldThreads()
                     let data = (rawdetails as! JSONDictionary)["data"] as! JSONDictionary
@@ -196,7 +196,7 @@ class LiveThreadViewController: MediaViewController, UICollectionViewDelegate, W
                 }
             })
         } catch {
-            print(error)
+            slideLog(error)
         }
     }
     
@@ -220,7 +220,7 @@ class LiveThreadViewController: MediaViewController, UICollectionViewDelegate, W
             try session?.getCurrentThreads(id, completion: { (result) in
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                 case .success(let rawupdates):
                     for item in rawupdates {
                         self.content.append((item as! JSONDictionary)["data"] as! JSONDictionary)
@@ -238,15 +238,15 @@ class LiveThreadViewController: MediaViewController, UICollectionViewDelegate, W
         socket = Starscream.WebSocket(url: URL(string: websocketUrl)!)
         // websocketDidConnect
         socket!.onConnect = {
-            print("websocket is connected")
+            slideLog("websocket is connected")
         }
         // websocketDidDisconnect
         socket!.onDisconnect = { (error: Error?) in
-            print("websocket is disconnected: \(error?.localizedDescription ?? "")")
+            slideLog("websocket is disconnected: \(error?.localizedDescription ?? "")")
         }
         // websocketDidReceiveMessage
         socket!.onText = { (text: String) in
-            print("got some text: \(text)")
+            slideLog("got some text: \(text)")
             do {
                 let text = try JSONSerialization.jsonObject(with: text.data(using: .utf8)!, options: [])
                 if (text as! JSONDictionary)["type"] as! String == "update" {
@@ -278,7 +278,7 @@ class LiveThreadViewController: MediaViewController, UICollectionViewDelegate, W
         }
         // websocketDidReceiveData
         socket!.onData = { (data: Data) in
-            print("got some data: \(data.count)")
+            slideLog("got some data: \(data.count)")
         }
         // you could do onPong as well.
         socket!.connect()

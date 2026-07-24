@@ -73,7 +73,7 @@ class SubredditFindReturnViewController: UITableViewController, UISearchBarDeleg
                     self.tableView.reloadData()
                 }
             case .failure(let error):
-                print(error)
+                slideLog(error)
             }
         })
     }
@@ -173,7 +173,7 @@ class SubredditFindReturnViewController: UITableViewController, UISearchBarDeleg
                         self.tableView.reloadData()
                     }
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                 }
             })
         }

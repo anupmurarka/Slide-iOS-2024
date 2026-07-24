@@ -100,12 +100,12 @@ class AlbumViewController: SwipeDownModalVC, UIPageViewControllerDataSource, UIP
                     return
                 }
             } catch {
-                print(error)
+                slideLog(error)
             }
         }
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             if error != nil || data == nil {
-                print(error ?? "Error loading album...")
+                slideLog(error ?? "Error loading album...")
                 self.dismiss(animated: true, completion: {
                     self.failureCallback?(self.baseURL!)
                 })
@@ -113,7 +113,7 @@ class AlbumViewController: SwipeDownModalVC, UIPageViewControllerDataSource, UIP
                 do {
                     try data!.write(to: URL.init(fileURLWithPath: self.getKeyFromURL(url)))
                 } catch {
-                    print(error)
+                    slideLog(error)
                 }
                 self.parseData(data!)
             }
@@ -214,7 +214,7 @@ class AlbumViewController: SwipeDownModalVC, UIPageViewControllerDataSource, UIP
                 let prefetcher = SDWebImagePrefetcher.shared
                 prefetcher.prefetchURLs(thumbs)
             } catch {
-                print(error)
+                slideLog(error)
                // TODO: - fallback
             }
         }
@@ -225,14 +225,14 @@ class AlbumViewController: SwipeDownModalVC, UIPageViewControllerDataSource, UIP
         if s.contains("/comment/") {
             s = s.substring(0, length: s.indexOf("/comment")!)
         }
-        print(s)
+        slideLog(s)
         if s.endsWith("?") {
             s = s.substring(0, length: s.length - 1)
         }
         if s.endsWith("/") {
             s = s.substring(0, length: s.length - 1)
         }
-        print(s)
+        slideLog(s)
         var next = s.substring(s.lastIndexOf("/")!, length: s.length - s.lastIndexOf("/")!)
         if next.contains(".") {
             next = next.substring(0, length: next.indexOf(".")!)

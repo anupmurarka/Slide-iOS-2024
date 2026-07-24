@@ -90,7 +90,7 @@ public class AutoCache: NSObject {
                     case .failure(let error):
                         done += 1
                         failed += 1
-                        print(error)
+                        slideLog(error)
                         progress(self.subs[index], done, currentLinks.count, failed)
                         self.cacheComments(index, commentIndex: commentIndex + 1, currentLinks: currentLinks, done: done, failed: failed, progress: progress, completion: completion)
                     case .success(let tuple):
@@ -142,7 +142,7 @@ public class AutoCache: NSObject {
         }
 
         let sub = subs[index]
-        print("Caching \(sub)")
+        slideLog("Caching \(sub)")
         DispatchQueue.main.async {
             do {
                 var subreddit: SubredditURLPath = Subreddit.init(subreddit: sub)
@@ -153,7 +153,7 @@ public class AutoCache: NSObject {
                     switch result {
                     case .failure(let error):
                        // TODO: - error reporting?
-                        print(error)
+                        slideLog(error)
                         self.cacheSub(index + 1, progress: progress, completion: completion, total: total, failed: failed)
                     case .success(let listing):
                         if self.cancel {
@@ -173,7 +173,7 @@ public class AutoCache: NSObject {
                     }
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
         }
     }
@@ -211,7 +211,7 @@ public class AutoCache: NSObject {
             do {
                 try context.save()
             } catch let error as NSError {
-                print("Failed to save managed context \(error): \(error.userInfo)")
+                slideLog("Failed to save managed context \(error): \(error.userInfo)")
             }
         }
     }
@@ -247,7 +247,7 @@ public class AutoCache: NSObject {
             do {
                 try context.save()
             } catch let error as NSError {
-                print("Failed to save managed context \(error): \(error.userInfo)")
+                slideLog("Failed to save managed context \(error): \(error.userInfo)")
             }
         }
     }
@@ -391,7 +391,7 @@ public class AutoCache: NSObject {
     }
 
     func cancelAutocache(completed: Int) {
-        print("Cancelling")
+        slideLog("Cancelling")
     }
 
 }

@@ -115,7 +115,7 @@ class SubredditCellView: UITableViewCell {
             if !self.cancelled {
                 if profile.isEmpty() {
                     let vc = SingleSubredditViewController.init(subName: self.subreddit, single: true)
-                    print("Dismissing")
+                    slideLog("Dismissing")
                     navController!.dismiss(animated: true) {
                         VCPresenter.showVC(viewController: vc, popupIfPossible: true, parentNavigationController: self.navController!.parent?.navigationController, parentViewController: self.navController!)
                     }

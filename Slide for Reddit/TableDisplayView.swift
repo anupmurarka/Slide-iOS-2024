@@ -74,7 +74,7 @@ class TableDisplayView: UIScrollView {
             if current == "<" {
                 continue
             }
-            // print(current)
+            // slideLog(current)
             if current == tableStart {
             } else if current == tableHeadStart {
             } else if current == tableRowStart {
@@ -232,7 +232,7 @@ class TableDisplayView: UIScrollView {
             if current == "<" {
                 continue
             }
-            // print(current)
+            // slideLog(current)
             if current == tableStart {
             } else if current == tableHeadStart {
             } else if current == tableRowStart {

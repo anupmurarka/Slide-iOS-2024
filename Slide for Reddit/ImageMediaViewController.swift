@@ -335,7 +335,7 @@ extension ImageMediaViewController {
                 CustomAlbum.shared.save(image: image, parent: self)
             }
         } else {
-            print("No image exists to be downloaded!")
+            slideLog("No image exists to be downloaded!")
         }
     }
 

@@ -41,7 +41,7 @@ class IAPHandler: NSObject {
     func canMakePurchases() -> Bool { return SKPaymentQueue.canMakePayments() }
     
     func purchaseMyProduct(index: Int) {
-        print("Purchasing")
+        slideLog("Purchasing")
         if iapProducts.count == 0 { return }
         
         if self.canMakePurchases() {
@@ -50,7 +50,7 @@ class IAPHandler: NSObject {
             SKPaymentQueue.default().add(self)
             SKPaymentQueue.default().add(payment)
             
-            print("PRODUCT TO PURCHASE: \(product.productIdentifier)")
+            slideLog("PRODUCT TO PURCHASE: \(product.productIdentifier)")
             productID = product.productIdentifier
         } else {
             purchaseStatusBlock?(.disabled)
@@ -87,7 +87,7 @@ extension IAPHandler: SKProductsRequestDelegate, SKPaymentTransactionObserver {
                 numberFormatter.numberStyle = .currency
                 numberFormatter.locale = product.priceLocale
                 let price1Str = numberFormatter.string(from: product.price)
-                print(product.localizedDescription + "\nfor just \(price1Str!)")
+                slideLog(product.localizedDescription + "\nfor just \(price1Str!)")
             }
         }
     }
@@ -103,16 +103,16 @@ extension IAPHandler: SKProductsRequestDelegate, SKPaymentTransactionObserver {
             if let trans = transaction as? SKPaymentTransaction {
                 switch trans.transactionState {
                 case .purchased:
-                    print("Product Purchased")
+                    slideLog("Product Purchased")
                     purchaseStatusBlock?(.purchased)
                     SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
                 case .failed:
-                    print("Purchased Failed")
+                    slideLog("Purchased Failed")
                     didFail = true
                     failed = trans.error?.localizedDescription
                     SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
                 case .restored:
-                    print("Already Purchased")
+                    slideLog("Already Purchased")
                     purchaseStatusBlock?(.restored)
                     SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
                 default:

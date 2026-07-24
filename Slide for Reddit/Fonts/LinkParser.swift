@@ -28,7 +28,7 @@ class LinkParser {
                     if matchRange.location != NSNotFound {
                         let attributedText = string.attributedSubstring(from: match.range).mutableCopy() as! NSMutableAttributedString
                         let oldAttrs = attributedText.attributes(at: 0, effectiveRange: nil)
-                        print(attributedText.string)
+                        slideLog(attributedText.string)
                         let newAttrs = [ NSAttributedString.Key.link: URL(string: attributedText.string)!] as [NSAttributedString.Key: Any]
                         let allParams = newAttrs.reduce(into: oldAttrs) { (r, e) in r[e.0] = e.1 }
                         let newText = NSMutableAttributedString(string: "Slide Theme", attributes: allParams)

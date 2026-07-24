@@ -47,10 +47,10 @@ class SettingsContentFilters: BubbleSettingTableViewController, UISearchBarDeleg
             try (UIApplication.shared.delegate as! AppDelegate).session?.getBlocked(userPaginator, limit: 50, completion: { (result) in
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                     return
                 case .success(let list):
-                    print(list)
+                    slideLog(list)
                     for user in list {
                         self.redditBlocked.append(user.name)
                     }
@@ -64,7 +64,7 @@ class SettingsContentFilters: BubbleSettingTableViewController, UISearchBarDeleg
             })
             
         } catch {
-            print(error)
+            slideLog(error)
         }
     }
 

@@ -101,7 +101,7 @@ class CustomAlbum: NSObject {
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         if let addPath = paths.first {
             let dataPath = addPath + "/\(cachedFile.split("/").last ?? "")"
-            print(dataPath)
+            slideLog(dataPath)
 
             do {
                 try fileManager.moveItem(at: movieURL, to: URL(fileURLWithPath: dataPath))

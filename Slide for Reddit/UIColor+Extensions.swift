@@ -55,7 +55,7 @@ public extension UIColor {
                 let _supersuper: AnyClass? = class_getSuperclass(_super)
                 if currentClass == UIColor.self || _super == UIColor.self || _supersuper == UIColor.self {
                     if let originalMethod = class_getInstanceMethod(currentClass.self, #selector(getter: cgColor)) {
-//                        print(String(describing: currentClass), currentClass)
+//                        slideLog(String(describing: currentClass), currentClass)
                         method_setImplementation(originalMethod, imp_implementationWithBlock(unsafeBitCast(StaticVars.randomColorBlock, to: AnyObject.self)))
                         modifiedClassCount += 1
                     }
@@ -63,7 +63,7 @@ public extension UIColor {
             }
         }
 
-        print("Swizzled UIColor class derivatives: \(modifiedClassCount)")
+        slideLog("Swizzled UIColor class derivatives: \(modifiedClassCount)")
 
     }()
 

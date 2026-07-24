@@ -64,7 +64,7 @@ class CollectionsContributionLoader: ContributionLoader {
                     }
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
             
         }

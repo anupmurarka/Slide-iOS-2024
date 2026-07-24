@@ -143,7 +143,7 @@ class ModalMediaViewController: UIViewController {
             URLSession.shared.dataTask(with: finalURL) { (data, _, error) in
                 var url: String?
                 if error != nil {
-                    print(error ?? "Error loading deviantart...")
+                    slideLog(error ?? "Error loading deviantart...")
                     self.dismiss(animated: true, completion: {
                         self.failureCallback?(baseUrl)
                     })
@@ -160,7 +160,7 @@ class ModalMediaViewController: UIViewController {
                         }
                         
                     } catch let error as NSError {
-                        print(error)
+                        slideLog(error)
                         self.dismiss(animated: true, completion: {
                             self.failureCallback?(baseUrl)
                         })
@@ -187,7 +187,7 @@ class ModalMediaViewController: UIViewController {
                 var url: String?
                 var text: String?
                 if error != nil {
-                    print(error ?? "Error loading xkcd...")
+                    slideLog(error ?? "Error loading xkcd...")
                     self.dismiss(animated: true, completion: {
                         self.failureCallback?(baseUrl)
                     })
@@ -205,7 +205,7 @@ class ModalMediaViewController: UIViewController {
                         }
                         
                     } catch let error as NSError {
-                        print(error)
+                        slideLog(error)
                         self.dismiss(animated: true, completion: {
                             self.failureCallback?(baseUrl)
                         })

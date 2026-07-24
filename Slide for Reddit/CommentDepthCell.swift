@@ -320,7 +320,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
     }
     
     @objc func specialAction(_ sender: AnyObject) {
-       print("Test")
+       slideLog("Test")
     }
 
     @objc func doShortClick() {
@@ -923,7 +923,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
                 self.getCommentEdited(name)
             })
         } catch {
-            print((error as NSError).description)
+            slideLog((error as NSError).description)
         }
     }
     
@@ -972,7 +972,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
             try session?.postComment(body!.text!, parentName: name, completion: { (result) -> Void in
                 switch result {
                 case .failure(let error):
-                    print(error.description)
+                    slideLog(error.description)
                     DispatchQueue.main.async {
                         self.toolbar?.saveDraft(self)
                         self.alertController?.dismiss(animated: false, completion: {
@@ -1187,12 +1187,12 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
                 try parent?.session?.setVote(direction, name: (comment!.name), completion: { (result) -> Void in
                     switch result {
                     case .failure(let error):
-                        print(error.description)
+                        slideLog(error.description)
                     case .success: break
                     }
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
             ActionStates.setVoteDirection(s: comment!, direction: direction)
             refresh(comment: content as! CommentObject, submissionAuthor: savedAuthor, text: cellContent!)
@@ -1205,7 +1205,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
                 try parent?.session?.approve(comment!.id, completion: { (result) -> Void in
                     switch result {
                     case .failure(let error):
-                        print(error.description)
+                        slideLog(error.description)
                         DispatchQueue.main.async {
                             BannerUtil.makeBanner(text: "Approving comment failed!", color: ColorUtil.accentColorForSub(sub: self.comment!.subreddit), seconds: 3, context: self.parent!)
                         }
@@ -1221,7 +1221,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
                     }
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
             refresh(comment: content as! CommentObject, submissionAuthor: savedAuthor, text: cellContent!)
         }
@@ -1233,7 +1233,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
                 try parent?.session?.distinguish(comment!.id, how: "yes", completion: { (result) -> Void in
                     switch result {
                     case .failure(let error):
-                        print(error.description)
+                        slideLog(error.description)
                         DispatchQueue.main.async {
                             BannerUtil.makeBanner(text: "Distinguishing comment failed!", color: ColorUtil.accentColorForSub(sub: self.comment!.subreddit), seconds: 3, context: self.parent!)
                         }
@@ -1244,7 +1244,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
                     }
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
             refresh(comment: content as! CommentObject, submissionAuthor: savedAuthor, text: cellContent!)
         }
@@ -1256,7 +1256,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
                 try parent?.session?.distinguish(comment!.id, how: "yes", sticky: sticky, completion: { (result) -> Void in
                     switch result {
                     case .failure(let error):
-                        print(error.description)
+                        slideLog(error.description)
                         DispatchQueue.main.async {
                             BannerUtil.makeBanner(text: "Couldn't \(sticky ? "" : "un-")pin comment!", color: ColorUtil.accentColorForSub(sub: self.comment!.subreddit), seconds: 3, context: self.parent!)
                         }
@@ -1267,7 +1267,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
                     }
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
             refresh(comment: content as! CommentObject, submissionAuthor: savedAuthor, text: cellContent!)
         }
@@ -1279,7 +1279,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
                 try parent?.session?.remove(comment!.id, spam: spam, completion: { (result) -> Void in
                     switch result {
                     case .failure(let error):
-                    print(error.description)
+                    slideLog(error.description)
                     DispatchQueue.main.async {
                         BannerUtil.makeBanner(text: "Removing comment failed!", color: ColorUtil.accentColorForSub(sub: self.comment!.subreddit), seconds: 3, context: self.parent!)
                         }
@@ -1296,7 +1296,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
             })
             
             } catch {
-                print(error)
+                slideLog(error)
             }
             refresh(comment: content as! CommentObject, submissionAuthor: savedAuthor, text: cellContent!)
         }
@@ -1308,7 +1308,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
                 try parent?.session?.ban(comment!.author, banReason: why, duration: duration == nil ? 999 /*forever*/ : duration!, completion: { (result) -> Void in
                     switch result {
                     case .failure(let error):
-                        print(error.description)
+                        slideLog(error.description)
                         DispatchQueue.main.async {
                             BannerUtil.makeBanner(text: "Banning user failed!", color: ColorUtil.accentColorForSub(sub: self.comment!.subreddit), seconds: 3, context: self.parent!)
                         }
@@ -1320,7 +1320,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
 
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
             refresh(comment: content as! CommentObject, submissionAuthor: savedAuthor, text: cellContent!)
         }
@@ -2194,7 +2194,7 @@ extension CommentDepthCell {
 
     private func refreshAccessibility() {
         guard let comment = comment, let parent = parent, let submission = parent.submission else {
-            print("Could not refresh accessibility for this cell!")
+            slideLog("Could not refresh accessibility for this cell!")
             return
         }
 

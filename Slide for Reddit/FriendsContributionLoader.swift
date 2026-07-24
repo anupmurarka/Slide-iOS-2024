@@ -40,7 +40,7 @@ class FriendsContributionLoader: ContributionLoader {
                 try delegate?.session?.getFriends(paginator, limit: 50, completion: { (result) in
                     switch result {
                     case .failure(let error):
-                        print(error.localizedDescription)
+                        slideLog(error.localizedDescription)
                     case .success(let listing):
                         if reload {
                             self.content = []
@@ -57,7 +57,7 @@ class FriendsContributionLoader: ContributionLoader {
                     }
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
             
         }

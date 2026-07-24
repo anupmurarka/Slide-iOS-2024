@@ -132,8 +132,8 @@ class SubredditToolbarSearchViewController: UIViewController, UIGestureRecognize
 //        for string in Subscriptions.pinned {
 //            var current = subsAlphabetical["★"] ?? [String]()
 //            current.append(string)
-//            print(current)
-//            print(Subscriptions.pinned)
+//            slideLog(current)
+//            slideLog(Subscriptions.pinned)
 //            subsAlphabetical["★"] = current
 //        }
 //
@@ -934,14 +934,14 @@ extension SubredditToolbarSearchViewController: UISearchBarDelegate {
                         self.tableView.reloadData()
                     }
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                 }
             })
             
             taskSearch = try! (UIApplication.shared.delegate as? AppDelegate)?.session?.getSearch(Subreddit.init(subreddit: self.subreddit), accountName: AccountController.currentName, query: searchBar.text ?? "", paginator: Paginator(), sort: .relevance, time: .all, nsfw: SettingValues.nsfwEnabled, completion: { (result) in
                 switch result {
                 case .failure:
-                    print(result.error!)
+                    slideLog(result.error!)
                     DispatchQueue.main.async {
                         self.isSearchComplete = true
                         self.tableView.reloadData()

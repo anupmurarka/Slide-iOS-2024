@@ -152,7 +152,7 @@ class SubredditThemeViewController: UITableViewController, ColorPickerViewDelega
                 try (UIApplication.shared.delegate as! AppDelegate).session!.getSubreddit(.default, paginator: Paginator(), completion: { (result) -> Void in
                     switch result {
                     case .failure:
-                        print(result.error!)
+                        slideLog(result.error!)
                     case .success(let listing):
                         let subs = listing.children.compactMap({ $0 as? Subreddit })
                         for sub in subs {
@@ -204,7 +204,7 @@ class SubredditThemeViewController: UITableViewController, ColorPickerViewDelega
                 })
             }
         } catch {
-            print(error)
+            slideLog(error)
             self.complete()
         }
 
@@ -602,7 +602,7 @@ public extension UIView {
             let toast = try self.toastViewForMessage(message, title: title, image: image, style: toastStyle)
             self.showToast(toast, duration: duration, position: position, completion: completion)
         } catch ToastError.insufficientData {
-            print("Error: message, title, and image are all nil")
+            slideLog("Error: message, title, and image are all nil")
         } catch {
         }
     }
@@ -632,7 +632,7 @@ public extension UIView {
             let toast = try self.toastViewForMessage(message, title: title, image: image, style: toastStyle)
             self.showToast(toast, duration: duration, position: position, completion: completion)
         } catch ToastError.insufficientData {
-            print("Error: message, title, and image cannot all be nil")
+            slideLog("Error: message, title, and image cannot all be nil")
         } catch {
         }
     }

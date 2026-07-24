@@ -41,7 +41,7 @@ class ModlogContributionLoader: ContributionLoader {
                 try delegate?.session?.getModLog(paginator, subreddit: Subreddit.init(subreddit: subreddit), completion: { (result) in
                     switch result {
                     case .failure(let error):
-                        print(error)
+                        slideLog(error)
                         self.delegate?.failed(error: error)
                     case.success(let listing):
                         let before = self.content.count
@@ -58,7 +58,7 @@ class ModlogContributionLoader: ContributionLoader {
                     }
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
 
         }

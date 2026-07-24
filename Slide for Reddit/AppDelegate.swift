@@ -22,6 +22,15 @@ import WatchConnectivity
 import WatchKit
 #endif
 
+/// Debug-only logging. Mirrors `print`'s interface but compiles to a no-op in Release, so
+/// the app's console stays quiet and no formatting work happens in shipping builds.
+/// The codebase's former `slideLog(...)` calls were swept to this.
+func slideLog(_ items: Any..., separator: String = " ", terminator: String = "\n") {
+    #if DEBUG
+    Swift.print(items.map { "\($0)" }.joined(separator: separator), terminator: terminator)
+    #endif
+}
+
 /// Posted when the OAuth2TokenRepository object succeed in saving a token successfully into Keychain.
 public let OAuth2TokenRepositoryDidSaveTokenName = Notification.Name(rawValue: "OAuth2TokenRepositoryDidSaveToken")
 
@@ -126,13 +135,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 do {
                     try fileManager.copyItem(atPath: bundlePath, toPath: seenFile!)
                 } catch {
-                    print("copy failure.")
+                    slideLog("copy failure.")
                 }
             } else {
-                print("file myData.plist not found.")
+                slideLog("file myData.plist not found.")
             }
         } else {
-            print("file myData.plist already exits at path.")
+            slideLog("file myData.plist already exits at path.")
         }
 
         if !fileManager.fileExists(atPath: readLaterFile!) {
@@ -141,13 +150,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 do {
                     try fileManager.copyItem(atPath: bundlePath, toPath: readLaterFile!)
                 } catch {
-                    print("copy failure.")
+                    slideLog("copy failure.")
                 }
             } else {
-                print("file myData.plist not found.")
+                slideLog("file myData.plist not found.")
             }
         } else {
-            print("file myData.plist already exits at path.")
+            slideLog("file myData.plist already exits at path.")
         }
 
         if !fileManager.fileExists(atPath: collectionsFile!) {
@@ -156,13 +165,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 do {
                     try fileManager.copyItem(atPath: bundlePath, toPath: collectionsFile!)
                 } catch {
-                    print("copy failure.")
+                    slideLog("copy failure.")
                 }
             } else {
-                print("file myData.plist not found.")
+                slideLog("file myData.plist not found.")
             }
         } else {
-            print("file myData.plist already exits at path.")
+            slideLog("file myData.plist already exits at path.")
         }
         
         if !fileManager.fileExists(atPath: iconsFile!) {
@@ -171,13 +180,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 do {
                     try fileManager.copyItem(atPath: bundlePath, toPath: iconsFile!)
                 } catch {
-                    print("copy failure.")
+                    slideLog("copy failure.")
                 }
             } else {
-                print("file myData.plist not found.")
+                slideLog("file myData.plist not found.")
             }
         } else {
-            print("file myData.plist already exits at path.")
+            slideLog("file myData.plist already exits at path.")
         }
 
         if !fileManager.fileExists(atPath: colorsFile!) {
@@ -186,13 +195,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 do {
                     try fileManager.copyItem(atPath: bundlePath, toPath: colorsFile!)
                 } catch {
-                    print("copy failure.")
+                    slideLog("copy failure.")
                 }
             } else {
-                print("file myData.plist not found.")
+                slideLog("file myData.plist not found.")
             }
         } else {
-            print("file myData.plist already exits at path.")
+            slideLog("file myData.plist already exits at path.")
         }
 
         if !fileManager.fileExists(atPath: commentsFile!) {
@@ -201,13 +210,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 do {
                     try fileManager.copyItem(atPath: bundlePath, toPath: commentsFile!)
                 } catch {
-                    print("copy failure.")
+                    slideLog("copy failure.")
                 }
             } else {
-                print("file myData.plist not found.")
+                slideLog("file myData.plist not found.")
             }
         } else {
-            print("file myData.plist already exits at path.")
+            slideLog("file myData.plist already exits at path.")
         }
 
         session = Session()
@@ -272,7 +281,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
                 }
             } catch let e as NSError {
-                print(e)
+                slideLog(e)
             }
             
             if currentVersionInt == 142 {
@@ -289,7 +298,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         }
                     }
                 } catch {
-                    print(error)
+                    slideLog(error)
                 }
             }
 
@@ -339,11 +348,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         if SettingValues.notifications {
             UIApplication.shared.setMinimumBackgroundFetchInterval(60 * 10) // 10 minute interval
-            print("Application background refresh minimum interval: \(60 * 10) seconds")
-            print("Application background refresh status: \(UIApplication.shared.backgroundRefreshStatus.rawValue)")
+            slideLog("Application background refresh minimum interval: \(60 * 10) seconds")
+            slideLog("Application background refresh status: \(UIApplication.shared.backgroundRefreshStatus.rawValue)")
         } else {
             UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalNever)
-            print("Application background refresh minimum set to never")
+            slideLog("Application background refresh minimum set to never")
         }
 
         #if DEBUG
@@ -362,7 +371,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     public func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-        print("Received: \(userInfo)")
+        slideLog("Received: \(userInfo)")
     }
 
     var statusBar = UIView()
@@ -580,7 +589,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         func handler (_ response: HTTPURLResponse?, _ dataURL: URL?, _ error: NSError?) {
             guard error == nil else {
-                print(String(describing: error?.localizedDescription))
+                slideLog(String(describing: error?.localizedDescription))
                 completionHandler(.failed)
                 cleanup()
                 return
@@ -598,7 +607,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             do {
                 data = try Data(contentsOf: dataURL)
             } catch {
-                print(error.localizedDescription)
+                slideLog(error.localizedDescription)
                 completionHandler(.failed)
                 cleanup()
                 return
@@ -638,7 +647,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return
 
             case .failure(let error):
-                print(error.localizedDescription)
+                slideLog(error.localizedDescription)
                 completionHandler(.failed)
                 cleanup()
                 return
@@ -683,7 +692,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     content: content, trigger: trigger)
             center.add(request, withCompletionHandler: { (error) in
                 if error != nil {
-                    print(error!.localizedDescription)
+                    slideLog(error!.localizedDescription)
                     // Something went wrong
                 }
             })
@@ -702,7 +711,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 try session?.getSubreddit(.default, paginator: paginator, completion: { (result) -> Void in
                     switch result {
                     case .failure:
-                        print(result.error!)
+                        slideLog(result.error!)
                     case .success(let listing):
                         self.subreddits += listing.children.compactMap({ $0 as? Subreddit })
                         self.paginator = listing.paginator
@@ -750,7 +759,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         } catch {
-            print(error)
+            slideLog(error)
             if subredditController != nil {
                 DispatchQueue.main.async(execute: { () -> Void in
                     subredditController?.complete(subs: toReturn)
@@ -764,7 +773,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func handleURL(_ url: URL) -> Bool {
-        print("Handling URL \(url)")
+        slideLog("Handling URL \(url)")
         let bUrl = url.absoluteString
         if bUrl.startsWith("googlechrome://") || bUrl.startsWith("firefox://") || bUrl.startsWith("opera-http://") {
             return false
@@ -796,22 +805,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 VCPresenter.openRedditLink(url.absoluteString.replacingOccurrences(of: "slide://", with: ""), window?.rootViewController as? UINavigationController, window?.rootViewController)
                 return true
         } else if url.query?.components(separatedBy: "&").count ?? 0 < 0 {
-            print("Returning \(url.absoluteString)")
+            slideLog("Returning \(url.absoluteString)")
             let parameters: [String: String] = url.getKeyVals()!
             
             if let code = parameters["code"], let state = parameters["state"] {
-                print(state)
+                slideLog(state)
                 if code.length > 0 {
-                    print(code)
+                    slideLog(code)
                 }
             }
             
             return OAuth2Authorizer.sharedInstance.receiveRedirect(url, completion: { (result) -> Void in
-                print(result)
+                slideLog(result)
                 switch result {
                     
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                 case .success(let token):
                     DispatchQueue.main.async(execute: { () -> Void in
                         do {
@@ -820,7 +829,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             NotificationCenter.default.post(name: OAuth2TokenRepositoryDidSaveTokenName, object: nil, userInfo: nil)
                         } catch {
                             NotificationCenter.default.post(name: OAuth2TokenRepositoryDidFailToSaveTokenName, object: nil, userInfo: nil)
-                            print(error)
+                            slideLog(error)
                         }
                     })
                 }
@@ -875,7 +884,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         } else {
-            print("CloudKit not available - skipping iCloud sync")
+            slideLog("CloudKit not available - skipping iCloud sync")
         }
     }
 
@@ -946,18 +955,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let datastring = NSString(data: data as Data, encoding: String.Encoding.utf8.rawValue) {
                collectionsRecord.setValue(datastring, forKey: "data_xml")
             } else {
-                print("Could not turn nsdata to string")
+                slideLog("Could not turn nsdata to string")
             }
             
-            print("Saving to iCloud \(key)")
+            slideLog("Saving to iCloud \(key)")
             CKContainer(identifier: "iCloud.\(USR_DOMAIN).redditslide").privateCloudDatabase.save(collectionsRecord) { (_, error) in
                 if error != nil {
-                    print("iCloud error")
-                    print(error.debugDescription)
+                    slideLog("iCloud error")
+                    slideLog(error.debugDescription)
                 }
             }
         } catch {
-            print("Error serializing dictionary")
+            slideLog("Error serializing dictionary")
         }
     }
     
@@ -965,11 +974,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let privateDatabase = CKContainer(identifier: "iCloud.\(USR_DOMAIN).redditslide").privateCloudDatabase
         
         let query = CKQuery(recordType: CKRecord.RecordType(stringLiteral: key), predicate: NSPredicate(value: true))
-        print("Reading from iCloud")
+        slideLog("Reading from iCloud")
         privateDatabase.perform(query, inZoneWith: nil) { (records, error) in
             if error != nil {
-                print("Error fetching records...")
-                print(error?.localizedDescription ?? "")
+                slideLog("Error fetching records...")
+                slideLog(error?.localizedDescription ?? "")
             } else {
                 if let unwrappedRecord = records?[0] {
                     if let object = unwrappedRecord.object(forKey: "data_xml") as? String {
@@ -982,12 +991,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 completion?(unwrappedRecord)
                                 return
                             } catch {
-                                print("Could not de-serialize list")
+                                slideLog("Could not de-serialize list")
                             }
                         }
                     }
                 } else {
-                    print("No record found!")
+                    slideLog("No record found!")
                 }
             }
         }
@@ -1032,16 +1041,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try self.session?.refreshTokenLocal({ (result) -> Void in
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                 case .success(let token):
                     DispatchQueue.main.async(execute: { () -> Void in
-                        print(token)
+                        slideLog(token)
                         NotificationCenter.default.post(name: OAuth2TokenRepositoryDidSaveTokenName, object: nil, userInfo: nil)
                     })
                 }
             })
         } catch {
-            print(error)
+            slideLog(error)
         }
     }
 
@@ -1062,7 +1071,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 self.session = Session(token: token)
                 self.refreshSession()
             } catch {
-                print(error)
+                slideLog(error)
                 AccountController.requireLogin()
             }
         } else {
@@ -1153,7 +1162,7 @@ extension Session {
                     let token = OAuth2Token(json)
                     self.token = token
                 }
-            } catch { print(error) }
+            } catch { slideLog(error) }
         }
     }
 }

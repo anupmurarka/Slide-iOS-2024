@@ -66,7 +66,7 @@ class ProfileContributionLoader: ContributionLoader {
                     }
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
 
         }

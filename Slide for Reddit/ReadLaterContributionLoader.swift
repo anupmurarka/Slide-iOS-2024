@@ -64,7 +64,7 @@ class ReadLaterContributionLoader: ContributionLoader {
                     }
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
             
         }

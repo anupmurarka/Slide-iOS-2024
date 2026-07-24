@@ -548,7 +548,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
                     try session.ruleList(subreddit, completion: { (result) in
                         switch result {
                         case .failure(let error):
-                            print(error)
+                            slideLog(error)
                         case .success(let rules):
                             var ruleString = NSMutableAttributedString()
                             let newLine = NSAttributedString(string: "\n")
@@ -641,7 +641,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
                     }
                 }
             } catch let error {
-                print(error)
+                slideLog(error)
                 buttonBase.widthAnchor /==/ finalWidth
             }
         } else {
@@ -1336,7 +1336,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
             try self.session?.getInfo([name.contains("t3") ? name : "t3_\(name)"], completion: { (res) in
                 switch res {
                 case .failure:
-                    print(res.error ?? "Error?")
+                    slideLog(res.error ?? "Error?")
                     self.submissionCallback(nil, res.error)
                 case .success(let listing):
                     if listing.children.count == 1 {
@@ -1378,7 +1378,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
                     self.getSubmissionEdited(name)
                 })
             } catch {
-                print((error as NSError).description)
+                slideLog((error as NSError).description)
             }
 
         } else {
@@ -1437,7 +1437,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
                     try self.session?.submitText(Subreddit.init(subreddit: subreddit.text), title: title.text, text: body.text ?? "", sendReplies: replies!.isSelected, captcha: "", captchaIden: "", flairID: self.selectedFlairID, flairText: self.selectedFlairText, completion: { (result) -> Void in
                         switch result {
                         case .failure(let error):
-                            print(error.description)
+                            slideLog(error.description)
                             self.submissionCallback(nil, error)
                         case .success(let submission):
                             if let string = self.getIDString(submission).value {
@@ -1453,7 +1453,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
                     try self.session?.submitLink(Subreddit.init(subreddit: subreddit.text), title: title.text, URL: body.text, sendReplies: replies!.isSelected, captcha: "", captchaIden: "", flairID: self.selectedFlairID, flairText: self.selectedFlairText, completion: { (result) -> Void in
                         switch result {
                         case .failure(let error):
-                            print(error.description)
+                            slideLog(error.description)
                             self.submissionCallback(nil, error)
                         case .success(let submission):
                             if let string = self.getIDString(submission).value {
@@ -1467,7 +1467,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
 
                 }
             } catch {
-                print((error as NSError).description)
+                slideLog((error as NSError).description)
             }
         }
     }
@@ -1503,7 +1503,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
             try (UIApplication.shared.delegate as! AppDelegate).session?.crosspost(Link.init(id: cLink.id), subreddit: subreddit.text, newTitle: title.text) { result in
                 switch result {
                 case .failure(let error):
-                    print(error.description)
+                    slideLog(error.description)
                     self.submissionCallback(nil, error)
                 case .success(let submission):
                     if let string = self.getIDString(submission).value {
@@ -1569,7 +1569,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
                 try self.session?.composeMessage(user, subject: title, text: body, completion: { (result) in
                     switch result {
                     case .failure(let error):
-                        print(error.description)
+                        slideLog(error.description)
                         self.messageCallback(nil, error)
                     case .success(let message):
                         self.messageCallback(message, nil)
@@ -1577,7 +1577,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
 
                 })
             } catch {
-                print((error as NSError).description)
+                slideLog((error as NSError).description)
             }
         } else {
             do {
@@ -1585,14 +1585,14 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
                 try self.session?.replyMessage(body, parentName: name, completion: { (result) -> Void in
                     switch result {
                     case .failure(let error):
-                        print(error.description)
+                        slideLog(error.description)
                         self.messageCallback(nil, error)
                     case .success(let comment):
                         self.messageCallback(comment, nil)
                     }
                 })
             } catch {
-                print((error as NSError).description)
+                slideLog((error as NSError).description)
             }
         }
     }
@@ -1637,14 +1637,14 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
             try self.session?.postComment(body.text, parentName: name, completion: { (result) -> Void in
                 switch result {
                 case .failure(let error):
-                    print(error.description)
+                    slideLog(error.description)
                     self.commentReplyCallback(nil, error)
                 case .success(let comment):
                     self.checkSticky(comment)
                 }
             })
         } catch {
-            print((error as NSError).description)
+            slideLog((error as NSError).description)
         }
     }
     

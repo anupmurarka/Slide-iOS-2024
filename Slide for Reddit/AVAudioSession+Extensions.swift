@@ -25,6 +25,6 @@ extension AVAudioSession {
             // Set category with options (iOS 9+) setCategory(_:options:)
             session.perform(NSSelectorFromString("setCategory:withOptions:error:"), with: category, with: options)
         }
-        print("Set audio mode to \(category.rawValue)")
+        slideLog("Set audio mode to \(category.rawValue)")
     }
 }

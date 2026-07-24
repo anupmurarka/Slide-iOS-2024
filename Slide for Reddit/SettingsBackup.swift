@@ -122,7 +122,7 @@ extension SettingsBackup {
         
         let icloud = NSUbiquitousKeyValueStore.default
         for item in icloud.dictionaryRepresentation {
-            print(item)
+            slideLog(item)
             UserDefaults.standard.set(item.value, forKey: item.key)
         }
         UserDefaults.standard.synchronize()

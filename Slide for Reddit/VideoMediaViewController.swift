@@ -502,7 +502,7 @@ class VideoMediaViewController: EmbeddableMediaViewController, UIGestureRecogniz
             AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.landscapeRight, andRotateTo: UIInterfaceOrientation.landscapeRight)
             forcedFullscreen = true
         } else {
-            print("Can't force landscape when the app is already landscape!")
+            slideLog("Can't force landscape when the app is already landscape!")
         }
     }
 
@@ -598,7 +598,7 @@ class VideoMediaViewController: EmbeddableMediaViewController, UIGestureRecogniz
         if FileManager.default.fileExists(atPath: getKeyFromURL()) || SettingValues.streamVideos {
             playVideo(toLoad)
         } else {
-            print(toLoad)
+            slideLog(toLoad)
             if toLoad.contains("HLSPlaylist.m3u8") {
                 let qualityList = ["1080", "720", "480", "360", "240", "96"]
                 getQualityURL(urlToLoad: toLoad, qualityList: qualityList) { url in
@@ -618,7 +618,7 @@ class VideoMediaViewController: EmbeddableMediaViewController, UIGestureRecogniz
     
     func doDownload(_ toLoad: String) {
         
-        print("Downloading " + toLoad)
+        slideLog("Downloading " + toLoad)
         let fileURLPath = self.videoType == .REDDIT ? self.getKeyFromURL().replacingOccurrences(of: ".mp4", with: "video.mp4") : self.getKeyFromURL()
         request = AF.download(toLoad, method: .get, to: { (_, _) -> (destinationURL: URL, options: DownloadRequest.Options) in
             return (URL(fileURLWithPath: fileURLPath), [.createIntermediateDirectories])
@@ -735,7 +735,7 @@ class VideoMediaViewController: EmbeddableMediaViewController, UIGestureRecogniz
                 try AVAudioSession.sharedInstance().setCategory(.ambient, options: [.mixWithOthers])
                 try AVAudioSession.sharedInstance().setActive(true)
             } catch let error as NSError {
-                print(error)
+                slideLog(error)
             }
         }
         
@@ -888,7 +888,7 @@ extension VideoMediaViewController {
 
         let i = URL(string: url)
         if let dictionary = i?.queryDictionary {
-            print(dictionary)
+            slideLog(dictionary)
             if let t = dictionary["t"] {
                 seconds = getTimeFromString(t)
             } else if let start = dictionary["start"] {
@@ -1001,7 +1001,7 @@ extension VideoMediaViewController {
     func getYoutubeVideoResolution(videoId: String, completion: @escaping (CGSize) -> Void) {
         let metaURL = URL(string: "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=\(videoId)&format=json")!
 
-        print(metaURL)
+        slideLog(metaURL)
         func failureBlock() {
             OperationQueue.main.addOperation({
                 completion(CGSize(width: 16, height: 9))
@@ -1025,7 +1025,7 @@ extension VideoMediaViewController {
             let width = dict.value(forKey: "width") as! CGFloat
 
             OperationQueue.main.addOperation({
-                print("Youtube video is \(width)x\(height)")
+                slideLog("Youtube video is \(width)x\(height)")
                 completion(CGSize(width: width, height: height))
             })
 
@@ -1148,7 +1148,7 @@ extension VideoMediaViewController: WKYTPlayerViewDelegate {
 
                 try AVAudioSession.sharedInstance().setActive(true)
             } catch let error as NSError {
-                print(error)
+                slideLog(error)
             }
         }
         
@@ -1215,7 +1215,7 @@ extension VideoMediaViewController: WKYTPlayerViewDelegate {
             break
         case .notEmbeddable:
             // TODO: - Redirect user to YouTube app or web view
-            print("Video is not embeddable!")
+            slideLog("Video is not embeddable!")
         case .videoNotFound:
             break
         case .unknown:
@@ -1242,7 +1242,7 @@ extension VideoMediaViewController {
             inv = inv.substring(0, length: inv.length - 1)
         }
         let slashindex = inv.lastIndexOf("/")!
-        print("Index is \(slashindex)")
+        slideLog("Index is \(slashindex)")
         inv = inv.substring(slashindex + 1, length: inv.length - slashindex - 1)
         return inv
     }
@@ -1250,7 +1250,7 @@ extension VideoMediaViewController {
     func getTimeFromString(_ time: String) -> Int {
         var timeAdd = 0
         for s in time.components(separatedBy: CharacterSet(charactersIn: "hms")) {
-            print(s)
+            slideLog(s)
             if !s.isEmpty {
                 if time.contains(s + "s") {
                     timeAdd += Int(s)!
@@ -1438,7 +1438,7 @@ extension VideoMediaViewController: VideoScrubberViewDelegate {
         var mutableCompositionVideoTrack: [AVMutableCompositionTrack] = []
         var mutableCompositionAudioTrack: [AVMutableCompositionTrack] = []
         let totalVideoCompositionInstruction: AVMutableVideoCompositionInstruction = AVMutableVideoCompositionInstruction()
-        print("Loading from " + videoUrl.absoluteString)
+        slideLog("Loading from " + videoUrl.absoluteString)
         // start merge
         let aVideoAsset: AVAsset = AVAsset(url: videoUrl)
         let aAudioAsset: AVAsset = AVAsset(url: audioUrl)
@@ -1459,7 +1459,7 @@ extension VideoMediaViewController: VideoScrubberViewDelegate {
             // Use this instead above line if your audiofile and video file's playing durations are same
             //            try mutableCompositionAudioTrack[0].insertTimeRange(CMTimeRangeMake(kCMTimeZero, aVideoAssetTrack.timeRange.duration), ofTrack: aAudioAssetTrack, atTime: kCMTimeZero)
         } catch {
-            print(error.localizedDescription)
+            slideLog(error.localizedDescription)
         }
         
         totalVideoCompositionInstruction.timeRange = CMTimeRangeMake(start: CMTime.zero, duration: aVideoAssetTrack.timeRange.duration)
@@ -1477,7 +1477,7 @@ extension VideoMediaViewController: VideoScrubberViewDelegate {
         do {
             try  FileManager.default.removeItem(at: savePathUrl)
         } catch {
-            print(error.localizedDescription)
+            slideLog(error.localizedDescription)
         }
         
         // find your video on this URl
@@ -1489,13 +1489,13 @@ extension VideoMediaViewController: VideoScrubberViewDelegate {
                 
             case AVAssetExportSession.Status.completed:
                 completion()
-                print("success")
+                slideLog("success")
             case AVAssetExportSession.Status.failed:
-                print("failed \(assetExport.error?.localizedDescription ?? "")")
+                slideLog("failed \(assetExport.error?.localizedDescription ?? "")")
             case AVAssetExportSession.Status.cancelled:
-                print("cancelled \(assetExport.error?.localizedDescription ?? "")")
+                slideLog("cancelled \(assetExport.error?.localizedDescription ?? "")")
             default:
-                print("complete")
+                slideLog("complete")
             }
         }
     }

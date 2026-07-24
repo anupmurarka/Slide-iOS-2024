@@ -75,7 +75,7 @@ class VideoMediaDownloader {
         if !ready || completion == nil || parent == nil {
             return
         }
-        print(baseURL)
+        slideLog(baseURL)
         alertView = UIAlertController(title: "Downloading...", message: "Your video is downloading", preferredStyle: .alert)
         alertView!.addCancelButton()
         
@@ -107,7 +107,7 @@ class VideoMediaDownloader {
                 }.responseData { response in
                     switch response.result {
                     case .failure(let error):
-                        print(error)
+                        slideLog(error)
                         self.alertView?.dismiss(animated: true, completion: {
                             BannerUtil.makeBanner(text: "Error downloading video", color: GMColor.red500Color(), seconds: 5, context: self.parent ?? nil, top: false, callback: nil)
                         })
@@ -148,7 +148,7 @@ class VideoMediaDownloader {
             key = key.substring(0, length: 200)
         }
         
-        print(key)
+        slideLog(key)
         return SDImageCache.shared.diskCachePath + "/" + key + ".mp4"
     }
     
@@ -305,7 +305,7 @@ class VideoMediaDownloader {
             inv = inv.substring(0, length: inv.length - 1)
         }
         let slashindex = inv.lastIndexOf("/")!
-        print("Index is \(slashindex)")
+        slideLog("Index is \(slashindex)")
         inv = inv.substring(slashindex + 1, length: inv.length - slashindex - 1)
         return inv
     }
@@ -313,7 +313,7 @@ class VideoMediaDownloader {
     func getTimeFromString(_ time: String) -> Int {
         var timeAdd = 0
         for s in time.components(separatedBy: CharacterSet(charactersIn: "hms")) {
-            print(s)
+            slideLog(s)
             if !s.isEmpty {
                 if time.contains(s + "s") {
                     timeAdd += Int(s)!
@@ -359,7 +359,7 @@ class VideoMediaDownloader {
             // Use this instead above line if your audiofile and video file's playing durations are same
             //            try mutableCompositionAudioTrack[0].insertTimeRange(CMTimeRangeMake(kCMTimeZero, aVideoAssetTrack.timeRange.duration), ofTrack: aAudioAssetTrack, atTime: kCMTimeZero)
         } catch {
-            print(error.localizedDescription)
+            slideLog(error.localizedDescription)
         }
         
         totalVideoCompositionInstruction.timeRange = CMTimeRangeMake(start: CMTime.zero, duration: aVideoAssetTrack.timeRange.duration)
@@ -377,7 +377,7 @@ class VideoMediaDownloader {
         do {
             try  FileManager.default.removeItem(at: savePathUrl)
         } catch {
-            print(error.localizedDescription)
+            slideLog(error.localizedDescription)
         }
         
         // find your video on this URl
@@ -389,13 +389,13 @@ class VideoMediaDownloader {
                 
             case AVAssetExportSession.Status.completed:
                 completion()
-                print("success")
+                slideLog("success")
             case AVAssetExportSession.Status.failed:
-                print("failed \(assetExport.error?.localizedDescription ?? "")")
+                slideLog("failed \(assetExport.error?.localizedDescription ?? "")")
             case AVAssetExportSession.Status.cancelled:
-                print("cancelled \(assetExport.error?.localizedDescription ?? "")")
+                slideLog("cancelled \(assetExport.error?.localizedDescription ?? "")")
             default:
-                print("complete")
+                slideLog("complete")
             }
         }
     }

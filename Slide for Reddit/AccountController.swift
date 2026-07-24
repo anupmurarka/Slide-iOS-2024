@@ -18,7 +18,7 @@ class AccountController {
     static func reload() {
         AccountController.names.removeAll(keepingCapacity: false)
         AccountController.names += LocalKeystore.savedNames
-        print(AccountController.names)
+        slideLog(AccountController.names)
     }
 
     static func switchAccount(name: String) {
@@ -57,7 +57,7 @@ class AccountController {
             UserDefaults.standard.synchronize()
 
         } catch {
-            print(error)
+            slideLog(error)
         }
     }
 
@@ -66,8 +66,8 @@ class AccountController {
     /// Removes all persisted state for a stale/corrupt account so the app stops
     /// re-selecting a login that can no longer authenticate.
     static func purgeAccount(_ name: String) {
-        do { try LocalKeystore.removeToken(of: name) } catch { print(error) }
-        do { try OAuth2TokenRepository.removeToken(of: name) } catch { print(error) }
+        do { try LocalKeystore.removeToken(of: name) } catch { slideLog(error) }
+        do { try OAuth2TokenRepository.removeToken(of: name) } catch { slideLog(error) }
         names.removeAll { $0 == name }
         UserDefaults.standard.removeObject(forKey: "AUTH+\(name)")
         if UserDefaults.standard.string(forKey: "name") == name {
@@ -98,7 +98,7 @@ class AccountController {
         NotificationCenter.default.addObserver(self, selector: #selector(AccountController.didSaveToken(_:)), name: OAuth2TokenRepositoryDidSaveTokenName, object: nil)
         let storedName = UserDefaults.standard.string(forKey: "name")
         if let name = storedName, name != "GUEST", !name.isEmpty {
-            print("Name is \(name)")
+            slideLog("Name is \(name)")
             do {
                 let token: OAuth2Token
                 if !isMigrated(name) {
@@ -123,7 +123,7 @@ class AccountController {
                 try session.getUserProfile(name, completion: { (result) in
                     switch result {
                     case .failure(let error):
-                        print(error)
+                        slideLog(error)
                     case .success(let account):
                         AccountController.current = account
                         NotificationCenter.default.post(name: .onAccountChanged, object: nil, userInfo: [
@@ -137,7 +137,7 @@ class AccountController {
                 UserDefaults.standard.set(name, forKey: "name")
                 UserDefaults.standard.synchronize()
             } catch {
-                print("Token load failed for \(name): \(error)")
+                slideLog("Token load failed for \(name): \(error)")
                 // Drop the stale/corrupt account so we don't keep re-selecting it, then
                 // require a fresh login.
                 purgeAccount(name)
@@ -247,7 +247,7 @@ class AccountController {
             try session.getUserRelatedSubreddit(.moderator, paginator: paginator, completion: { (result) -> Void in
                 switch result {
                 case .failure:
-                    print(result.error!.localizedDescription)
+                    slideLog(result.error!.localizedDescription)
                     completion(toReturn)
                 case .success(let listing):
                     toReturn += listing.children.compactMap({ $0 as? Subreddit })

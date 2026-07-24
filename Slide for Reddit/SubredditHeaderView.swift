@@ -238,12 +238,12 @@ class SubredditHeaderView: UIView {
             try (UIApplication.shared.delegate as! AppDelegate).session?.flairUser(subName, flairId: flairID, username: AccountController.currentName, text: text ?? "") { result in
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                     DispatchQueue.main.async {
                         BannerUtil.makeBanner(text: "Flair not set", color: GMColor.red500Color(), seconds: 3, context: self.parentController)
                     }
                 case .success(let success):
-                    print(success)
+                    slideLog(success)
                     DispatchQueue.main.async {
                         BannerUtil.makeBanner(text: "Flair set successfully!", seconds: 3, context: self.parentController)
                         // TODO update flair view on sidebar

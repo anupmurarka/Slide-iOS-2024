@@ -15,22 +15,22 @@ import WatchKit
 
 public class WatchSessionManager: NSObject, WCSessionDelegate {
     public func sessionDidBecomeInactive(_ session: WCSession) {
-        print("Inactive")
+        slideLog("Inactive")
     }
     
     public func sessionDidDeactivate(_ session: WCSession) {
-        print("Deactivate")
+        slideLog("Deactivate")
     }
     
     public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        print("Activate Complete")
+        slideLog("Activate Complete")
     }
         
     public var paginator = Paginator()
 
     public func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {
-        print("GOT MESSAGE")
-        print(message)
+        slideLog("GOT MESSAGE")
+        slideLog(message)
         DispatchQueue.main.async {
             if message["pro"] != nil {
                 VCPresenter.showVC(viewController: SettingsPro(), popupIfPossible: false, parentNavigationController: nil, parentViewController: (UIApplication.shared.delegate as! AppDelegate).window?.rootViewController)
@@ -38,11 +38,11 @@ public class WatchSessionManager: NSObject, WCSessionDelegate {
                 DispatchQueue.main.async {
                     let redditSession = (UIApplication.shared.delegate as! AppDelegate).session ?? Session()
                     do {
-                        print(message)
+                        slideLog(message)
                         try redditSession.getArticles((message["comments"] as! String).replacingOccurrences(of: "t3_", with: ""), sort: CommentSort.top, comments: message["context"] == nil ? nil : [(message["context"] as! String).replacingOccurrences(of: "t1_", with: "")], depth: 2, context: 0, limit: 50, completion: { (result) in
                                 switch result {
                                 case .failure(let error):
-                                    print(error)
+                                    slideLog(error)
                                 case .success(let tuple):
                                     let listing = tuple.1
                                     var objects = [NSDictionary]()
@@ -87,12 +87,12 @@ public class WatchSessionManager: NSObject, WCSessionDelegate {
                             vote = .down
                         }
                     }
-                    print(vote)
+                    slideLog(vote)
                     try (UIApplication.shared.delegate as? AppDelegate)?.session?.setVote(vote, name: fullname, completion: { (result) in
                         switch result {
                         case .success:
                             let message = ["upvoted": (vote == .up), "downvoted": (vote == .down)]
-                            print(message)
+                            slideLog(message)
                             replyHandler(message)
                             if let index = ActionStates.upVotedFullnames.firstIndex(of: fullname) {
                                 ActionStates.upVotedFullnames.remove(at: index)
@@ -115,7 +115,7 @@ public class WatchSessionManager: NSObject, WCSessionDelegate {
                                 ActionStates.unvotedFullnames.append(fullname)
                             }
                         case .failure(let error):
-                            print(error)
+                            slideLog(error)
                             replyHandler(["failed": true])
                         }
                     })
@@ -141,7 +141,7 @@ public class WatchSessionManager: NSObject, WCSessionDelegate {
                         colorDict[sub] = ColorUtil.getColorForSub(sub: sub).hexString()
                     }
                 }
-                print("REPLY SUBLIST")
+                slideLog("REPLY SUBLIST")
                 replyHandler(["subs": colorDict, "orderedsubs": sublist, "pro": SettingValues.isPro])
             } else if message["links"] != nil {
                 if message["reset"] as? Bool ?? true {
@@ -164,7 +164,7 @@ public class WatchSessionManager: NSObject, WCSessionDelegate {
                         try redditSession.getList(self.paginator, subreddit: Subreddit.init(subreddit: sub), sort: sort, timeFilterWithin: .day, limit: 10) { (result) in
                             switch result {
                             case .failure(let error):
-                                print(error)
+                                slideLog(error)
                             case .success(let listing):
                                 self.paginator = listing.paginator
                                 var results = [NSDictionary]()

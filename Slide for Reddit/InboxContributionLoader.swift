@@ -42,7 +42,7 @@ class InboxContributionLoader: ContributionLoader {
                 try delegate?.session?.getMessage(paginator, messages, completion: { (result) in
                     switch result {
                     case .failure(let error):
-                        print(error)
+                        slideLog(error)
                         DispatchQueue.main.async {
                             self.delegate?.doneLoading(before: 0, filter: false)
                         }
@@ -62,7 +62,7 @@ class InboxContributionLoader: ContributionLoader {
                     }
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
             
         }

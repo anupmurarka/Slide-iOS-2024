@@ -121,7 +121,7 @@ class SubmissionsDataSource {
                 hideString = hideString.substring(0, length: hideString.length - 1)
                 do {
                     try session.setHide(true, name: hideString) { (result) in
-                        print(result)
+                        slideLog(result)
                     }
                 } catch {
                 }
@@ -248,7 +248,7 @@ class SubmissionsDataSource {
                 })
             } catch {
                 loading = false
-                print(error)
+                slideLog(error)
             }
         }
     }
@@ -291,7 +291,7 @@ extension SubmissionsDataSource: Cacheable {
                 do {
                     try context.save()
                 } catch let error as NSError {
-                    print("Failed to save managed context \(error): \(error.userInfo)")
+                    slideLog("Failed to save managed context \(error): \(error.userInfo)")
                     return nil
                 }
             }

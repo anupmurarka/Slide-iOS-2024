@@ -76,7 +76,7 @@ class RedditLink {
         case .DIRECT_MESSAGE:
             return ThreadViewControler(threadID: parts[2], title: "")
         case .LIVE:
-            print(parts[1])
+            slideLog(parts[1])
             return LiveThreadViewController.init(id: parts[2])
         case .WIKI:
             return WebsiteViewController.init(url: URL(string: safeURL)!, subreddit: "")
@@ -292,7 +292,7 @@ extension String {
             let results = regex.matches(in: self, options: [], range: NSRange(location: 0, length: self.length))
             return results.count > 0
         } catch let error {
-            print("invalid regex: \(error.localizedDescription)")
+            slideLog("invalid regex: \(error.localizedDescription)")
             return false
         }
     }

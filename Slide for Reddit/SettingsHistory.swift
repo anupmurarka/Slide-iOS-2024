@@ -161,7 +161,7 @@ class SettingsHistory: BubbleSettingTableViewController {
             let activityViewController = UIActivityViewController(activityItems: filesToShare, applicationActivities: nil)
             self.present(activityViewController, animated: true, completion: nil)
         } catch {
-            print("error creating file")
+            slideLog("error creating file")
         }
 
     }

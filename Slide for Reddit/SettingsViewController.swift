@@ -512,7 +512,7 @@ class SettingsViewController: MediaTableViewController, MFMailComposeViewControl
                     return fileSize
                 }
             } catch let error {
-                print(error)
+                slideLog(error)
             }
         }
         return 0
@@ -787,7 +787,7 @@ class SettingsViewController: MediaTableViewController, MFMailComposeViewControl
                             }
                         }
                     } catch {
-                        print(error)
+                        slideLog(error)
                     }
                     
                     do {

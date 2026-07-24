@@ -298,7 +298,7 @@ extension CommentObject: Cacheable {
                 do {
                     try context.save()
                 } catch let error as NSError {
-                    print("Failed to save managed context \(error): \(error.userInfo)")
+                    slideLog("Failed to save managed context \(error): \(error.userInfo)")
                     return nil
                 }
             }

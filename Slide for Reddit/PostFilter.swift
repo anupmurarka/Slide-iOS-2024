@@ -30,7 +30,7 @@ class PostFilter {
         PostFilter.flairs = UserDefaults.standard.array(forKey: "flairfilters") as! [NSString]? ?? []
         PostFilter.openExternally = UserDefaults.standard.array(forKey: "openexternally") as! [NSString]? ?? ["itunes.apple.com"]
         filters = UserDefaults.init(suiteName: "filters")
-        print(PostFilter.domains)
+        slideLog(PostFilter.domains)
 
     }
 

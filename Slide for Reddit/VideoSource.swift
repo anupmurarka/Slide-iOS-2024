@@ -60,7 +60,7 @@ class GfycatVideoSource: VideoSource {
         }
         let dataTask = URLSession.shared.dataTask(with: finalURL!) { (data, _, error) in
             if error != nil {
-                print(error ?? "Error loading gif...")
+                slideLog(error ?? "Error loading gif...")
                 DispatchQueue.main.async {
                     failure?()
                 }
@@ -94,7 +94,7 @@ class GfycatVideoSource: VideoSource {
                         }
                     }
                 } catch let error as NSError {
-                    print(error)
+                    slideLog(error)
                 }
             }
 
@@ -127,7 +127,7 @@ class StreamableVideoSource: VideoSource {
         }
         let dataTask = URLSession.shared.dataTask(with: finalURL!) { (data, _, error) in
             if error != nil {
-                print(error ?? "Error loading gif...")
+                slideLog(error ?? "Error loading gif...")
                 failure?()
             } else {
                 do {
@@ -157,7 +157,7 @@ class StreamableVideoSource: VideoSource {
                         completion(video)
                     }
                 } catch let error as NSError {
-                    print(error)
+                    slideLog(error)
                 }
             }
         }

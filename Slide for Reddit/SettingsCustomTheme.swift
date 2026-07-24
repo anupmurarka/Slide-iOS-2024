@@ -65,11 +65,11 @@ class SettingsCustomTheme: UITableViewController {
         doToolbar(UIColor.black)
 
         if !inputTheme.isEmpty() {
-            print("Input theme is \(inputTheme)")
+            slideLog("Input theme is \(inputTheme)")
             let colors = UserDefaults.standard.string(forKey: "Theme+" + inputTheme)?.removingPercentEncoding ?? UserDefaults.standard.string(forKey: "Theme+" + inputTheme.replacingOccurrences(of: "#", with: "<H>").addPercentEncoding)?.removingPercentEncoding ?? UserDefaults.standard.string(forKey: "Theme+" + inputTheme.replacingOccurrences(of: "#", with: "<H>"))?.removingPercentEncoding ?? ""
             if !colors.isEmpty {
                 let split = colors.split("#")
-                print(colors)
+                slideLog(colors)
                 foregroundColor = UIColor(hexString: split[2])
                 backgroundColor = UIColor(hexString: split[3])
                 fontColor = UIColor(hexString: split[4])

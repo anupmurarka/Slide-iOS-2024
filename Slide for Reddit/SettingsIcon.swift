@@ -108,7 +108,7 @@ class SettingsIcon: BubbleSettingTableViewController {
                         : iconRow.id
                 ) { (error) in
                     if let error = error {
-                        print("err: \(error)")
+                        slideLog("err: \(error)")
                     }
                 }
             }

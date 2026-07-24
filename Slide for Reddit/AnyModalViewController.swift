@@ -199,7 +199,7 @@ class AnyModalViewController: UIViewController {
                     try AVAudioSession.sharedInstance().setCategory(.ambient, options: [.mixWithOthers])
                     try AVAudioSession.sharedInstance().setActive(true)
                 } catch let error as NSError {
-                    print(error)
+                    slideLog(error)
                 }
             }
 
@@ -532,7 +532,7 @@ class AnyModalViewController: UIViewController {
                 try AVAudioSession.sharedInstance().setCategory(.ambient, options: [.mixWithOthers])
                 try AVAudioSession.sharedInstance().setActive(true)
             } catch {
-                print(error.localizedDescription)
+                slideLog(error.localizedDescription)
                 NSLog(error.localizedDescription)
             }
         }
@@ -767,7 +767,7 @@ class AnyModalViewController: UIViewController {
             AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.landscapeRight, andRotateTo: UIInterfaceOrientation.landscapeRight)
             forcedFullscreen = true
         } else {
-            print("Can't force landscape when the app is already landscape!")
+            slideLog("Can't force landscape when the app is already landscape!")
         }
     }
     

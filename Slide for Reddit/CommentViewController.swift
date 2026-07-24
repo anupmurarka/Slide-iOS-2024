@@ -259,7 +259,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
             try session?.getArticles(name, sort: .new, limit: SettingValues.commentLimit, completion: { (result) in
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                 case .success(let tuple):
                     DispatchQueue.main.async(execute: { () -> Void in
                         
@@ -552,10 +552,10 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
     @objc func save(_ cell: LinkCellView) {
         do {
             let state = !ActionStates.isSaved(s: cell.link!)
-            print(cell.link!.getId())
+            slideLog(cell.link!.getId())
             try session?.setSave(state, name: (cell.link?.getId())!, completion: { (result) in
                 if result.error != nil {
-                    print(result.error!)
+                    slideLog(result.error!)
                 }
                 DispatchQueue.main.async {
                     BannerUtil.makeBanner(text: state ? "Saved" : "Unsaved", color: ColorUtil.accentColorForSub(sub: self.subreddit), seconds: 1, context: self)
@@ -859,7 +859,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                 }
             }
         } catch let e {
-            print(e)
+            slideLog(e)
             DispatchQueue.main.async {
                 self.endLoadingOffline(error: true)
             }
@@ -912,7 +912,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                     try session?.getArticles(name, sort: sort == .suggested ? nil : sort, comments: (context.isEmpty ? nil : [context]), context: 3, limit: SettingValues.commentLimit, completion: { (result) -> Void in
                         switch result {
                         case .failure(let error):
-                            print(error)
+                            slideLog(error)
                             // TODO show error code?
                             self.loadOffline()
                         case .success(let tuple):
@@ -1080,7 +1080,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                     })
                 }
             } catch {
-                print(error)
+                slideLog(error)
             }
             
         }
@@ -1931,13 +1931,13 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                 try session?.setVote(direction, name: link.getId(), completion: { (result) -> Void in
                     switch result {
                     case .failure(let error):
-                        print(error)
+                        slideLog(error)
                     case .success(let check):
-                        print(check)
+                        slideLog(check)
                     }
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
         }
     }
@@ -2258,10 +2258,10 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
             if AccountController.isLoggedIn {
                 do {
                     try (UIApplication.shared.delegate as! AppDelegate).session?.blockViaUsername(name, completion: { (result) in
-                        print(result)
+                        slideLog(result)
                     })
                 } catch {
-                    print(error)
+                    slideLog(error)
                 }
             }
         })
@@ -2482,13 +2482,13 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
             try session?.setVote(direction, name: comment.getId(), completion: { (result) -> Void in
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                 case .success(let check):
-                    print(check)
+                    slideLog(check)
                 }
             })
         } catch {
-            print(error)
+            slideLog(error)
         }
         ActionStates.setVoteDirection(s: comment, direction: direction)
     }
@@ -2944,7 +2944,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                     try session?.getMoreChildren(strings, name: link.getId(), sort: sort, id: more.getId(), completion: { (result) -> Void in
                         switch result {
                         case .failure(let error):
-                            print(error)
+                            slideLog(error)
                         case .success(let list):
                             DispatchQueue.main.async(execute: { () -> Void in
                                 let startDepth = self.cDepth[more.getId()] ?? 0
@@ -3009,7 +3009,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                     
                 } catch {
                     loadMoreWithCallback(datasetPosition + 1)
-                    print(error)
+                    slideLog(error)
                 }
             }
         } else {
@@ -3174,7 +3174,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                                 try session?.getMoreChildren(strings, name: link.getId(), sort: sort, id: more.getId(), completion: { (result) -> Void in
                                     switch result {
                                     case .failure(let error):
-                                        print(error)
+                                        slideLog(error)
                                     case .success(let list):
                                         DispatchQueue.main.async(execute: { () -> Void in
                                             let startDepth = self.cDepth[more.getId()] ?? 0
@@ -3237,7 +3237,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                                 })
                                 
                             } catch {
-                                print(error)
+                                slideLog(error)
                             }
                         }
                     }
@@ -3605,7 +3605,7 @@ extension CommentViewController: Cacheable {
                     do {
                         try context.save()
                     } catch let error as NSError {
-                        print("Failed to save managed context \(error): \(error.userInfo)")
+                        slideLog("Failed to save managed context \(error): \(error.userInfo)")
                         return nil
                     }
                 }

@@ -465,7 +465,7 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
                         History.currentSeen.removeAll()
                     }
                 } catch let error {
-                    print(error)
+                    slideLog(error)
                 }
             }
         }
@@ -867,7 +867,7 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
 
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                     return
                 case .success(let r):
                     if let baseData = r as? JSONDictionary, let data = baseData["data"] as? [String: Any] {
@@ -1082,7 +1082,7 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
 
                         switch result {
                         case .failure:
-                            print(result.error!.description)
+                            slideLog(result.error!.description)
                             DispatchQueue.main.async {
                                 if self.sub == ("all") || self.sub == ("frontpage") || self.sub == ("popular") || self.sub == ("friends") || self.sub.lowercased() == ("myrandom") || self.sub.lowercased() == ("random") || self.sub.lowercased() == ("randnsfw") || self.sub.hasPrefix("/m/") || self.sub.contains("+") {
                                     if !self.dataSource.loading && !self.dataSource.loaded {
@@ -2002,7 +2002,7 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
                 htmlString = htmlString.replacingOccurrences(of: "{{subcolor}}", with: ColorUtil.getColorForSub(sub: self.sub).toHexString())
                 htmlString = htmlString.replacingOccurrences(of: "{{subicon}}", with: base64String)
 
-                print(htmlString)
+                slideLog(htmlString)
                 let bodyString = htmlString.toBase64()
                 sendBody(Data.init(base64Encoded: bodyString!)!)
                 sendBody(Data())
@@ -2012,7 +2012,7 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
             do {
                 try self.server?.start()
             } catch let error {
-                print(error)
+                slideLog(error)
                 self.server?.stop()
                 do {
                     try self.server?.start()
@@ -2526,8 +2526,8 @@ extension SingleSubredditViewController: UIScrollViewDelegate {
     func markReadScroll() {
         if SettingValues.markReadOnScroll {
             let top = tableView.indexPathsForVisibleItems
-            print(top)
-            print(lastTopItem)
+            slideLog(top)
+            slideLog(lastTopItem)
             if !top.isEmpty {
                 let topItem = top[0].row - 1
                 if topItem > lastTopItem && topItem < dataSource.content.count {

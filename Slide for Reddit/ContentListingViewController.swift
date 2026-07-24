@@ -133,7 +133,7 @@ class ContentListingViewController: MediaViewController, UICollectionViewDelegat
     }
     
     func failed(error: Error) {
-        print(error.localizedDescription)
+        slideLog(error.localizedDescription)
         loaded = true
         loading = false
         DispatchQueue.main.async {
@@ -822,7 +822,7 @@ extension ContentListingViewController: MessageCellViewDelegate {
             do {
                 try session?.markMessagesAsRead([message.name.contains("_") ? message.name : (message.wasComment ? "t1_" : "t4_") + message.name], completion: { (result) in
                     if result.error != nil {
-                        print(result.error!.description)
+                        slideLog(result.error!.description)
                     } else {
                         NotificationCenter.default.post(name: .accountRefreshRequested, object: nil, userInfo: nil)
                     }
@@ -849,7 +849,7 @@ extension ContentListingViewController: MessageCellViewDelegate {
     }
     
     func showMenu(for message: MessageObject, cell: MessageCellView) {
-        print("Showing Menu")
+        slideLog("Showing Menu")
         let alertController = DragDownAlertMenu(title: "Message from u/\(message.author)", subtitle: message.subject, icon: nil)
 
         alertController.addAction(title: "\(AccountController.formatUsernamePosessive(input: message.author, small: false)) profile", icon: UIImage(sfString: SFSymbol.personFill, overrideString: "profile")!.menuIcon()) {
@@ -867,7 +867,7 @@ extension ContentListingViewController: MessageCellViewDelegate {
                 do {
                     try session?.markMessagesAsUnread([message.name.contains("_") ? message.name : (message.wasComment ? "t1_" : "t4_") + message.name], completion: { (result) in
                         if result.error != nil {
-                            print(result.error!.description)
+                            slideLog(result.error!.description)
                         }
                     })
                 } catch {
@@ -882,7 +882,7 @@ extension ContentListingViewController: MessageCellViewDelegate {
                 do {
                     try session?.markMessagesAsRead([message.name.contains("_") ? message.name : (message.wasComment ? "t1_" : "t4_") + message.name], completion: { (result) in
                         if result.error != nil {
-                            print(result.error!.description)
+                            slideLog(result.error!.description)
                         }
                     })
                 } catch {

@@ -308,7 +308,7 @@ class MediaViewController: UIViewController, MediaVCDelegate, UIPopoverPresentat
             }
 
             if #available(iOS 10.0, *) {
-                print("Opening externally")
+                slideLog("Opening externally")
                 UIApplication.shared.open(newUrl, options: [:], completionHandler: nil)
             } else {
                 UIApplication.shared.openURL(newUrl)

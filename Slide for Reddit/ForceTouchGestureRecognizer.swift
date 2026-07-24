@@ -69,7 +69,7 @@ final class ForceTouchGestureRecognizerWithWatcher: UIGestureRecognizer {
         super.touchesEnded(touches, with: event)
         state = UIGestureRecognizer.State.failed
         forceDelegate?.touchCancelled()
-        print("Ended")
+        slideLog("Ended")
 
     }
     
@@ -77,7 +77,7 @@ final class ForceTouchGestureRecognizerWithWatcher: UIGestureRecognizer {
         super.touchesCancelled(touches, with: event)
         state = UIGestureRecognizer.State.failed
         forceDelegate?.touchCancelled()
-        print("Cancelled")
+        slideLog("Cancelled")
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
@@ -96,7 +96,7 @@ final class ForceTouchGestureRecognizerWithWatcher: UIGestureRecognizer {
     
     func handleTouch(_ firstTouch: UITouch) {
         guard firstTouch.force != 0 && firstTouch.maximumPossibleForce != 0 else {
-            print("Closing")
+            slideLog("Closing")
             return
         }
         
@@ -104,7 +104,7 @@ final class ForceTouchGestureRecognizerWithWatcher: UIGestureRecognizer {
         let showTreshold: CGFloat = 0.2
         let force = firstTouch.force / firstTouch.maximumPossibleForce
         if force >= showTreshold && force < treshold && forceDelegate != nil && !doneOnce {
-            print("Starting")
+            slideLog("Starting")
             touch = firstTouch
             doneOnce = true
             forceDelegate?.touchStarted()

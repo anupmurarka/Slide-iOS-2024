@@ -77,16 +77,16 @@ class Subscriptions {
     private static var accountSubs: [String] = []
     
     public static func sync(name: String, completion: (() -> Void)?) {
-        print("Getting \(name)'s subs")
+        slideLog("Getting \(name)'s subs")
         if let accounts = UserDefaults.standard.array(forKey: "subs" + name) {
-            print("Count is \(accounts.count)")
+            slideLog("Count is \(accounts.count)")
             accountSubs = accounts as! [String]
         } else {
             accountSubs = defaultSubs
         }
         
         if let accounts = UserDefaults.standard.array(forKey: "historysubs" + name) {
-            print("Count is \(accounts.count)")
+            slideLog("Count is \(accounts.count)")
             historySubs = accounts as! [String]
         } else {
             historySubs = []
@@ -115,14 +115,14 @@ class Subscriptions {
     }
     
     public static func set(name: String, subs: [String], completion: @escaping () -> Void) {
-        print("Setting subs")
+        slideLog("Setting subs")
         UserDefaults.standard.set(subs, forKey: "subs" + name)
         UserDefaults.standard.synchronize()
         Subscriptions.sync(name: name, completion: completion)
     }
 
     public static func setPinned(name: String, subs: [String], completion: @escaping () -> Void) {
-        print("Setting pinned subs")
+        slideLog("Setting pinned subs")
         UserDefaults.standard.set(subs, forKey: "subsP" + name)
         UserDefaults.standard.synchronize()
         Subscriptions.sync(name: name, completion: completion)
@@ -170,7 +170,7 @@ class Subscriptions {
                 try session.setSubscribeSubreddit(Subreddit.init(subreddit: name), subscribe: false, completion: { (result) in
                     switch result {
                     case .failure:
-                        print(result.error!)
+                        slideLog(result.error!)
                     default:
                         break
                     }
@@ -189,7 +189,7 @@ class Subscriptions {
                 try session.getUserRelatedSubreddit(.subscriber, paginator: paginator, completion: { (result) -> Void in
                     switch result {
                     case .failure:
-                        print(result.error!)
+                        slideLog(result.error!)
                         completion(toReturn, toReturnMultis)
                     case .success(let listing):
                         toReturn += listing.children.compactMap({ $0 as? Subreddit })
@@ -213,7 +213,7 @@ class Subscriptions {
                 try session.getMineMultireddit({ (result) in
                     switch result {
                     case .failure:
-                        print(result.error!)
+                        slideLog(result.error!)
                         completion(toReturn, toReturnMultis)
                     case .success(let multireddits):
                         for multi in multireddits {

@@ -23,7 +23,7 @@ public extension SubmissionModel {
             do {
                 try context.save()
             } catch let error as NSError {
-                print(error)
+                slideLog(error)
             }
 
         }

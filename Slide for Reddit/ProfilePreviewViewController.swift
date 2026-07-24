@@ -198,7 +198,7 @@ extension ProfilePreviewViewController {
             try (UIApplication.shared.delegate as! AppDelegate).session?.getTrophies(user.name, completion: { (result) in
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                 case .success(let trophies):
                     var i = 0
                     DispatchQueue.main.async {
@@ -290,7 +290,7 @@ extension ProfilePreviewViewController {
                             self.header.setAccount(account)
                             self.setLoadingState(false)
                         } else {
-                            print("No account to show!")
+                            slideLog("No account to show!")
                         }
                     }
                 }

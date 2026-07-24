@@ -285,7 +285,7 @@ class PostActions: NSObject {
             try (UIApplication.shared.delegate as! AppDelegate).session?.setLocked(id, locked: set, completion: { (result) -> Void in
                 switch result {
                 case .failure(let error):
-                    print(error.description)
+                    slideLog(error.description)
                     DispatchQueue.main.async {
                         BannerUtil.makeBanner(text: "Locking submission failed!", color: GMColor.red500Color(), seconds: 3, context: cell.parentViewController)
                     }
@@ -302,7 +302,7 @@ class PostActions: NSObject {
                 }
             })
         } catch {
-            print(error)
+            slideLog(error)
         }
     }
     
@@ -312,7 +312,7 @@ class PostActions: NSObject {
             try (UIApplication.shared.delegate as! AppDelegate).session?.setSpoiler(id, spoiler: set, completion: { (result) -> Void in
                 switch result {
                 case .failure(let error):
-                    print(error.description)
+                    slideLog(error.description)
                     DispatchQueue.main.async {
                         BannerUtil.makeBanner(text: "Request failed!", color: GMColor.red500Color(), seconds: 3, context: cell.parentViewController)
                     }
@@ -329,7 +329,7 @@ class PostActions: NSObject {
                 }
             })
         } catch {
-            print(error)
+            slideLog(error)
         }
     }
 
@@ -339,7 +339,7 @@ class PostActions: NSObject {
             try (UIApplication.shared.delegate as! AppDelegate).session?.setNSFW(id, nsfw: set, completion: { (result) -> Void in
                 switch result {
                 case .failure(let error):
-                    print(error.description)
+                    slideLog(error.description)
                     DispatchQueue.main.async {
                         BannerUtil.makeBanner(text: "Request failed!", color: GMColor.red500Color(), seconds: 3, context: cell.parentViewController)
                     }
@@ -356,7 +356,7 @@ class PostActions: NSObject {
                 }
             })
         } catch {
-            print(error)
+            slideLog(error)
         }
     }
     
@@ -366,7 +366,7 @@ class PostActions: NSObject {
             try (UIApplication.shared.delegate as! AppDelegate).session?.approve(id, completion: { (result) -> Void in
                 switch result {
                 case .failure(let error):
-                    print(error.description)
+                    slideLog(error.description)
                     DispatchQueue.main.async {
                         BannerUtil.makeBanner(text: "Approving submission failed!", color: GMColor.red500Color(), seconds: 3, context: cell.parentViewController)
                     }
@@ -382,7 +382,7 @@ class PostActions: NSObject {
                 }
             })
         } catch {
-            print(error)
+            slideLog(error)
         }
     }
     
@@ -392,7 +392,7 @@ class PostActions: NSObject {
             try (UIApplication.shared.delegate as! AppDelegate).session?.distinguish(id, how: "yes", completion: { (result) -> Void in
                 switch result {
                 case .failure(let error):
-                    print(error.description)
+                    slideLog(error.description)
                     DispatchQueue.main.async {
                         BannerUtil.makeBanner(text: "Distinguishing submission failed!", color: GMColor.red500Color(), seconds: 3, context: cell.parentViewController)
                     }
@@ -405,7 +405,7 @@ class PostActions: NSObject {
                 }
             })
         } catch {
-            print(error)
+            slideLog(error)
         }
     }
     
@@ -415,7 +415,7 @@ class PostActions: NSObject {
             try (UIApplication.shared.delegate as! AppDelegate).session?.sticky(id, sticky: sticky, completion: { (result) -> Void in
                 switch result {
                 case .failure(let error):
-                    print(error.description)
+                    slideLog(error.description)
                     DispatchQueue.main.async {
                         BannerUtil.makeBanner(text: "Couldn't \(sticky ? "" : "un-")sticky submission!", color: GMColor.red500Color(), seconds: 3, context: cell.parentViewController)
                     }
@@ -428,7 +428,7 @@ class PostActions: NSObject {
                 }
             })
         } catch {
-            print(error)
+            slideLog(error)
         }
     }
 
@@ -441,7 +441,7 @@ class PostActions: NSObject {
                         showRemovalReasons(cell, rules: rules, spam: spam)
                     }
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                     DispatchQueue.main.async {
                         showRemovalReasons(cell, rules: [RuleTemplate](), spam: spam)
                     }
@@ -461,7 +461,7 @@ class PostActions: NSObject {
                         showRemovalReasons(cell, rules: rules, spam: spam)
                     }
                 case .failure(let error):
-                    print(error)
+                    slideLog(error)
                     DispatchQueue.main.async {
                         showRemovalReasons(cell, rules: [RuleTemplate](), spam: spam)
                     }
@@ -503,7 +503,7 @@ class PostActions: NSObject {
             try (UIApplication.shared.delegate as! AppDelegate).session?.remove(id, spam: spam, completion: { (result) -> Void in
                 switch result {
                 case .failure(let error):
-                    print(error.description)
+                    slideLog(error.description)
                     DispatchQueue.main.async {
                         BannerUtil.makeBanner(text: "Removing submission failed!", color: GMColor.red500Color(), seconds: 3, context: cell.parentViewController)
                     }
@@ -519,7 +519,7 @@ class PostActions: NSObject {
             })
             
         } catch {
-            print(error)
+            slideLog(error)
         }
     }
     
@@ -529,7 +529,7 @@ class PostActions: NSObject {
             try (UIApplication.shared.delegate as! AppDelegate).session?.remove(id, spam: false, completion: { (result) -> Void in
                 switch result {
                 case .failure(let error):
-                    print(error.description)
+                    slideLog(error.description)
                     DispatchQueue.main.async {
                         BannerUtil.makeBanner(text: "Removing submission failed!", color: GMColor.red500Color(), seconds: 3, context: cell.parentViewController)
                     }
@@ -552,7 +552,7 @@ class PostActions: NSObject {
             })
             
         } catch {
-            print(error)
+            slideLog(error)
         }
     }
     
@@ -561,7 +561,7 @@ class PostActions: NSObject {
             try (UIApplication.shared.delegate as! AppDelegate).session?.ban(cell.link!.author, banReason: why, duration: duration == nil ? 999 /*forever*/ : duration!, completion: { (result) -> Void in
                 switch result {
                 case .failure(let error):
-                    print(error.description)
+                    slideLog(error.description)
                     DispatchQueue.main.async {
                         BannerUtil.makeBanner(text: "Banning user failed!", color: GMColor.red500Color(), seconds: 3, context: cell.parentViewController)
                     }
@@ -572,7 +572,7 @@ class PostActions: NSObject {
                 }
             })
         } catch {
-            print(error)
+            slideLog(error)
         }
     }
     
@@ -677,21 +677,21 @@ class PostActions: NSObject {
                     try (UIApplication.shared.delegate as! AppDelegate).session?.getUserProfile(username, completion: { (result) in
                         switch result {
                         case .failure(let error):
-                            print(error)
+                            slideLog(error)
                         case .success(let account):
                                 DispatchQueue.main.async {
                                     do {
                                         try (UIApplication.shared.delegate as! AppDelegate).session?.blockViaId(account.id, completion: { (result) in
-                                            print(result)
+                                            slideLog(result)
                                         })
                                     } catch {
-                                        print(error)
+                                        slideLog(error)
                                     }
                                 }
                         }
                     })
                 } catch {
-                    print(error)
+                    slideLog(error)
                 }
             }
             callback()
@@ -719,7 +719,7 @@ class PostActions: NSObject {
             // Error happened.
             for obj in errors {
                 if let errorStrings = obj as? [String] {
-                    print(errorStrings)
+                    slideLog(errorStrings)
                     return errorStrings[1]
                 }
             }

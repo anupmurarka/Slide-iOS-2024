@@ -63,7 +63,7 @@ class ModQueueContributionLoader: ContributionLoader {
                     }
                 })
             } catch {
-                print(error)
+                slideLog(error)
             }
 
         }

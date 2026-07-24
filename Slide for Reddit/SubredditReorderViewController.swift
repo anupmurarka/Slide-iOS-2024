@@ -277,7 +277,7 @@ class SubredditReorderViewController: UITableViewController {
         var newPins = pinned
         
         for i in selectedPinnedRows {
-            print("Unpin \(pinned[i.row])")
+            slideLog("Unpin \(pinned[i.row])")
             let item = pinned[i.row]
             newPins.removeAll { (pin) -> Bool in
                 return pin == item
@@ -285,7 +285,7 @@ class SubredditReorderViewController: UITableViewController {
         }
         
         for i in selectedSubRows {
-            print("Pin \(subs[i.row])")
+            slideLog("Pin \(subs[i.row])")
             newPins.append(subs[i.row])
         }
         
