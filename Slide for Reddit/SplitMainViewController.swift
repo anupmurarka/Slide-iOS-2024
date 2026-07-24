@@ -94,7 +94,7 @@ class SplitMainViewController: MainViewController {
             account.isHidden = true
         }
 
-        account.sizeAnchors /==/ CGSize.square(size: 30)
+        account.sizeAnchors /==/ CGSize.square(size: 30) ~ .high
         accountB = UIBarButtonItem(customView: account)
         accountB.accessibilityIdentifier = "Account button"
         accountB.accessibilityLabel = "Account"
@@ -148,7 +148,7 @@ class SplitMainViewController: MainViewController {
         account.clipsToBounds = true
         account.contentMode = .scaleAspectFill
         account.frame = CGRect.init(x: 0, y: 0, width: 30, height: 30)
-        account.sizeAnchors /==/ CGSize.square(size: 30)
+        account.sizeAnchors /==/ CGSize.square(size: 30) ~ .high
         account.showsMenuAsPrimaryAction = true
         account.menu = accountPullDownMenu()
         
@@ -199,7 +199,7 @@ class SplitMainViewController: MainViewController {
         searchNav.setImage(UIImage(sfString: SFSymbol.magnifyingglass, overrideString: "search")?.navIcon(), for: UIControl.State.normal)
         searchNav.addTarget(self, action: #selector(self.search), for: UIControl.Event.touchUpInside)
         searchNav.frame = CGRect.init(x: 0, y: 0, width: 30, height: 44)
-        searchNav.sizeAnchors /==/ CGSize.square(size: 30)
+        searchNav.sizeAnchors /==/ CGSize.square(size: 30) ~ .high
         searchNavB = UIBarButtonItem(customView: searchNav)
         if #available(iOS 26.0, *) {
             searchNavB?.hidesSharedBackground = true
@@ -1327,7 +1327,7 @@ extension SplitMainViewController: AutoCacheDelegate {
         }
 
         backView.frame = CGRect.init(x: 0, y: 0, width: 30, height: 30)
-        backView.sizeAnchors /==/ CGSize.square(size: 30)
+        backView.sizeAnchors /==/ CGSize.square(size: 30) ~ .high
         subIcon.layer.cornerRadius = 10
         subIcon.clipsToBounds = true
         

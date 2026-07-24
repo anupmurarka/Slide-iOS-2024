@@ -623,7 +623,8 @@ class MainViewController: ColorMuxPagingViewController, UINavigationControllerDe
         account.contentMode = .scaleAspectFill
         account.addTarget(self, action: #selector(self.showCurrentAccountMenu(_:)), for: UIControl.Event.touchUpInside)
         account.frame = CGRect.init(x: 0, y: 0, width: 30, height: 30)
-        account.sizeAnchors /==/ CGSize.square(size: 30)
+        // ~ .high so the width yields to the iOS 26 nav-bar item wrapper (see SplitMainViewController).
+        account.sizeAnchors /==/ CGSize.square(size: 30) ~ .high
         accountB = UIBarButtonItem(customView: account)
         accountB.accessibilityIdentifier = "Account button"
         accountB.accessibilityLabel = "Account"

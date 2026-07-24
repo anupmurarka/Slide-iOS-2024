@@ -132,10 +132,13 @@ for a strictly non-dismissable gate. Also `WatchSessionManager` still has `?? Se
 fallbacks (harmless, ungated) if the watch messages while logged out.
 
 ## Other issues to triage (new session)
-- Autolayout warning: `ExpandedHitButton` width 30 vs `NavigationButtonBar.ItemWrapperView`
-  width 36 (unsatisfiable constraint, non-fatal) — recurring in the nav bar.
+- ✅ RESOLVED — Autolayout warning: `ExpandedHitButton` width 30 vs
+  `NavigationButtonBar.ItemWrapperView` width 36. The nav-bar custom-view size
+  constraints were relaxed to `~ .high` priority so they yield to the iOS 26 wrapper's
+  required width; visual result unchanged (buttons already rendered at the wrapper width).
 - App-group prefs warning `group.io.automationworks.redditslide.prefs` "only allowed for
-  System Containers" (see iCloud provisioning item below).
+  System Containers" (see iCloud provisioning item below). Benign on simulator; verify the
+  App Group is provisioned on device.
 - (User mentioned additional issues to tackle next session — capture them here as found.)
 
 ## Reddit API credentials — add a runtime override (settings)

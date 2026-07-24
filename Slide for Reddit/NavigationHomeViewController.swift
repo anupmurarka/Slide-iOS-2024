@@ -1329,7 +1329,7 @@ class AccountShortcutsView: UIView {
         // infoStack.addArrangedSubviews(commentKarmaLabel, postKarmaLabel)
         for action in actions {
             if !action.needsAccount() || AccountController.isLoggedIn {
-                cellStack.addArrangedSubview(UITableViewCell().then {
+                cellStack.addArrangedSubview(NavShortcutRow().then {
                     $0.configure(text: action.getTitle(), image: action.getImage())
                     $0.addTapGestureRecognizer { (_) in
                         if let delegate = self.delegate, let parent = self.parent {
@@ -1337,14 +1337,11 @@ class AccountShortcutsView: UIView {
                         }
                     }
                     $0.heightAnchor />=/ 50
-                    $0.backgroundColor = UIColor.foregroundColor
-                    $0.contentView.backgroundColor = UIColor.foregroundColor
-                    $0.accessoryType = .disclosureIndicator
                 })
             }
         }
         
-        cellStack.addArrangedSubview(UITableViewCell().then {
+        cellStack.addArrangedSubview(NavShortcutRow().then {
             $0.configure(text: "More shortcuts", image: UIImage(sfString: SFSymbol.ellipsis, overrideString: "moreh")!.menuIcon())
             $0.addTapGestureRecognizer { (_) in
                 let optionMenu = DragDownAlertMenu(title: "Slide shortcuts", subtitle: "Displayed shortcuts can be changed in Settings", icon: nil)
@@ -1360,7 +1357,6 @@ class AccountShortcutsView: UIView {
                 self.delegate?.displayMenu(self.parent!, optionMenu)
             }
             $0.heightAnchor />=/ 50
-            $0.accessoryType = .disclosureIndicator
         })
 
         self.clipsToBounds = true
@@ -1389,6 +1385,52 @@ class AccountShortcutsView: UIView {
         cellStack.horizontalAnchors /==/ horizontalAnchors
         
         cellStack.bottomAnchor /==/ bottomAnchor
+    }
+}
+
+/// Lightweight row for the drawer shortcut list. Replaces the former misuse of
+/// `UITableViewCell` inside a `UIStackView`, which triggered UIKit's
+/// "translatesAutoresizingMaskIntoConstraints … managed by a UITableView" warnings.
+class NavShortcutRow: UIView {
+    private let iconView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+    }
+    private let label = UILabel().then {
+        $0.textColor = UIColor.fontColor
+    }
+    private let chevron = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+        $0.image = UIImage(sfString: SFSymbol.chevronRight, overrideString: "next")?.menuIcon().getCopy(withColor: UIColor.fontColor.withAlphaComponent(0.35))
+    }
+
+    init() {
+        super.init(frame: .zero)
+        backgroundColor = UIColor.foregroundColor
+        layer.cornerRadius = 5
+        clipsToBounds = true
+        addSubviews(iconView, label, chevron)
+
+        iconView.leftAnchor /==/ leftAnchor + 16
+        iconView.centerYAnchor /==/ centerYAnchor
+        iconView.sizeAnchors /==/ CGSize.square(size: 28)
+
+        label.leftAnchor /==/ iconView.rightAnchor + 16
+        label.centerYAnchor /==/ centerYAnchor
+
+        chevron.rightAnchor /==/ rightAnchor - 16
+        chevron.centerYAnchor /==/ centerYAnchor
+        chevron.sizeAnchors /==/ CGSize.square(size: 14)
+
+        label.rightAnchor /<=/ chevron.leftAnchor - 8
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func configure(text: String, image: UIImage) {
+        label.text = text
+        iconView.image = image
     }
 }
 

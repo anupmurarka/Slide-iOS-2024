@@ -3480,7 +3480,6 @@ public class LinksHeaderCellView: UICollectionViewCell {
                     imageView.edgeAnchors /==/ header.edgeAnchors
                 }
                 
-                header.heightAnchor /==/ 180
                 header.horizontalAnchors /==/ self.contentView.horizontalAnchors
                 header.topAnchor /==/ self.contentView.topAnchor + 4
                 scroll.topAnchor /==/ self.header.bottomAnchor + 4
