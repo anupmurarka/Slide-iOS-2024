@@ -141,6 +141,8 @@ class SettingsContentFilters: BubbleSettingTableViewController, UISearchBarDeleg
         self.view.backgroundColor = UIColor.backgroundColor
         // set the title
         self.title = "Filters"
+        // Filter fields accept regular expressions; surface that so it's discoverable.
+        self.navigationItem.prompt = "Tip: filter fields support Regex"
         self.headers = ["Submission domain filters", "Submission body text filters", "Submission title filters", "Submission author filters", "Subreddit filters", "Submission flair filters"]
 
         setupSearchBar(domainEnter, "Add new domain filter")

@@ -1,5 +1,39 @@
 # TODO
 
+## Port from upstream 7.1 (Haptic-Apps/Slide-iOS)
+
+Fork diverged from upstream at `5494fd25` (2021-02-27), before 7.0.2/7.1. The 7.1 infra
+(Catalyst, Alamofire 5, new-windows, event-based settings) is already present via the
+modernization. Remaining user-facing 7.1 features:
+
+**Done (this session):**
+- ✅ Load-more-comments respects the active sort (upstream #1177 / 888e891f) —
+  `CommentViewController.getMoreChildren` now passes `sort` instead of `.top`.
+- ✅ Regex content filters (upstream #1175 / 2e38f4d4) — `PostFilter.regexMatch` treats
+  filter fields as case-insensitive regex (falls back to substring for invalid patterns);
+  applied to submission/comment/message author, subreddit, domain, selftext, title. Added
+  a "Tip: filter fields support Regex" prompt in Content Filters settings.
+
+**To port later:**
+- **Follow / subscribe to user profiles** (#3, upstream 54696633) — add `u_`-style user
+  subscribe to `Subscriptions.subscribe` + a follow/subscribe action on
+  `ProfileViewController`. Larger change (API + UI + subscriptions list handling).
+- **#4 — moderate, deferred:**
+  - *Disable tapping usernames/subreddits* (upstream a66ceed3, #1174) — add
+    `SettingValues.tapProfilesAndSubs` toggle in Settings → Layout, and gate the
+    author/subreddit `.urlAction`/`.textHighlight` links in `CachedTitle`. Needs care:
+    the fork's `CachedTitle` uses different text attributes than upstream, and
+    `SettingsLayout` section row counts must be updated to match the fork.
+  - *Show profile images in comments* (upstream 2cd9166d) — real avatar rendering in
+    comment cells (image load + layout), not just a toggle. More involved.
+- **Dark Mode default** (upstream fb3cd94d) — NOT a clean port: the commit bundles an
+  inverted-logic `ColorUtil.isLightTheme` fix, and the fork already follows the system
+  appearance on iOS 13+, so a hard default flip is largely moot. Revisit only if we want
+  to force dark regardless of system setting.
+- **iCloud debugging menu** (upstream 063044fd) — dev-only diagnostics screen. Low value;
+  port only if we need to debug the iCloud/CloudKit sync paths (see provisioning item
+  below).
+
 ## Multi-account fixes (in progress — needs device retest)
 
 Symptoms with 2+ accounts: (a) "Add a new account" reused the current account's Reddit

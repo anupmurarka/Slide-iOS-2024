@@ -57,17 +57,28 @@ class PostFilter {
     
     public static func containedIn(_ array: [NSString], value: String) -> Bool {
         for text in array {
-            if value.localizedCaseInsensitiveContains(String(text)) {
+            if regexMatch(text as String, against: value) {
                 return true
             }
         }
         return false
     }
 
+    /// Treats `regex` as a case-insensitive regular expression matched against `against`.
+    /// If the pattern is not valid regex, falls back to a plain case-insensitive substring
+    /// match so existing (non-regex) filters keep working.
+    public static func regexMatch(_ regex: String, against: String) -> Bool {
+        if let pattern = try? NSRegularExpression(pattern: regex, options: .caseInsensitive) {
+            let range = NSRange(location: 0, length: (against as NSString).length)
+            return pattern.firstMatch(in: against, options: [], range: range) != nil
+        }
+        return against.range(of: regex, options: .caseInsensitive) != nil
+    }
+
     public static func matches(_ link: SubmissionObject, baseSubreddit: String, gallery: Bool) -> Bool {
-        let mainMatch = (PostFilter.domains.contains(where: { $0.containedIn(base: link.domain) })) ||
-            PostFilter.profiles.contains(where: { $0.caseInsensitiveCompare(link.author) == .orderedSame }) ||
-            PostFilter.subreddits.contains(where: { $0.caseInsensitiveCompare(link.subreddit) == .orderedSame }) ||
+        let mainMatch = (PostFilter.domains.contains(where: { $0.containedIn(base: link.domain) || regexMatch($0 as String, against: link.domain) })) ||
+            containedIn(PostFilter.profiles, value: link.author) ||
+            containedIn(PostFilter.subreddits, value: link.subreddit) ||
             contains(PostFilter.flairs, value: link.flair) ||
             containedIn(PostFilter.selftext, value: link.htmlBody ?? "") ||
             containedIn(PostFilter.titles, value: link.title) ||
@@ -148,15 +159,15 @@ class PostFilter {
                 }
             } else if link is CommentObject {
                 let comment = link as! CommentObject
-                let mainMatch = PostFilter.profiles.contains(where: { $0.caseInsensitiveCompare(comment.author) == .orderedSame }) ||
-                    PostFilter.subreddits.contains(where: { $0.caseInsensitiveCompare(comment.subreddit) == .orderedSame }) ||
+                let mainMatch = containedIn(PostFilter.profiles, value: comment.author) ||
+                    containedIn(PostFilter.subreddits, value: comment.subreddit) ||
                     contains(PostFilter.flairs, value: comment.flair)
                 if !mainMatch {
                     toReturn.append(link)
                 }
             } else if link is MessageObject {
                 let message = link as! MessageObject
-                let mainMatch = PostFilter.profiles.contains(where: { $0.caseInsensitiveCompare(message.author) == .orderedSame })
+                let mainMatch = containedIn(PostFilter.profiles, value: message.author)
                 if !mainMatch {
                     toReturn.append(link)
                 }
