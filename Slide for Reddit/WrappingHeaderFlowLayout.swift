@@ -7,7 +7,7 @@
 //
 
 import Foundation
-protocol WrappingHeaderFlowLayoutDelegate: class {
+protocol WrappingHeaderFlowLayoutDelegate: AnyObject {
     func collectionView(_ collectionView: UICollectionView, indexPath: IndexPath) -> CGSize
 }
 

@@ -10,7 +10,7 @@ import Anchorage
 import reddift
 import UIKit
 
-protocol MessageCellViewDelegate: class {
+protocol MessageCellViewDelegate: AnyObject {
     func doReply(to message: MessageObject, cell: MessageCellView)
     func showThread(id: String, title: String)
     func showMenu(for message: MessageObject, cell: MessageCellView)

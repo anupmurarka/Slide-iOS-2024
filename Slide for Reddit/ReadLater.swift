@@ -9,7 +9,7 @@
 import reddift
 import UIKit
 
-protocol ReadLaterDelegate: class {
+protocol ReadLaterDelegate: AnyObject {
     func didUpdate()
 }
 

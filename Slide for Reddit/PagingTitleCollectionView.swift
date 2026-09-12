@@ -9,7 +9,7 @@
 import Anchorage
 import UIKit
 
-public protocol PagingTitleDelegate: class {
+public protocol PagingTitleDelegate: AnyObject {
     func didSelect(_ subreddit: String)
     func didSetWidth()
 }

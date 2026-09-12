@@ -10,7 +10,7 @@ import CoreData
 import Foundation
 import reddift
 
-protocol SubmissionDataSouceDelegate: class {
+protocol SubmissionDataSouceDelegate: AnyObject {
     func showIndicator()
     func generalError(title: String, message: String)
     func loadSuccess(before: Int, count: Int)

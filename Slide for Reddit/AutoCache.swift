@@ -20,7 +20,7 @@ extension Notification.Name {
 }
 
 // TODO on cancel
-protocol AutoCacheDelegate: class {
+protocol AutoCacheDelegate: AnyObject {
     func autoCacheStarted(_ notification: Notification)
     func autoCacheFinished(_ notification: Notification)
     func autoCacheProgress(_ notification: Notification)

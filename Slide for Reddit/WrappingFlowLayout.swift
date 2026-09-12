@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol WrappingFlowLayoutDelegate: class {
+protocol WrappingFlowLayoutDelegate: AnyObject {
     func collectionView(_ collectionView: UICollectionView, width: CGFloat, indexPath: IndexPath) -> CGSize
     func headerOffset() -> Int
 }

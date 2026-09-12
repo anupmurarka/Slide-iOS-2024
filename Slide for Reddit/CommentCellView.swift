@@ -11,7 +11,7 @@ import AudioToolbox
 import reddift
 import UIKit
 
-protocol CommentCellViewDelegate: class {
+protocol CommentCellViewDelegate: AnyObject {
     func openComment(_ comment: CommentObject)
 }
 

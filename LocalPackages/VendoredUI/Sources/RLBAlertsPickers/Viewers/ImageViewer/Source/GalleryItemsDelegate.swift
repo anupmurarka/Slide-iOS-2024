@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol GalleryItemsDelegate: class {
+public protocol GalleryItemsDelegate: AnyObject {
     func isItemSelected(at index: Int) -> Bool
     func itemSelectionIndex(at index: Int) -> Int?
     func removeGalleryItem(at index: Int)

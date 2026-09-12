@@ -19,7 +19,7 @@ import SDWebImage
 import Then
 import UIKit
 
-protocol LinkCellViewDelegate: class {
+protocol LinkCellViewDelegate: AnyObject {
     func upvote(_ cell: LinkCellView)
     func downvote(_ cell: LinkCellView)
     func save(_ cell: LinkCellView)

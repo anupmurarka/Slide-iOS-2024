@@ -15,7 +15,7 @@ import UIKit
      }
 */
 
-protocol AutoplayScrollViewDelegate: class {
+protocol AutoplayScrollViewDelegate: AnyObject {
     func didScrollExtras(_ currentY: CGFloat)
     var isScrollingDown: Bool { get set }
     var lastScrollDirectionWasDown: Bool { get set }

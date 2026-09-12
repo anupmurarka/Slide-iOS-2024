@@ -11,7 +11,7 @@ import AudioToolbox
 import reddift
 import UIKit
 
-protocol FriendCellViewDelegate: class {
+protocol FriendCellViewDelegate: AnyObject {
     func showProfile(name: String)
 }
 

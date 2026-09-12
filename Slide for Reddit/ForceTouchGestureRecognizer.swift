@@ -52,7 +52,7 @@ final class ForceTouchGestureRecognizer: UIGestureRecognizer {
     }
 }
 
-protocol ForceTouchGestureDelegate: class {
+protocol ForceTouchGestureDelegate: AnyObject {
     func touchStarted()
     func touchCancelled()
     func pop()

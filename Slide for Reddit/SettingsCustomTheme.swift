@@ -11,7 +11,7 @@ import RLBAlertsPickers
 import SDCAlertView
 import UIKit
 
-protocol SettingsCustomThemeDelegate: class {
+protocol SettingsCustomThemeDelegate: AnyObject {
     func themeSaved()
 }
 

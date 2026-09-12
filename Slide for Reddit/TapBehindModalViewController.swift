@@ -11,7 +11,7 @@
 import Anchorage
 import Foundation
 
-protocol TapBehindModalViewControllerDelegate: class {
+protocol TapBehindModalViewControllerDelegate: AnyObject {
     func shouldDismiss() -> Bool
 }
 

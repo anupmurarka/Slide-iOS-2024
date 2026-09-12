@@ -11,7 +11,7 @@ import AudioToolbox
 import reddift
 import UIKit
 
-protocol ModlogCellViewDelegate: class {
+protocol ModlogCellViewDelegate: AnyObject {
     func didClick(on modLogObject: ModLogObject)
     func showMenu(for modLogObject: ModLogObject)
 }

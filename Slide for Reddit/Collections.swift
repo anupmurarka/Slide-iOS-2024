@@ -9,7 +9,7 @@
 import reddift
 import UIKit
 
-protocol CollectionsDelegate: class {
+protocol CollectionsDelegate: AnyObject {
     func didUpdate()
 }
 

@@ -15,13 +15,13 @@ import SDCAlertView
 import SDWebImage
 import UIKit
 
-protocol TTTAttributedCellDelegate: class {
+protocol TTTAttributedCellDelegate: AnyObject {
     func pushedSingleTap(_ cell: CommentDepthCell)
     func isMenuShown() -> Bool
     func getMenuShown() -> String?
 }
 
-protocol ReplyDelegate: class {
+protocol ReplyDelegate: AnyObject {
     func replySent(comment: Comment?, cell: CommentDepthCell?)
     func updateHeight(textView: UITextView)
     func discard()

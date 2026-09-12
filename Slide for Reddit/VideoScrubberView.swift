@@ -10,7 +10,7 @@ import Anchorage
 import CoreMedia
 import UIKit
 
-protocol VideoScrubberViewDelegate: class {
+protocol VideoScrubberViewDelegate: AnyObject {
     func sliderValueChanged(toSeconds: Float)
     func sliderDidBeginDragging()
     func sliderDidEndDragging()

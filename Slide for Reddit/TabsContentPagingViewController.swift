@@ -10,7 +10,7 @@ import Anchorage
 import Foundation
 import reddift
 
-protocol TabsContentPagingViewControllerDelegate: class {
+protocol TabsContentPagingViewControllerDelegate: AnyObject {
     func shouldUpdateButtons()
 }
 

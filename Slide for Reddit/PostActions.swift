@@ -13,7 +13,7 @@ import RLBAlertsPickers
 import SDCAlertView
 import UIKit
 
-protocol SubmissionMoreDelegate: class {
+protocol SubmissionMoreDelegate: AnyObject {
     func save(_ cell: LinkCellView)
     func hide(_ cell: LinkCellView)
     func showFilterMenu(_ cell: LinkCellView)

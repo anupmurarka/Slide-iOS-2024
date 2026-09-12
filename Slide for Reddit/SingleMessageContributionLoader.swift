@@ -9,7 +9,7 @@
 import Foundation
 import reddift
 
-protocol SingleMessageContributionLoaderDelegate: class {
+protocol SingleMessageContributionLoaderDelegate: AnyObject {
     func doneLoading(before: Int)
     func failedLoading()
 }
