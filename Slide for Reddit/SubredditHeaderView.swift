@@ -475,11 +475,17 @@ extension UIView {
     // In order to create computed properties for extensions, we need a key to
     // store and access the stored property
     private struct AssociatedObjectKeys {
-        static var tapGestureRecognizer = "tapGR"
-        static var longTapGestureRecognizer = "longTapGR"
-        static var longTapGestureRecognizerInstance = "longTapGRInstance"
-        static var longTapGestureTimer = "longTapTimer"
-        static var longTapGestureCancelled = "longTapCancelled"
+    // Associated-object keys are matched by pointer identity, never by value, so a key
+    // only needs a unique, stable address. These were `String`s, and `&aString` forms a
+    // pointer to the string's internal representation — an address Swift does not promise
+    // is stable across accesses, so a get and a set could in principle use different keys
+    // and the association would silently fail. A trivial `UInt8` has an unambiguous
+    // address; this matches the existing idiom in UIAlertController+Extensions.swift.
+        static var tapGestureRecognizer: UInt8 = 0
+        static var longTapGestureRecognizer: UInt8 = 0
+        static var longTapGestureRecognizerInstance: UInt8 = 0
+        static var longTapGestureTimer: UInt8 = 0
+        static var longTapGestureCancelled: UInt8 = 0
     }
 
     private typealias Action = ((_ sender: UIGestureRecognizer) -> Void)?

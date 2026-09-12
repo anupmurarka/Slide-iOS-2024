@@ -43,7 +43,13 @@ extension UIAlertController {
     }
     
     private struct AssociatedKeys {
-        static var blurStyleKey = "UIAlertController.blurStyleKey"
+    // Associated-object keys are matched by pointer identity, never by value, so a key
+    // only needs a unique, stable address. These were `String`s, and `&aString` forms a
+    // pointer to the string's internal representation — an address Swift does not promise
+    // is stable across accesses, so a get and a set could in principle use different keys
+    // and the association would silently fail. A trivial `UInt8` has an unambiguous
+    // address; this matches the existing idiom in UIAlertController+Extensions.swift.
+        static var blurStyleKey: UInt8 = 0
     }
     
     public var cancelButtonColor: UIColor? {

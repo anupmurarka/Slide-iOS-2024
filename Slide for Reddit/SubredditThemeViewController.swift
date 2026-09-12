@@ -474,13 +474,19 @@ public extension UIView {
      Keys used for associated objects.
      */
     private struct ToastKeys {
-        static var Timer = "CSToastTimerKey"
-        static var Duration = "CSToastDurationKey"
-        static var Position = "CSToastPositionKey"
-        static var Completion = "CSToastCompletionKey"
-        static var ActiveToast = "CSToastActiveToastKey"
-        static var ActivityView = "CSToastActivityViewKey"
-        static var Queue = "CSToastQueueKey"
+    // Associated-object keys are matched by pointer identity, never by value, so a key
+    // only needs a unique, stable address. These were `String`s, and `&aString` forms a
+    // pointer to the string's internal representation — an address Swift does not promise
+    // is stable across accesses, so a get and a set could in principle use different keys
+    // and the association would silently fail. A trivial `UInt8` has an unambiguous
+    // address; this matches the existing idiom in UIAlertController+Extensions.swift.
+        static var Timer: UInt8 = 0
+        static var Duration: UInt8 = 0
+        static var Position: UInt8 = 0
+        static var Completion: UInt8 = 0
+        static var ActiveToast: UInt8 = 0
+        static var ActivityView: UInt8 = 0
+        static var Queue: UInt8 = 0
     }
 
     /**

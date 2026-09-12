@@ -323,8 +323,14 @@ public extension UIPanGestureRecognizer {
     }
     
     private struct UIPanGestureRecognizerRuntimeKeys {
-        static var directions = "\(#file)+\(#line)"
-        static var touchesBegan = "\(#file)+\(#line)"
+    // Associated-object keys are matched by pointer identity, never by value, so a key
+    // only needs a unique, stable address. These were `String`s, and `&aString` forms a
+    // pointer to the string's internal representation — an address Swift does not promise
+    // is stable across accesses, so a get and a set could in principle use different keys
+    // and the association would silently fail. A trivial `UInt8` has an unambiguous
+    // address; this matches the existing idiom in UIAlertController+Extensions.swift.
+        static var directions: UInt8 = 0
+        static var touchesBegan: UInt8 = 0
     }
     
     var direction: UIPanGestureRecognizer.Direction? {
