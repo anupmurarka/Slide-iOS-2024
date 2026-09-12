@@ -15,6 +15,8 @@ disabled_rules:
 # Re-enable the next few over time
 - trailing_whitespace
 - force_cast
+# type_name stays disabled; its `min_length: 2` config was removed because configuring a
+# disabled rule makes SwiftLint warn on every build. Restore both together if re-enabled.
 - type_name
 - force_try
 # Rules added in newer SwiftLint (>0.42) that surface pre-existing style issues.
@@ -44,9 +46,6 @@ control_statement:
 
 shorthand_operator:
   severity: warning
-
-type_name:
-  min_length: 2
 
 trailing_comma:
   mandatory_comma: true
