@@ -110,14 +110,21 @@ class SettingsUserTags: UITableViewController {
         return tags.count
     }
     
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (_, indexPath) in
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = UIContextualAction(style: .destructive, title: "Delete") { _, _, completion in
             UserDefaults.standard.removeObject(forKey: "tag+" + self.tags[indexPath.row].key)
             self.tags.removeValue(forKey: self.tags[indexPath.row].key)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            completion(true)
         }
-        
-        return [delete]
+
+        let configuration = UISwipeActionsConfiguration(actions: [delete])
+        // `UITableViewRowAction` had no full-swipe gesture: deleting always took an
+        // explicit tap on the button. `UISwipeActionsConfiguration` enables full swipe by
+        // default, which would make a long swipe delete a tag outright. Keep the old
+        // behaviour.
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
     }
     
 }

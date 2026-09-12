@@ -979,7 +979,6 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
         tableView.addSubview(refreshControl) // not required when using UITableViewController
         tableView.alwaysBounceVertical = true
 
-
         // TODO: - Can just use .self instead of .classForCoder()
         self.tableView.register(BannerLinkCellView.classForCoder(), forCellWithReuseIdentifier: "banner\(SingleSubredditViewController.cellVersion)")
         self.tableView.register(AutoplayBannerLinkCellView.classForCoder(), forCellWithReuseIdentifier: "autoplay\(SingleSubredditViewController.cellVersion)")

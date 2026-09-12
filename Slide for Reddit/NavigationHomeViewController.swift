@@ -412,13 +412,21 @@ extension NavigationHomeViewController: UITableViewDelegate, UITableViewDataSour
         return false && !isSearching // Disable pinning for now
     }
 
-    func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
+    /// `UITableViewRowAction` had no full-swipe gesture; `UISwipeActionsConfiguration`
+    /// enables it by default. Keep pinning behind an explicit tap on the button.
+    private static func swipeConfiguration(for action: UIContextualAction) -> UISwipeActionsConfiguration {
+        let configuration = UISwipeActionsConfiguration(actions: [action])
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt editActionsForRowAt: IndexPath) -> UISwipeActionsConfiguration? {
         tableView.contentOffset = CGPoint(x: 0, y: tableView.contentOffset.y + 1)
         let sub = subsSource.subredditsInSection(editActionsForRowAt.section)![editActionsForRowAt.row]
         let wasEmpty = Subscriptions.pinned.isEmpty
         let isPinned = editActionsForRowAt.section == 0 && !wasEmpty
         if isPinned {
-            let pin = UITableViewRowAction(style: .normal, title: "Un-Pin") { _, _ in
+            let pin = UIContextualAction(style: .normal, title: "Un-Pin") { _, _, completion in
                 Subscriptions.setPinned(name: AccountController.currentName, subs: Subscriptions.pinned.filter({ $0 != sub })) {
                     self.tableView.beginUpdates()
 
@@ -433,13 +441,16 @@ extension NavigationHomeViewController: UITableViewDelegate, UITableViewDataSour
                     }
                     self.tableView.endUpdates()
                     self.tableView.reloadData()
+                    completion(true)
                 }
             }
             pin.backgroundColor = GMColor.red500Color()
-            return [pin]
+            return Self.swipeConfiguration(for: pin)
         } else {
-            let pin = UITableViewRowAction(style: .normal, title: "Pin") { _, _ in
+            let pin = UIContextualAction(style: .normal, title: "Pin") { _, _, completion in
                 if Subscriptions.pinned.filter({ $0.lowercased() == sub.lowercased() }).count > 0 {
+                    // Already pinned: nothing to do, but the swipe still has to close.
+                    completion(false)
                     return
                 }
                 var newPinned = Subscriptions.pinned
@@ -469,10 +480,11 @@ extension NavigationHomeViewController: UITableViewDelegate, UITableViewDataSour
 
                     self.tableView.endUpdates()
                     self.tableView.reloadData()
+                    completion(true)
                 }
             }
             pin.backgroundColor = GMColor.yellow500Color()
-            return [pin]
+            return Self.swipeConfiguration(for: pin)
         }
     }
 
