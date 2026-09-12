@@ -40,6 +40,11 @@ excluded:
   - "*+CoreDataClass.swift"
   - "*+CoreDataProperties.swift"
   - Pods
+  # Vendored third-party sources. Linting them produced 1,162 of the project's ~1,198
+  # violations — 82% of the noise — for code we did not write, and fixing them in place
+  # would make `Reddift` harder to diff against upstream reddift while we still port
+  # fixes into it. Remove this line to lint them again.
+  - LocalPackages
 
 control_statement:
   severity: warning
