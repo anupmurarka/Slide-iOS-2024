@@ -139,9 +139,9 @@ class OnboardingSplashPageViewController: UIViewController {
 
     func moveView(view: PreviewSubredditView, chosenLane: Int) {
         let time = Int.random(in: 5...10)
-        UIView.animate(withDuration: Double(time), delay: 0, options: .curveLinear, animations: { () -> Void in
+        UIView.animate(withDuration: Double(time), delay: 0, options: .curveLinear, animations: { () in
             view.frame = self.getFinalFrame(for: view, in: chosenLane)
-        }, completion: { [weak self] (_) -> Void in
+        }, completion: { [weak self] (_) in
             guard let self = self else { return }
             if self.shouldMove {
                 view.randomizeColors()
@@ -520,10 +520,6 @@ class OnboardingHardcodedChangelogPageViewController: UIViewController {
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
     func setupViews() {
         let attributedChangelog = NSMutableAttributedString()
         for paragraph in order {
@@ -606,10 +602,6 @@ class OnboardingVideoPageViewController: UIViewController {
         setupConstraints()
         
         startVideos()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
     }
     
     func setupViews() {

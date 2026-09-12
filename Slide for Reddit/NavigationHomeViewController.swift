@@ -320,11 +320,6 @@ class NavigationHomeViewController: UIViewController {
         tableView.bottomAnchor /==/ view.bottomAnchor
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     func setViewController(controller: SplitMainViewController) {
         parentController = controller
     }
@@ -971,7 +966,7 @@ class CurrentAccountHeaderView: UIView {
         $0.clipsToBounds = true
         $0.layer.masksToBounds = true
         if !SettingValues.reduceElevation { // Let's just keep this rounded...
-            //$0.elevate(elevation: 2.0)
+            // $0.elevate(elevation: 2.0)
         }
     }
     
@@ -1243,7 +1238,7 @@ extension CurrentAccountHeaderView {
             } else {
                 UIView.animate(withDuration: 0.3, animations: {
                     if (SettingValues.appMode == .MULTI_COLUMN || SettingValues.appMode == .SINGLE) && UIDevice.current.userInterfaceIdiom == .pad {
-                        UIView.animate(withDuration: 0.5, animations: { () -> Void in
+                        UIView.animate(withDuration: 0.5, animations: { () in
                             self.parent?.splitViewController?.preferredDisplayMode = .primaryHidden
                         }, completion: { (_) in
                         })

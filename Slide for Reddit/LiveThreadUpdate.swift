@@ -111,7 +111,7 @@ class LiveThreadUpdate: UICollectionViewCell, UIGestureRecognizerDelegate {
                 image.alpha = 0
                 if let url = embeds["url"] as? String {
                     image.isUserInteractionEnabled = true
-                    image.sd_setImage(with: URL.init(string: url), completed: { (image, _, cache, _) in
+                    image.sd_setImage(with: URL.init(string: url), completed: { (_, _, cache, _) in
                         self.image.contentMode = .scaleAspectFill
                         if cache == .none {
                             UIView.animate(withDuration: 0.3, animations: {

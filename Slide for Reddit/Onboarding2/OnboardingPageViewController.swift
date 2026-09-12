@@ -29,7 +29,7 @@ enum OnboardingPageViewModel {
             return OnboardingFeaturePageViewController(text: text, subText: subText, image: image)
         case .splash(let text, let subText, let image):
             return OnboardingSplashPageViewController(text: text, subText: subText, image: image)
-        case .testflight(_):
+        case .testflight:
             return OnboardingTFViewController()
         case .changelog(let link):
             return OnboardingChangelogPageViewController(link: link)

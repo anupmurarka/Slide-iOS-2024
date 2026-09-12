@@ -946,7 +946,7 @@ extension VideoMediaViewController {
                 strongSelf.ytButton.isHidden = false
             }
             
-            //Notify other videos to end
+            // Notify other videos to end
             NotificationCenter.default.post(name: .onYouTubeWillStart, object: nil)
             
             if !playlist.isEmpty {
@@ -1009,7 +1009,7 @@ extension VideoMediaViewController {
         }
         
         // fetching the data from the url
-        URLSession.shared.dataTask(with: metaURL, completionHandler: { (data, _, error) -> Void in
+        URLSession.shared.dataTask(with: metaURL, completionHandler: { (data, _, error) in
             if error != nil {
                 failureBlock()
                 return
@@ -1484,7 +1484,7 @@ extension VideoMediaViewController: VideoScrubberViewDelegate {
         let assetExport: AVAssetExportSession = AVAssetExportSession(asset: mixComposition, presetName: AVAssetExportPresetHighestQuality)!
         assetExport.outputFileType = AVFileType.mp4
         assetExport.outputURL = savePathUrl
-        assetExport.exportAsynchronously { () -> Void in
+        assetExport.exportAsynchronously { () in
             switch assetExport.status {
                 
             case AVAssetExportSession.Status.completed:

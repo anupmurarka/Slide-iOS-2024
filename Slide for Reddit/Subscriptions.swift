@@ -186,7 +186,7 @@ class Subscriptions {
         var paginator = p
         do {
             if !multis {
-                try session.getUserRelatedSubreddit(.subscriber, paginator: paginator, completion: { (result) -> Void in
+                try session.getUserRelatedSubreddit(.subscriber, paginator: paginator, completion: { (result) in
                     switch result {
                     case .failure:
                         slideLog(result.error!)

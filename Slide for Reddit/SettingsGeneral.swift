@@ -314,7 +314,7 @@ class SettingsGeneral: BubbleSettingTableViewController {
         
         let alert = AlertController(title: "Select \(submissions ? "submission" : "comment") depth limit", message: nil, preferredStyle: .alert)
 
-        let cancelActionButton = AlertAction(title: "Close", style: .preferred) { _ -> Void in
+        let cancelActionButton = AlertAction(title: "Close", style: .preferred) { _ in
         }
         alert.addAction(cancelActionButton)
 

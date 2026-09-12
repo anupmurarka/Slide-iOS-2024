@@ -21,10 +21,6 @@ class HistoryViewController: ContentListingViewController {
         self.title = "History"
         setBarColors(color: ColorUtil.getColorForSub(sub: ""))
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
         
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

@@ -42,10 +42,6 @@ class SubredditThemeEditViewController: UIViewController, UIColorPickerViewContr
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -218,10 +214,6 @@ class SubredditThemeEditViewController: UIViewController, UIColorPickerViewContr
         
         label.sizeToFit()
         self.navigationItem.titleView = label
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
     }
     
     override func viewDidLoad() {

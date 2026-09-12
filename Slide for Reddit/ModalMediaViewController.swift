@@ -36,7 +36,7 @@ class ModalMediaViewController: UIViewController {
     var spinnerIndicator = UIActivityIndicatorView()
     var titleView: TitleUITextView!
     
-    var didStartPan : (_ panStart: Bool) -> Void = { _ in }
+    var didStartPan: (_ panStart: Bool) -> Void = { _ in }
 
     private var savedColor: UIColor?
     var commentCallback: (() -> Void)?
@@ -225,7 +225,7 @@ class ModalMediaViewController: UIViewController {
             let changedUrl = URL(string: "\(urlBase).png")!
             var request = URLRequest(url: changedUrl)
             request.httpMethod = "HEAD"
-            let task = URLSession.shared.dataTask(with: request) { (_, response, _) -> Void in
+            let task = URLSession.shared.dataTask(with: request) { (_, response, _) in
                 if response != nil {
                     if response!.mimeType ?? "" == "image/gif" {
                         let finalUrl = URL.init(string: baseUrl.absoluteString + ".mp4")!
@@ -339,10 +339,6 @@ class ModalMediaViewController: UIViewController {
         } else {
             desiredStatusBarStyle = .lightContent
         }
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
     }
 
     var desiredStatusBarStyle: UIStatusBarStyle = .default {

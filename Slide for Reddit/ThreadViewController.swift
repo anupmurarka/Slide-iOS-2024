@@ -93,7 +93,7 @@ class ThreadViewControler: MediaViewController, UICollectionViewDelegate, Wrappi
         var items: [UIBarButtonItem] = []
         items.append(space)
         
-        var replyTo = AccountController.currentName //Fallback if no replies have been sent by other user
+        var replyTo = AccountController.currentName // Fallback if no replies have been sent by other user
         if let last = self.baseData.content.last(where: { $0.author != AccountController.currentName }) {
             replyTo = last.author
         } else if let last = self.baseData.content.last {
@@ -116,7 +116,7 @@ class ThreadViewControler: MediaViewController, UICollectionViewDelegate, Wrappi
     @objc func sendReply() {
         if let message = self.baseData.content.last(where: { $0.author != AccountController.currentName }) ?? self.baseData.content.last {
             VCPresenter.presentAlert(TapBehindModalViewController.init(rootViewController: ReplyViewController.init(message: message, completion: {(_) in
-                DispatchQueue.main.async(execute: { () -> Void in
+                DispatchQueue.main.async(execute: { () in
                     self.baseData.getData(reload: false)
                 })
             })), parentVC: self)
@@ -208,11 +208,6 @@ class ThreadViewControler: MediaViewController, UICollectionViewDelegate, Wrappi
     }
     
     var tC: UIViewController?
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return baseData.content.count
@@ -448,7 +443,7 @@ extension ThreadViewControler: MessageCellViewDelegate {
                 VCPresenter.showVC(viewController: vc, popupIfPossible: true, parentNavigationController: self.navigationController, parentViewController: self)
             } else {
                 VCPresenter.presentAlert(TapBehindModalViewController.init(rootViewController: ReplyViewController.init(message: message, completion: {(_) in
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async(execute: { () in
                         BannerUtil.makeBanner(text: "Message sent!", seconds: 3, context: self)
                     })
                 })), parentVC: self)

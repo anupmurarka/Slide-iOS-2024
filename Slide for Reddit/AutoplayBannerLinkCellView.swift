@@ -22,7 +22,7 @@ final class AutoplayBannerLinkCellView: LinkCellView {
             bannerImage.isHidden = false
             if SettingValues.postViewMode == .CENTER {
                 // Image goes between title and buttons
-                title.topAnchor /==/ innerView.topAnchor + ctwelve  ~ .required
+                title.topAnchor /==/ innerView.topAnchor + ctwelve ~ .required
                 if SettingValues.actionBarMode == .SIDE_RIGHT {
                     sideButtons.topAnchor /==/ innerView.topAnchor + ctwelve
                     sideButtons.bottomAnchor /<=/ bannerImage.topAnchor - ceight
@@ -42,9 +42,9 @@ final class AutoplayBannerLinkCellView: LinkCellView {
                 bannerImage.horizontalAnchors /==/ innerView.horizontalAnchors + bannerPadding
                 
                 if SettingValues.actionBarMode.isFull() {
-                    bannerImage.bottomAnchor /==/ box.topAnchor - ctwelve  ~ .required
+                    bannerImage.bottomAnchor /==/ box.topAnchor - ctwelve ~ .required
                 } else {
-                    bannerImage.bottomAnchor /==/ innerView.bottomAnchor - ctwelve  ~ .required
+                    bannerImage.bottomAnchor /==/ innerView.bottomAnchor - ctwelve ~ .required
                 }
                 
                 videoView.edgeAnchors /==/ bannerImage.edgeAnchors
@@ -67,8 +67,8 @@ final class AutoplayBannerLinkCellView: LinkCellView {
                     title.bottomAnchor /==/ box.topAnchor - ceight / 2 ~ .required
                 }
                 
-                bannerImage.topAnchor /==/ innerView.topAnchor + bannerPadding  ~ .required
-                bannerImage.bottomAnchor /==/ title.topAnchor - ceight  ~ .required
+                bannerImage.topAnchor /==/ innerView.topAnchor + bannerPadding ~ .required
+                bannerImage.bottomAnchor /==/ title.topAnchor - ceight ~ .required
                 bannerImage.horizontalAnchors /==/ innerView.horizontalAnchors + bannerPadding
                 if SettingValues.actionBarMode.isSide() {
                     sideButtons.topAnchor /==/ bannerImage.bottomAnchor + ceight

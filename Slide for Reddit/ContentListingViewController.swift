@@ -261,11 +261,6 @@ class ContentListingViewController: MediaViewController, UICollectionViewDelegat
     
     var tC: UIViewController?
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return baseData.content.count
     }
@@ -840,7 +835,7 @@ extension ContentListingViewController: MessageCellViewDelegate {
                 VCPresenter.showVC(viewController: vc, popupIfPossible: true, parentNavigationController: self.navigationController, parentViewController: self)
             } else {
                 VCPresenter.presentAlert(TapBehindModalViewController.init(rootViewController: ReplyViewController.init(message: message, completion: {(_) in
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async(execute: { () in
                         BannerUtil.makeBanner(text: "Message sent!", seconds: 3, context: self)
                     })
                 })), parentVC: self)

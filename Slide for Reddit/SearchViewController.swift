@@ -109,7 +109,7 @@ class SearchViewController: ContentListingViewController {
     
 }
 
-//https://stackoverflow.com/a/28288340/3697225
+// https://stackoverflow.com/a/28288340/3697225
 extension StringProtocol {
     var firstUppercased: String {
         guard let first = first else { return "" }

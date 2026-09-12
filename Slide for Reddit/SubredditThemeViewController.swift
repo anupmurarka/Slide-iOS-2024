@@ -149,7 +149,7 @@ class SubredditThemeViewController: UITableViewController, ColorPickerViewDelega
         defaults.synchronize()
         do {
             if !AccountController.isLoggedIn {
-                try (UIApplication.shared.delegate as! AppDelegate).session!.getSubreddit(.default, paginator: Paginator(), completion: { (result) -> Void in
+                try (UIApplication.shared.delegate as! AppDelegate).session!.getSubreddit(.default, paginator: Paginator(), completion: { (result) in
                     switch result {
                     case .failure:
                         slideLog(result.error!)
@@ -167,7 +167,7 @@ class SubredditThemeViewController: UITableViewController, ColorPickerViewDelega
                         }
 
                     }
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async(execute: { () in
                         self.complete()
                     })
                 })
@@ -198,7 +198,7 @@ class SubredditThemeViewController: UITableViewController, ColorPickerViewDelega
                     }
                     toReturn.insert("all", at: 0)
                     toReturn.insert("frontpage", at: 0)
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async(execute: { () in
                         self.complete()
                     })
                 })
@@ -222,11 +222,6 @@ class SubredditThemeViewController: UITableViewController, ColorPickerViewDelega
             }
         }
         tableView.reloadData()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: – Table view data source
@@ -300,7 +295,7 @@ class SubredditThemeViewController: UITableViewController, ColorPickerViewDelega
 
             isAccent = false
             let margin: CGFloat = 10.0
-            let rect = CGRect(x: margin, y: margin, width: UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 314 - margin * 4.0: alertController.view.bounds.size.width - margin * 4.0, height: 150)
+            let rect = CGRect(x: margin, y: margin, width: UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 314 - margin * 4.0 : alertController.view.bounds.size.width - margin * 4.0, height: 150)
             let MKColorPicker = ColorPickerView.init(frame: rect)
             MKColorPicker.delegate = self
             MKColorPicker.colors = GMPalette.allColor()
@@ -347,7 +342,7 @@ class SubredditThemeViewController: UITableViewController, ColorPickerViewDelega
         let alertController = UIAlertController(title: "\n\n\n\n\n\n\n\n", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
 
         let margin: CGFloat = 10.0
-        let rect = CGRect(x: margin, y: margin, width: UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 314 - margin * 4.0: alertController.view.bounds.size.width - margin * 4.0, height: 150)
+        let rect = CGRect(x: margin, y: margin, width: UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 314 - margin * 4.0 : alertController.view.bounds.size.width - margin * 4.0, height: 150)
         let MKColorPicker = ColorPickerView.init(frame: rect)
         MKColorPicker.delegate = self
         MKColorPicker.colors = GMPalette.allColorAccent()
@@ -678,7 +673,7 @@ public extension UIView {
     func showToast(_ toast: UIView, duration: TimeInterval, position: CGPoint, completion: ((_ didTap: Bool) -> Void)?) {
         objc_setAssociatedObject(toast, &ToastKeys.Completion, ToastCompletionWrapper(completion), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
-        if objc_getAssociatedObject(self, &ToastKeys.ActiveToast) as? UIView != nil, ToastManager.shared.queueEnabled {
+        if objc_getAssociatedObject(self, &ToastKeys.ActiveToast) is UIView, ToastManager.shared.queueEnabled {
             objc_setAssociatedObject(toast, &ToastKeys.Duration, NSNumber(value: duration), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             objc_setAssociatedObject(toast, &ToastKeys.Position, NSValue(cgPoint: position), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
@@ -704,7 +699,7 @@ public extension UIView {
      */
     func makeToastActivity(_ position: ToastPosition) {
         // sanity
-        if objc_getAssociatedObject(self, &ToastKeys.ActivityView) as? UIView != nil {
+        if objc_getAssociatedObject(self, &ToastKeys.ActivityView) is UIView {
             return
         }
 
@@ -727,7 +722,7 @@ public extension UIView {
      */
     func makeToastActivity(_ position: CGPoint) {
         // sanity
-        if objc_getAssociatedObject(self, &ToastKeys.ActivityView) as? UIView != nil {
+        if objc_getAssociatedObject(self, &ToastKeys.ActivityView) is UIView {
             return
         }
 
@@ -740,9 +735,9 @@ public extension UIView {
      */
     func hideToastActivity() {
         if let toast = objc_getAssociatedObject(self, &ToastKeys.ActivityView) as? UIView {
-            UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: { () -> Void in
+            UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: { () in
                 toast.alpha = 0.0
-            }, completion: { (_: Bool) -> Void in
+            }, completion: { (_: Bool) in
                 toast.removeFromSuperview()
                 objc_setAssociatedObject(self, &ToastKeys.ActivityView, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             })
@@ -759,7 +754,7 @@ public extension UIView {
 
         self.addSubview(toast)
 
-        UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: .curveEaseOut, animations: { () -> Void in
+        UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: .curveEaseOut, animations: { () in
             toast.alpha = 1.0
         }, completion: nil)
     }
@@ -804,7 +799,7 @@ public extension UIView {
 
         self.addSubview(toast)
 
-        UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseOut, .allowUserInteraction], animations: { () -> Void in
+        UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseOut, .allowUserInteraction], animations: { () in
             toast.alpha = 1.0
         }, completion: { _ in
             let timer = Timer(timeInterval: duration, target: self, selector: #selector(UIView.toastTimerDidFinish(_:)), userInfo: toast, repeats: false)
@@ -819,7 +814,7 @@ public extension UIView {
 
     private func hideToast(_ toast: UIView, fromTap: Bool) {
 
-        UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: { () -> Void in
+        UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: { () in
             toast.alpha = 0.0
         }, completion: { _ in
             toast.removeFromSuperview()

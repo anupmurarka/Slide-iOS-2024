@@ -9,7 +9,7 @@
 import UIKit
 
 private let minimumHitArea = CGSize(width: 100, height: 100)
-//https://stackoverflow.com/a/50127204/3697225
+// https://stackoverflow.com/a/50127204/3697225
 extension UIButton {
     func leftImage(image: UIImage, renderMode: UIImage.RenderingMode) {
         self.setImage(image.withRenderingMode(renderMode), for: .normal)

@@ -176,7 +176,7 @@ class AlbumViewController: SwipeDownModalVC, UIPageViewControllerDataSource, UIP
                         self.urlStringKeys.append(urlStringkey)
                         self.embeddableMediaDataCache[urlStringkey] = EmbeddableMediaDataModel(
                             baseURL: URL.init(string: urlStringkey)!,
-                            lqURL: URL.init(string: "https://imgur.com/\(image.hash!)\(image.ext! != ".gif" ? "m":"")\(image.ext!)"),
+                            lqURL: URL.init(string: "https://imgur.com/\(image.hash!)\(image.ext! != ".gif" ? "m" : "")\(image.ext!)"),
                             text: image.description,
                             inAlbum: true,
                             buttons: true
@@ -330,8 +330,8 @@ class AlbumViewController: SwipeDownModalVC, UIPageViewControllerDataSource, UIP
                 rawDat = rawDat.substring(0, length: rawDat.length - 1)
             }
             
-            if rawDat.contains("/") && (rawDat.length - (rawDat.lastIndexOf("/")!+1)) < 4 {
-                rawDat = rawDat.replacingOccurrences(of: rawDat.substring(rawDat.lastIndexOf("/")!, length: rawDat.length - (rawDat.lastIndexOf("/")!+1)), with: "")
+            if rawDat.contains("/") && (rawDat.length - (rawDat.lastIndexOf("/")! + 1)) < 4 {
+                rawDat = rawDat.replacingOccurrences(of: rawDat.substring(rawDat.lastIndexOf("/")!, length: rawDat.length - (rawDat.lastIndexOf("/")! + 1)), with: "")
             }
 
             if rawDat.contains("?") {

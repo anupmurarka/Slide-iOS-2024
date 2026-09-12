@@ -54,10 +54,6 @@ class SettingsWidget: BubbleSettingTableViewController {
         self.widgets = suite?.stringArray(forKey: "widgets") ?? []
         self.tableView.reloadData()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
 
     override func loadView() {
         super.loadView()

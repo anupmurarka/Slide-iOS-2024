@@ -22,7 +22,7 @@ public extension AlertController {
         }
     }
 
-    //https://stackoverflow.com/a/51723032/3697225
+    // https://stackoverflow.com/a/51723032/3697225
     func showWindowless() {
         self.alertWindow = UIWindow.init(frame: UIScreen.main.bounds)
 
@@ -57,7 +57,7 @@ public extension UIAlertController {
         }
     }
 
-    //https://stackoverflow.com/a/51723032/3697225
+    // https://stackoverflow.com/a/51723032/3697225
     func showWindowless() {
         self.alertWindow = UIWindow.init(frame: UIScreen.main.bounds)
 

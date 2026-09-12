@@ -911,7 +911,7 @@ class LinkCellView: UICollectionViewCell, UIViewControllerPreviewingDelegate, UI
                 UIView.animate(withDuration: 0.2) {
                     self.backgroundColor = self.action.getColor()
                 }
-            } else if progress < 0.1  && previousProgress >= 0.1 {
+            } else if progress < 0.1 && previousProgress >= 0.1 {
                 typeImage.alpha = 1
                 UIView.animate(withDuration: 0.2, animations: {
                     self.typeImage.alpha = 0
@@ -2422,7 +2422,7 @@ class LinkCellView: UICollectionViewCell, UIViewControllerPreviewingDelegate, UI
     
     func editSelftext() {
         let reply = ReplyViewController.init(submission: link!, sub: (self.link?.subreddit)!) { (cr) in
-            DispatchQueue.main.async(execute: { () -> Void in
+            DispatchQueue.main.async(execute: { () in
                 if let parent = self.parentViewController {
                     self.setLink(submission: SubmissionObject.linkToSubmissionObject(submission: cr!), parent: parent, nav: parent.navigationController, baseSub: (self.link?.subreddit)!, np: false)
                     self.showBody(width: self.innerView.frame.size.width - 24)
@@ -2831,7 +2831,7 @@ class LinkCellView: UICollectionViewCell, UIViewControllerPreviewingDelegate, UI
                 innerPadding += (SettingValues.postViewMode == .COMPACT ? 8 : 12) // between top and thumbnail
                 innerPadding += 18 - (SettingValues.postViewMode == .COMPACT && !full ? 4 : 0) // between label and bottom box
                 innerPadding += (SettingValues.postViewMode == .COMPACT && !full ? 4 : 8) // between box and end
-            } else if big  && SettingValues.postImageMode != .NONE {
+            } else if big && SettingValues.postImageMode != .NONE {
                 if SettingValues.postViewMode == .CENTER || full {
                     innerPadding += (SettingValues.postViewMode == .COMPACT && !full ? 8 : 12) // between label
                     innerPadding += (SettingValues.postViewMode == .COMPACT && !full ? 4 : 8) // between banner and box

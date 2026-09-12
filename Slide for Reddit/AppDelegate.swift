@@ -597,7 +597,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
 
-        func handler (_ response: HTTPURLResponse?, _ dataURL: URL?, _ error: NSError?) {
+        func handler(_ response: HTTPURLResponse?, _ dataURL: URL?, _ error: NSError?) {
             guard error == nil else {
                 slideLog(String(describing: error?.localizedDescription))
                 completionHandler(.failed)
@@ -718,7 +718,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         defaults.synchronize()
         do {
             if !AccountController.isLoggedIn {
-                try session?.getSubreddit(.default, paginator: paginator, completion: { (result) -> Void in
+                try session?.getSubreddit(.default, paginator: paginator, completion: { (result) in
                     switch result {
                     case .failure:
                         slideLog(result.error!)
@@ -732,7 +732,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         }
                     }
                     if subredditController != nil {
-                        DispatchQueue.main.async(execute: { () -> Void in
+                        DispatchQueue.main.async(execute: { () in
                             subredditController?.complete(subs: toReturn)
                         })
                     }
@@ -742,7 +742,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if UserDefaults.standard.array(forKey: "subs" + (subredditController?.tempToken?.name ?? "")) != nil {
                     Subscriptions.sync(name: (subredditController?.tempToken?.name ?? ""), completion: nil)
                     if subredditController != nil {
-                        DispatchQueue.main.async(execute: { () -> Void in
+                        DispatchQueue.main.async(execute: { () in
                             subredditController?.complete(subs: Subscriptions.subreddits)
                         })
                     }
@@ -761,7 +761,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         toReturn.insert("all", at: 0)
                         toReturn.insert("frontpage", at: 0)
                         if subredditController != nil {
-                            DispatchQueue.main.async(execute: { () -> Void in
+                            DispatchQueue.main.async(execute: { () in
                                 subredditController?.complete(subs: toReturn)
                             })
                         }
@@ -771,7 +771,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             slideLog(error)
             if subredditController != nil {
-                DispatchQueue.main.async(execute: { () -> Void in
+                DispatchQueue.main.async(execute: { () in
                     subredditController?.complete(subs: toReturn)
                 })
             }
@@ -825,14 +825,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
             
-            return OAuth2Authorizer.sharedInstance.receiveRedirect(url, completion: { (result) -> Void in
+            return OAuth2Authorizer.sharedInstance.receiveRedirect(url, completion: { (result) in
                 slideLog(result)
                 switch result {
                     
                 case .failure(let error):
                     slideLog(error)
                 case .success(let token):
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async(execute: { () in
                         do {
                             try LocalKeystore.save(token: token, of: token.name)
                             self.login?.setToken(token: token)
@@ -940,7 +940,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var isAvailable = false
         let semaphore = DispatchSemaphore(value: 0)
         
-        container.accountStatus { (status, error) in
+        container.accountStatus { (status, _) in
             switch status {
             case .available:
                 isAvailable = true
@@ -1063,12 +1063,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard session?.token != nil else { return }
         // refresh current session token
         do {
-            try self.session?.refreshTokenLocal({ (result) -> Void in
+            try self.session?.refreshTokenLocal({ (result) in
                 switch result {
                 case .failure(let error):
                     slideLog(error)
                 case .success(let token):
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async(execute: { () in
                         slideLog(token)
                         NotificationCenter.default.post(name: OAuth2TokenRepositoryDidSaveTokenName, object: nil, userInfo: nil)
                     })
@@ -1148,12 +1148,12 @@ extension Session {
         guard let currentToken = token as? OAuth2Token
             else { throw ReddiftError.tokenIsNotAvailable as NSError }
         do {
-            try currentToken.revoke({ (result) -> Void in
+            try currentToken.revoke({ (result) in
                 switch result {
                 case .failure(let error):
                     completion(Result(error: error as NSError))
                 case .success:
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async(execute: { () in
                         do {
                             try LocalKeystore.removeToken(of: currentToken.name)
                             completion(Result(value: currentToken))

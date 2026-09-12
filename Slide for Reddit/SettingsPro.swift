@@ -53,10 +53,6 @@ class SettingsPro: UITableViewController, MFMailComposeViewControllerDelegate {
         setupBaseBarColors()
         navigationController?.setToolbarHidden(true, animated: false)
     }
-
-    override func loadView() {
-        super.loadView()
-    }
     
     var cellsDone = false
 

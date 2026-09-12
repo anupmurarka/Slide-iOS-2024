@@ -85,7 +85,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
         type = .NEW_MESSAGE
         super.init(nibName: nil, bundle: nil)
         setBarColors(color: ColorUtil.getColorForSub(sub: ""))
-        self.messageCallback = { (message, error) in
+        self.messageCallback = { (_, error) in
             DispatchQueue.main.async {
                 if error != nil {
                     self.toolbar?.saveDraft(self)
@@ -126,7 +126,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
         toReplyTo = message
         super.init(nibName: nil, bundle: nil)
         setBarColors(color: ColorUtil.getColorForUser(name: message!.author))
-        self.messageCallback = { (message, error) in
+        self.messageCallback = { (_, error) in
             DispatchQueue.main.async {
                 if error != nil {
                     if error!.localizedDescription.contains("25") {
@@ -489,8 +489,8 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
          sticky = UIStateButton.init(frame: CGRect.init(x: 0, y: 0, width: 100, height: 45)).then {
             $0.layer.cornerRadius = 15
             $0.clipsToBounds = true
-            $0.setTitle(type == .REPLY_SUBMISSION ? "Comment stickied": "Post stickied", for: .selected)
-            $0.setTitle(type == .REPLY_SUBMISSION ? "Comment not stickied": "Post not stickied", for: .normal)
+            $0.setTitle(type == .REPLY_SUBMISSION ? "Comment stickied" : "Post stickied", for: .selected)
+            $0.setTitle(type == .REPLY_SUBMISSION ? "Comment not stickied" : "Post not stickied", for: .normal)
             $0.setTitleColor(GMColor.green500Color(), for: .normal)
             $0.setTitleColor(.white, for: .selected)
             $0.titleLabel?.textAlignment = .center
@@ -1434,7 +1434,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
 
             do {
                 if type == .SUBMIT_TEXT {
-                    try self.session?.submitText(Subreddit.init(subreddit: subreddit.text), title: title.text, text: body.text ?? "", sendReplies: replies!.isSelected, captcha: "", captchaIden: "", flairID: self.selectedFlairID, flairText: self.selectedFlairText, completion: { (result) -> Void in
+                    try self.session?.submitText(Subreddit.init(subreddit: subreddit.text), title: title.text, text: body.text ?? "", sendReplies: replies!.isSelected, captcha: "", captchaIden: "", flairID: self.selectedFlairID, flairText: self.selectedFlairText, completion: { (result) in
                         switch result {
                         case .failure(let error):
                             slideLog(error.description)
@@ -1450,7 +1450,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
                     })
 
                 } else {
-                    try self.session?.submitLink(Subreddit.init(subreddit: subreddit.text), title: title.text, URL: body.text, sendReplies: replies!.isSelected, captcha: "", captchaIden: "", flairID: self.selectedFlairID, flairText: self.selectedFlairText, completion: { (result) -> Void in
+                    try self.session?.submitLink(Subreddit.init(subreddit: subreddit.text), title: title.text, URL: body.text, sendReplies: replies!.isSelected, captcha: "", captchaIden: "", flairID: self.selectedFlairID, flairText: self.selectedFlairText, completion: { (result) in
                         switch result {
                         case .failure(let error):
                             slideLog(error.description)
@@ -1582,7 +1582,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
         } else {
             do {
                 let name = toReplyTo!.getId()
-                try self.session?.replyMessage(body, parentName: name, completion: { (result) -> Void in
+                try self.session?.replyMessage(body, parentName: name, completion: { (result) in
                     switch result {
                     case .failure(let error):
                         slideLog(error.description)
@@ -1634,7 +1634,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
 
         do {
             let name = toReplyTo!.getId()
-            try self.session?.postComment(body.text, parentName: name, completion: { (result) -> Void in
+            try self.session?.postComment(body.text, parentName: name, completion: { (result) in
                 switch result {
                 case .failure(let error):
                     slideLog(error.description)
@@ -1652,7 +1652,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
         DispatchQueue.main.async {
             if self.sticky != nil && self.sticky!.isSelected {
                 do {
-                    try self.session?.distinguish(comment.id, how: "yes", sticky: true, completion: { (_) -> Void in
+                    try self.session?.distinguish(comment.id, how: "yes", sticky: true, completion: { (_) in
                         var newComment = comment
                         newComment.stickied = true
                         newComment.distinguished = .moderator

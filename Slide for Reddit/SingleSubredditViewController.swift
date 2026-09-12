@@ -701,7 +701,7 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
                 self.fab!.isHidden = false
                 self.fab?.transform = CGAffineTransform.identity.scaledBy(x: 0.001, y: 0.001)
 
-                UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                UIView.animate(withDuration: 0.3, animations: { () in
                     self.fab?.transform = CGAffineTransform.identity
                 })
             } else {
@@ -713,7 +713,7 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
     func hideFab(_ animated: Bool = true) {
         if self.fab != nil {
             if animated {
-                UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                UIView.animate(withDuration: 0.3, animations: { () in
                     self.fab!.alpha = 0
                 }, completion: { [weak self] _ in
                     guard let self = self else { return }
@@ -943,7 +943,7 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
     var lastVersion = 0
     
     func doToolbar() {
-        if let mainVC = self.parent as? MainViewController, (!self.single || mainVC is SplitMainViewController) {
+        if let mainVC = self.parent as? MainViewController, !self.single || mainVC is SplitMainViewController {
             doSortImage(mainVC.sortButton)
         }
         
@@ -1242,7 +1242,6 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
         dataSource.hideReadPosts { [weak self] (indexPaths: [IndexPath]) in
             guard let self = self else { return }
             
-            
             func containsTopIndex() -> Bool {
                 if topIndex == 0 {
                     return false
@@ -1259,7 +1258,6 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
             while containsTopIndex() {
                 topIndex -= 1
             }
-            
             
             DispatchQueue.main.async {
                 if !indexPaths.isEmpty {
@@ -1427,11 +1425,6 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
         }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     @objc func showSortMenu(_ selector: UIView?) {
         let isDefault = UISwitch()
         isDefault.onTintColor = ColorUtil.accentColorForSub(sub: self.sub)
@@ -1452,7 +1445,7 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
         // TODO: show sort default? let defaultSort = SettingValues.getLinkSorting(forSubreddit: self.sub)
         
         for link in LinkSortType.cases {
-            if link == LinkSortType.best && sub.lowercased() != "frontpage"{
+            if link == LinkSortType.best && sub.lowercased() != "frontpage" {
                 continue
             }
             var sortIcon = UIImage()
@@ -1486,7 +1479,7 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
     func showTimeMenu(s: LinkSortType, selector: UIView?, isDefault: UISwitch) {
         if s == .hot || s == .new || s == .rising || s == .best {
             dataSource.sorting = s
-            if let mainVC = self.parent as? MainViewController, (!self.single || mainVC is SplitMainViewController) {
+            if let mainVC = self.parent as? MainViewController, !self.single || mainVC is SplitMainViewController {
                 self.doSortImage(mainVC.sortButton)
             } else {
                 self.doSortImage(sortButton)
@@ -1504,7 +1497,7 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
             for t in TimeFilterWithin.cases {
                 actionSheetController.addAction(title: t.param, icon: nil) {
                     self.dataSource.sorting = s
-                    if let mainVC = self.parent as? MainViewController, (!self.single || mainVC is SplitMainViewController) {
+                    if let mainVC = self.parent as? MainViewController, !self.single || mainVC is SplitMainViewController {
                         self.doSortImage(mainVC.sortButton)
                     } else {
                         self.doSortImage(self.sortButton)
@@ -1998,7 +1991,7 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
     var server: DefaultHTTPServer?
     
     func addToHomescreen() {
-        DispatchQueue.global(qos: .background).async { () -> Void in
+        DispatchQueue.global(qos: .background).async { () in
             self.loop = try! SelectorEventLoop(selector: try! KqueueSelector())
             self.server = DefaultHTTPServer(eventLoop: self.loop!, port: 8080) { (_, startResponse: ((String, [(String, String)]) -> Void), sendBody: ((Data) -> Void)
                 ) in
@@ -2259,7 +2252,7 @@ extension SingleSubredditViewController {
 
         isAccent = false
         let margin: CGFloat = 10.0
-        let rect = CGRect(x: margin, y: margin, width: UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 314 - margin * 4.0: alertController.view.bounds.size.width - margin * 4.0, height: 150)
+        let rect = CGRect(x: margin, y: margin, width: UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 314 - margin * 4.0 : alertController.view.bounds.size.width - margin * 4.0, height: 150)
         let MKColorPicker = ColorPickerView.init(frame: rect)
         MKColorPicker.scrollToPreselectedIndex = true
         MKColorPicker.delegate = self
@@ -2339,7 +2332,7 @@ extension SingleSubredditViewController {
 
         isAccent = true
         let margin: CGFloat = 10.0
-        let rect = CGRect(x: margin, y: margin, width: UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 314 - margin * 4.0: alertController.view.bounds.size.width - margin * 4.0, height: 150)
+        let rect = CGRect(x: margin, y: margin, width: UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 314 - margin * 4.0 : alertController.view.bounds.size.width - margin * 4.0, height: 150)
         let MKColorPicker = ColorPickerView.init(frame: rect)
         MKColorPicker.scrollToPreselectedIndex = true
         MKColorPicker.delegate = self
@@ -2971,7 +2964,7 @@ extension SingleSubredditViewController: SubmissionMoreDelegate {
         actionSheetController.addCancelButton()
         
         var cancelActionButton = UIAlertAction()
-        cancelActionButton = UIAlertAction(title: "Posts by u/\(link.author)", style: .default) { _ -> Void in
+        cancelActionButton = UIAlertAction(title: "Posts by u/\(link.author)", style: .default) { _ in
             PostFilter.profiles.append(link.author as NSString)
             PostFilter.saveAndUpdate()
             self.dataSource.content = PostFilter.filter(self.dataSource.content, previous: nil, baseSubreddit: self.sub).map { $0 as! SubmissionObject }
@@ -2979,7 +2972,7 @@ extension SingleSubredditViewController: SubmissionMoreDelegate {
         }
         actionSheetController.addAction(cancelActionButton)
 
-        cancelActionButton = UIAlertAction(title: "Posts from r/\(link.subreddit)", style: .default) { _ -> Void in
+        cancelActionButton = UIAlertAction(title: "Posts from r/\(link.subreddit)", style: .default) { _ in
             PostFilter.subreddits.append(link.subreddit as NSString)
             PostFilter.saveAndUpdate()
             self.dataSource.content = PostFilter.filter(self.dataSource.content, previous: nil, baseSubreddit: self.sub).map { $0 as! SubmissionObject }
@@ -2987,7 +2980,7 @@ extension SingleSubredditViewController: SubmissionMoreDelegate {
         }
         actionSheetController.addAction(cancelActionButton)
 
-        cancelActionButton = UIAlertAction(title: "Posts linking to \(link.domain)", style: .default) { _ -> Void in
+        cancelActionButton = UIAlertAction(title: "Posts linking to \(link.domain)", style: .default) { _ in
             PostFilter.domains.append(link.domain as NSString)
             PostFilter.saveAndUpdate()
             self.dataSource.content = PostFilter.filter(self.dataSource.content, previous: nil, baseSubreddit: self.sub).map { $0 as! SubmissionObject }

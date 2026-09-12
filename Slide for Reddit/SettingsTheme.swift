@@ -82,7 +82,7 @@ class SettingsTheme: BubbleSettingTableViewController, ColorPickerViewDelegate {
         } else {
             let alertController = UIAlertController(title: "\n\n\n\n\n\n\n\n", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
             let margin: CGFloat = 10.0
-            let rect = CGRect(x: margin, y: margin, width: UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 314 - margin * 4.0: UIScreen.main.bounds.size.width - margin * 4.0, height: 200)
+            let rect = CGRect(x: margin, y: margin, width: UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 314 - margin * 4.0 : UIScreen.main.bounds.size.width - margin * 4.0, height: 200)
             let MKColorPicker = ColorPickerView.init(frame: rect)
             MKColorPicker.delegate = self
             MKColorPicker.colors = GMPalette.allColor()
@@ -172,7 +172,7 @@ class SettingsTheme: BubbleSettingTableViewController, ColorPickerViewDelegate {
             let alertController = UIAlertController(title: "\n\n\n\n\n\n\n\n", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
 
             let margin: CGFloat = 10.0
-            let rect = CGRect(x: margin, y: margin, width: UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 314 - margin * 4.0: alertController.view.bounds.size.width - margin * 4.0, height: 200)
+            let rect = CGRect(x: margin, y: margin, width: UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 314 - margin * 4.0 : alertController.view.bounds.size.width - margin * 4.0, height: 200)
             let MKColorPicker = ColorPickerView.init(frame: rect)
             MKColorPicker.delegate = self
             MKColorPicker.colors = GMPalette.allColorAccent()
@@ -436,10 +436,6 @@ class SettingsTheme: BubbleSettingTableViewController, ColorPickerViewDelegate {
         return 4
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
@@ -637,7 +633,7 @@ class SettingsTheme: BubbleSettingTableViewController, ColorPickerViewDelegate {
     func selectTime() {
         let alert = AlertController(title: "Select night hours", message: nil, preferredStyle: .alert)
 
-        let cancelActionButton = AlertAction(title: "Save", style: .preferred) { _ -> Void in
+        let cancelActionButton = AlertAction(title: "Save", style: .preferred) { _ in
             _ = ColorUtil.doInit()
             self.setupViews()
             SingleSubredditViewController.cellVersion += 1

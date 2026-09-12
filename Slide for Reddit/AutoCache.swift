@@ -85,7 +85,7 @@ public class AutoCache: NSObject {
                     name = name.replacingOccurrences(of: "t3_", with: "")
                 }
 
-                try (UIApplication.shared.delegate as! AppDelegate).session?.getArticles(name, sort: SettingValues.defaultCommentSorting, depth: SettingValues.commentDepth, context: 3, completion: { (result) -> Void in
+                try (UIApplication.shared.delegate as! AppDelegate).session?.getArticles(name, sort: SettingValues.defaultCommentSorting, depth: SettingValues.commentDepth, context: 3, completion: { (result) in
                     switch result {
                     case .failure(let error):
                         done += 1

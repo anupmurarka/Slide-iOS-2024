@@ -66,7 +66,7 @@ final class ThumbnailLinkCellView: LinkCellView {
             if !SettingValues.actionBarMode.isFull() {
                 title.bottomAnchor /==/ innerView.bottomAnchor - ceight ~ .required
             } else {
-                title.bottomAnchor /==/ box.topAnchor - ceight  ~ .required
+                title.bottomAnchor /==/ box.topAnchor - ceight ~ .required
             }
             
             subicon.topAnchor /==/ title.topAnchor

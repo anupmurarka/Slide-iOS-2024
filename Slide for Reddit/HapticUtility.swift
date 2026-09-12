@@ -9,7 +9,7 @@
 import AudioToolbox.AudioServices
 import UIKit
 
-//https://medium.com/@sdrzn/make-your-ios-app-feel-better-a-comprehensive-guide-over-taptic-engine-and-haptic-feedback-724dec425f10
+// https://medium.com/@sdrzn/make-your-ios-app-feel-better-a-comprehensive-guide-over-taptic-engine-and-haptic-feedback-724dec425f10
 public class HapticUtility {
     
     static let peek = SystemSoundID(1519)

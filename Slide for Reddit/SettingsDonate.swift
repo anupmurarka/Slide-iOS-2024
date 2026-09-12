@@ -19,10 +19,6 @@ class SettingsDonate: UIViewController, MFMailComposeViewControllerDelegate {
     
     static var changed = false
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         if UIColor.isLightTheme && SettingValues.reduceColor {
                         if #available(iOS 13, *) {
@@ -40,10 +36,6 @@ class SettingsDonate: UIViewController, MFMailComposeViewControllerDelegate {
         super.viewWillAppear(animated)
         setupBaseBarColors()
         navigationController?.setToolbarHidden(true, animated: false)
-    }
-    
-    override func loadView() {
-        super.loadView()
     }
     
     var cellsDone = false

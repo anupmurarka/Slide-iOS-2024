@@ -469,7 +469,7 @@ extension UIImage {
     }
 }
 
-//https://medium.com/@sdrzn/adding-gesture-recognizers-with-closures-instead-of-selectors-9fb3e09a8f0b
+// https://medium.com/@sdrzn/adding-gesture-recognizers-with-closures-instead-of-selectors-9fb3e09a8f0b
 extension UIView {
 
     // In order to create computed properties for extensions, we need a key to

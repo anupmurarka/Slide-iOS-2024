@@ -77,7 +77,7 @@ class IAPHandler: NSObject {
 
 extension IAPHandler: SKProductsRequestDelegate, SKPaymentTransactionObserver {
     // MARK: - REQUEST IAP PRODUCTS
-    func productsRequest (_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         getItemsBlock?(response.products)
         if response.products.count > 0 {
             iapProducts = response.products

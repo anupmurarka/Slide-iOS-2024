@@ -31,16 +31,16 @@ class LeftTransition: NSObject, UIViewControllerAnimatedTransitioning {
         
         if dismiss {
             containerView.bringSubviewToFront(fromVC.view)
-            UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: { () -> Void in
+            UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: { () in
                 fromVC.view.frame = originRect
-            }, completion: { (_ ) -> Void in
+            }, completion: { (_ ) in
                 fromVC.view.removeFromSuperview()
                 transitionContext.completeTransition(true )
             })
         } else {
             toVC.view.frame = originRect
             UIView.animate(withDuration: transitionDuration(using: transitionContext),
-                                       animations: { () -> Void in
+                                       animations: { () in
                                         toVC.view.center = containerView.center
             }, completion: { _ in
                 fromVC.view.removeFromSuperview()

@@ -517,8 +517,7 @@ public class TextDisplayStackView: UIStackView {
         return TextDisplayStackView.createAttributedChunk(baseHTML: baseHTML, fontSize: fontSize, submission: submission, accentColor: accent, fontColor: baseFontColor, linksCallback: linksCallback, indexCallback: indexCallback)
     }
     
-    public static func
-        createAttributedChunk(baseHTML: String, fontSize: CGFloat, submission: Bool, accentColor: UIColor, fontColor: UIColor, linksCallback: ((URL) -> Void)?, indexCallback: (() -> Int)?) -> NSAttributedString {
+    public static func createAttributedChunk(baseHTML: String, fontSize: CGFloat, submission: Bool, accentColor: UIColor, fontColor: UIColor, linksCallback: ((URL) -> Void)?, indexCallback: (() -> Int)?) -> NSAttributedString {
         let font = FontGenerator.fontOfSize(size: fontSize, submission: submission)
         var htmlBase = TextDisplayStackView
             .addSpoilers(baseHTML)
@@ -689,7 +688,7 @@ public class TextDisplayStackView: UIStackView {
             let imgPattern = "\\<img.+src\\=(?:\\\"|\\')(.+?)(?:\\\"|\\')(?:.+?)\\>"
             
             if let regex = try? NSRegularExpression(pattern: imgPattern, options: .caseInsensitive) {
-                let modString = regex.stringByReplacingMatches(in: html, options: .withTransparentBounds, range: NSMakeRange(0, html.length), withTemplate: "Image")
+                let modString = regex.stringByReplacingMatches(in: html, options: .withTransparentBounds, range: NSRange(location: 0, length: html.length), withTemplate: "Image")
                 preSeperated.append(modString)
             } else {
                 preSeperated.append(html)

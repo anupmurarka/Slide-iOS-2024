@@ -53,7 +53,7 @@ class InboxViewController: TabsContentPagingViewController {
 
     @objc func new(_ sender: AnyObject) {
         VCPresenter.presentAlert(TapBehindModalViewController.init(rootViewController: ReplyViewController.init(completion: {(_) in
-            DispatchQueue.main.async(execute: { () -> Void in
+            DispatchQueue.main.async(execute: { () in
                 BannerUtil.makeBanner(text: "Message sent!", seconds: 3, context: self)
             })
         })), parentVC: self)

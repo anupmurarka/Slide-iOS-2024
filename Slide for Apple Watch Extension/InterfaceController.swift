@@ -13,12 +13,6 @@ import WatchKit
 class InterfaceController: Votable {
     @IBOutlet weak var table: WKInterfaceTable!
     @IBOutlet weak var loadingImage: WKInterfaceImage!
-    
-    override func awake(withContext context: Any?) {
-        super.awake(withContext: context)
-        
-        // Configure interface objects here.
-    }
 
     override func contextForSegue(withIdentifier segueIdentifier: String, in table: WKInterfaceTable, rowIndex: Int) -> Any? {
         return table.rowController(at: rowIndex)
@@ -82,12 +76,6 @@ class InterfaceController: Votable {
         }, errorHandler: { (error) in
             print(error)
         })
-    }
-    
-    override func didDeactivate() {
-        // setTitle("DEACTIVATE")
-        // This method is called when watch view controller is no longer visible
-        super.didDeactivate()
     }
     
     func beginLoadingTable() {

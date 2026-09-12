@@ -118,7 +118,7 @@ class TabsContentPagingViewController: ColorMuxPagingViewController, UIPageViewC
         self.automaticallyAdjustsScrollViewInsets = false
 
         var isModal13 = false
-        if #available(iOS 13, *), (self.navigationController?.viewControllers[0] == self) {
+        if #available(iOS 13, *), self.navigationController?.viewControllers[0] == self {
             isModal13 = true
         }
         let topAnchorOffset = (self.navigationController?.navigationBar.frame.size.height ?? 64) + (isModal13 ? 0 : UIApplication.shared.statusBarFrame.height)

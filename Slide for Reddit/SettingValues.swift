@@ -415,7 +415,7 @@ class SettingValues {
         
         func getPhoto() -> String {
             switch self {
-            case .SUBS :
+            case .SUBS: 
                 return "subs"
             case .POST:
                 return "edit"
@@ -430,7 +430,7 @@ class SettingValues {
         
         func getColor() -> UIColor {
             switch self {
-            case .SUBS :
+            case .SUBS: 
                 return GMColor.blue500Color()
             case .POST:
                 return GMColor.green500Color()
@@ -971,7 +971,7 @@ class SettingValues {
         
         func getTitle() -> String {
             switch self {
-            case .COLLAPSE :
+            case .COLLAPSE: 
                 return "Collapse parent"
             case .UPVOTE:
                 return "Upvote"
@@ -996,7 +996,7 @@ class SettingValues {
         
         func getPhoto() -> String {
             switch self {
-            case .COLLAPSE :
+            case .COLLAPSE: 
                 return "down"
             case .UPVOTE:
                 return "upvote"
@@ -1021,7 +1021,7 @@ class SettingValues {
         
         func getColor() -> UIColor {
             switch self {
-            case .COLLAPSE :
+            case .COLLAPSE: 
                 return GMColor.grey500Color()
             case .UPVOTE:
                 return ColorUtil.upvoteColor
@@ -1062,7 +1062,7 @@ class SettingValues {
         
         func getTitle() -> String {
             switch self {
-            case .HIDE :
+            case .HIDE: 
                 return "Hide post"
             case .UPVOTE:
                 return "Upvote"
@@ -1089,7 +1089,7 @@ class SettingValues {
         
         func getPhoto() -> String {
             switch self {
-            case .HIDE :
+            case .HIDE: 
                 return "hide"
             case .UPVOTE:
                 return "upvote"
@@ -1116,7 +1116,7 @@ class SettingValues {
         
         func getColor() -> UIColor {
             switch self {
-            case .HIDE :
+            case .HIDE: 
                 return .black
             case .UPVOTE:
                 return ColorUtil.upvoteColor

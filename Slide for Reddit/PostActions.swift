@@ -165,7 +165,7 @@ class PostActions: NSObject {
         var buttons = [UIAction]()
         if let link = cell.link {
             for item in SettingValues.PostOverflowAction.getMenu(link, mutableList: mutableList) {
-                buttons.append(UIAction(title: item.getTitle(), image: item.getImage(), handler: { (action) in
+                buttons.append(UIAction(title: item.getTitle(), image: item.getImage(), handler: { (_) in
                     handleAction(action: item, cell: cell, parent: parent, nav: nav, mutableList: mutableList, delegate: delegate, index: index)
                 }))
             }
@@ -282,7 +282,7 @@ class PostActions: NSObject {
     static func modLock(_ cell: LinkCellView, _ set: Bool) {
         let id = cell.link!.id
         do {
-            try (UIApplication.shared.delegate as! AppDelegate).session?.setLocked(id, locked: set, completion: { (result) -> Void in
+            try (UIApplication.shared.delegate as! AppDelegate).session?.setLocked(id, locked: set, completion: { (result) in
                 switch result {
                 case .failure(let error):
                     slideLog(error.description)
@@ -309,7 +309,7 @@ class PostActions: NSObject {
     static func modSpoiler(_ cell: LinkCellView, _ set: Bool) {
         let id = cell.link!.id
         do {
-            try (UIApplication.shared.delegate as! AppDelegate).session?.setSpoiler(id, spoiler: set, completion: { (result) -> Void in
+            try (UIApplication.shared.delegate as! AppDelegate).session?.setSpoiler(id, spoiler: set, completion: { (result) in
                 switch result {
                 case .failure(let error):
                     slideLog(error.description)
@@ -336,7 +336,7 @@ class PostActions: NSObject {
     static func modNSFW(_ cell: LinkCellView, _ set: Bool) {
         let id = cell.link!.id
         do {
-            try (UIApplication.shared.delegate as! AppDelegate).session?.setNSFW(id, nsfw: set, completion: { (result) -> Void in
+            try (UIApplication.shared.delegate as! AppDelegate).session?.setNSFW(id, nsfw: set, completion: { (result) in
                 switch result {
                 case .failure(let error):
                     slideLog(error.description)
@@ -363,7 +363,7 @@ class PostActions: NSObject {
     static func modApprove(_ cell: LinkCellView) {
         let id = cell.link!.id
         do {
-            try (UIApplication.shared.delegate as! AppDelegate).session?.approve(id, completion: { (result) -> Void in
+            try (UIApplication.shared.delegate as! AppDelegate).session?.approve(id, completion: { (result) in
                 switch result {
                 case .failure(let error):
                     slideLog(error.description)
@@ -389,7 +389,7 @@ class PostActions: NSObject {
     static func modDistinguish(_ cell: LinkCellView) {
         let id = cell.link!.id
         do {
-            try (UIApplication.shared.delegate as! AppDelegate).session?.distinguish(id, how: "yes", completion: { (result) -> Void in
+            try (UIApplication.shared.delegate as! AppDelegate).session?.distinguish(id, how: "yes", completion: { (result) in
                 switch result {
                 case .failure(let error):
                     slideLog(error.description)
@@ -412,7 +412,7 @@ class PostActions: NSObject {
     static func modSticky(_ cell: LinkCellView, sticky: Bool) {
         let id = cell.link!.id
         do {
-            try (UIApplication.shared.delegate as! AppDelegate).session?.sticky(id, sticky: sticky, completion: { (result) -> Void in
+            try (UIApplication.shared.delegate as! AppDelegate).session?.sticky(id, sticky: sticky, completion: { (result) in
                 switch result {
                 case .failure(let error):
                     slideLog(error.description)
@@ -500,7 +500,7 @@ class PostActions: NSObject {
     static func removeNoReason(_ cell: LinkCellView, spam: Bool = false) {
         let id = cell.link!.id
         do {
-            try (UIApplication.shared.delegate as! AppDelegate).session?.remove(id, spam: spam, completion: { (result) -> Void in
+            try (UIApplication.shared.delegate as! AppDelegate).session?.remove(id, spam: spam, completion: { (result) in
                 switch result {
                 case .failure(let error):
                     slideLog(error.description)
@@ -526,7 +526,7 @@ class PostActions: NSObject {
     static func modRemoveReason(_ cell: LinkCellView, reason: String) {
         let id = cell.link!.id
         do {
-            try (UIApplication.shared.delegate as! AppDelegate).session?.remove(id, spam: false, completion: { (result) -> Void in
+            try (UIApplication.shared.delegate as! AppDelegate).session?.remove(id, spam: false, completion: { (result) in
                 switch result {
                 case .failure(let error):
                     slideLog(error.description)
@@ -558,7 +558,7 @@ class PostActions: NSObject {
     
     static func modBan(_ cell: LinkCellView, why: String, duration: Int?) {
         do {
-            try (UIApplication.shared.delegate as! AppDelegate).session?.ban(cell.link!.author, banReason: why, duration: duration == nil ? 999 /*forever*/ : duration!, completion: { (result) -> Void in
+            try (UIApplication.shared.delegate as! AppDelegate).session?.ban(cell.link!.author, banReason: why, duration: duration == nil ? 999 /*forever*/ : duration!, completion: { (result) in
                 switch result {
                 case .failure(let error):
                     slideLog(error.description)

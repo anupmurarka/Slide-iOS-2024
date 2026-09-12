@@ -82,7 +82,7 @@ class AnyModalViewController: UIViewController {
     
     var scrubber = VideoScrubberView()
     
-    var didStartPan : (_ panStart: Bool) -> Void = { _ in }
+    var didStartPan: (_ panStart: Bool) -> Void = { _ in }
     private let blurEffect = (NSClassFromString("_UICustomBlurEffect") as! UIBlurEffect.Type).init()
     
     private var savedColor: UIColor?

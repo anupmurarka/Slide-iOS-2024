@@ -282,7 +282,7 @@ class AccountController {
         var toReturn = tR
         var paginator = p
         do {
-            try session.getUserRelatedSubreddit(.moderator, paginator: paginator, completion: { (result) -> Void in
+            try session.getUserRelatedSubreddit(.moderator, paginator: paginator, completion: { (result) in
                 switch result {
                 case .failure:
                     slideLog(result.error!.localizedDescription)

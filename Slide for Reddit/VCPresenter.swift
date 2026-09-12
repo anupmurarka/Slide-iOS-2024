@@ -43,7 +43,6 @@ public class VCPresenter {
             override13 = false
         }
         
-        
         // Yes, this logic is a mess. I need to redo it sometime...
         let respectedOverride13 = override13
         var shouldPopup = popupIfPossible

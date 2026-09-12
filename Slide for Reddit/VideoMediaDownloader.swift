@@ -384,7 +384,7 @@ class VideoMediaDownloader {
         let assetExport: AVAssetExportSession = AVAssetExportSession(asset: mixComposition, presetName: AVAssetExportPresetHighestQuality)!
         assetExport.outputFileType = AVFileType.mp4
         assetExport.outputURL = savePathUrl
-        assetExport.exportAsynchronously { () -> Void in
+        assetExport.exportAsynchronously { () in
             switch assetExport.status {
                 
             case AVAssetExportSession.Status.completed:

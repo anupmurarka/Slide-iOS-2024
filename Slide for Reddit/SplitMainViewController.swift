@@ -287,7 +287,7 @@ class SplitMainViewController: MainViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(autoCacheFinished(_:)), name: .autoCacheFinished, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(autoCacheProgress(_:)), name: .autoCacheProgress, object: nil)
 
-        if let splitViewController = splitViewController, (!UIApplication.shared.isSplitOrSlideOver || UIApplication.shared.isMac()) {
+        if let splitViewController = splitViewController, !UIApplication.shared.isSplitOrSlideOver || UIApplication.shared.isMac() {
             (UIApplication.shared.delegate as? AppDelegate)?.setupSplitLayout(splitViewController)
         }
     }
@@ -1202,7 +1202,7 @@ extension SplitMainViewController: NavigationHomeDelegate {
                 } else {
                     UIView.animate(withDuration: 0.3, animations: {
                         if (SettingValues.appMode == .MULTI_COLUMN || SettingValues.appMode == .SINGLE) && UIDevice.current.userInterfaceIdiom == .pad {
-                            UIView.animate(withDuration: 0.5, animations: { () -> Void in
+                            UIView.animate(withDuration: 0.5, animations: { () in
                                 self.splitViewController?.preferredDisplayMode = .primaryHidden
                             }, completion: { (_) in
                             })
@@ -1237,7 +1237,7 @@ extension SplitMainViewController: NavigationHomeDelegate {
                 } else {
                     UIView.animate(withDuration: 0.3, animations: {
                         if (SettingValues.appMode == .MULTI_COLUMN || SettingValues.appMode == .SINGLE) && UIDevice.current.userInterfaceIdiom == .pad && !SettingValues.desktopMode {
-                            UIView.animate(withDuration: 0.5, animations: { () -> Void in
+                            UIView.animate(withDuration: 0.5, animations: { () in
                                 self.splitViewController?.preferredDisplayMode = .primaryHidden
                             }, completion: { (_) in
                             })

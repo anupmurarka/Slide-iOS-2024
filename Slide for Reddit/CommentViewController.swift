@@ -261,7 +261,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                 case .failure(let error):
                     slideLog(error)
                 case .success(let tuple):
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async(execute: { () in
                         
                         var queue: [RedditObject] = []
                         let startDepth = 1
@@ -423,7 +423,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
     
     func replySent(comment: Comment?, cell: CommentDepthCell?) {
         if comment != nil && cell != nil {
-            DispatchQueue.main.async(execute: { () -> Void in
+            DispatchQueue.main.async(execute: { () in
                 let startDepth = (self.cDepth[cell!.comment!.getId()] ?? 0) + 1
                 
                 let queue: [RedditObject] = [CommentObject.commentToCommentObject(comment: comment!, depth: startDepth)]
@@ -464,7 +464,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                 
             })
         } else if comment != nil && cell == nil {
-            DispatchQueue.main.async(execute: { () -> Void in
+            DispatchQueue.main.async(execute: { () in
                 let startDepth = 1
                 
                 let queue: [RedditObject] = [CommentObject.commentToCommentObject(comment: comment!, depth: startDepth)]
@@ -497,7 +497,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
     
     func editSent(cr: Comment?, cell: CommentDepthCell) {
         if cr != nil {
-            DispatchQueue.main.async(execute: { () -> Void in
+            DispatchQueue.main.async(execute: { () in
                 var realPosition = 0
                 
                 var comment = cell.comment!
@@ -835,7 +835,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                         self.lastSeen = (self.context.isEmpty ? History.getSeenTime(s: self.submission!) : Double(0))
                     }
                 }
-                DispatchQueue.main.async(execute: { () -> Void in
+                DispatchQueue.main.async(execute: { () in
                     self.refreshControl?.endRefreshing()
                     self.indicator.stopAnimating()
                     
@@ -909,7 +909,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                         self.loadOffline()
                     }
                 } else {
-                    try session?.getArticles(name, sort: sort == .suggested ? nil : sort, comments: (context.isEmpty ? nil : [context]), context: 3, limit: SettingValues.commentLimit, completion: { (result) -> Void in
+                    try session?.getArticles(name, sort: sort == .suggested ? nil : sort, comments: (context.isEmpty ? nil : [context]), context: 3, limit: SettingValues.commentLimit, completion: { (result) in
                         switch result {
                         case .failure(let error):
                             slideLog(error)
@@ -966,7 +966,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                             self.lastSeen = (self.context.isEmpty ? History.getSeenTime(s: self.submission!) : Double(0))
                             History.setComments(s: link)
                             History.addSeen(s: link, skipDuplicates: false)
-                            DispatchQueue.main.async(execute: { () -> Void in
+                            DispatchQueue.main.async(execute: { () in
                                 if !self.hasSubmission {
                                     self.headerCell = FullLinkCellView()
                                     self.headerCell?.del = self
@@ -1569,11 +1569,6 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     var subreddit = ""
     
     // MARK: - Table view data source
@@ -1928,7 +1923,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
     func vote(_ direction: VoteDirection) {
         if let link = self.submission {
             do {
-                try session?.setVote(direction, name: link.getId(), completion: { (result) -> Void in
+                try session?.setVote(direction, name: link.getId(), completion: { (result) in
                     switch result {
                     case .failure(let error):
                         slideLog(error)
@@ -2056,7 +2051,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
         }
         var contents = content[dataArray[topCell]]
         
-        while (contents is CommentObject ?  !matches(comment: contents as! CommentObject, sort: currentSort) : true ) && dataArray.count > topCell && topCell - 1 >= 0 {
+        while (contents is CommentObject ? !matches(comment: contents as! CommentObject, sort: currentSort) : true ) && dataArray.count > topCell && topCell - 1 >= 0 {
             topCell -= 1
             contents = content[dataArray[topCell]]
         }
@@ -2479,7 +2474,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
             break
         }
         do {
-            try session?.setVote(direction, name: comment.getId(), completion: { (result) -> Void in
+            try session?.setVote(direction, name: comment.getId(), completion: { (result) in
                 switch result {
                 case .failure(let error):
                     slideLog(error)
@@ -2941,12 +2936,12 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                     for c in children {
                         strings.append(c)
                     }
-                    try session?.getMoreChildren(strings, name: link.getId(), sort: sort, id: more.getId(), completion: { (result) -> Void in
+                    try session?.getMoreChildren(strings, name: link.getId(), sort: sort, id: more.getId(), completion: { (result) in
                         switch result {
                         case .failure(let error):
                             slideLog(error)
                         case .success(let list):
-                            DispatchQueue.main.async(execute: { () -> Void in
+                            DispatchQueue.main.async(execute: { () in
                                 let startDepth = self.cDepth[more.getId()] ?? 0
                                 
                                 var queue: [RedditObject] = []
@@ -3171,12 +3166,12 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                                     strings.append(c)
                                 }
                                 cell.animateMore()
-                                try session?.getMoreChildren(strings, name: link.getId(), sort: sort, id: more.getId(), completion: { (result) -> Void in
+                                try session?.getMoreChildren(strings, name: link.getId(), sort: sort, id: more.getId(), completion: { (result) in
                                     switch result {
                                     case .failure(let error):
                                         slideLog(error)
                                     case .success(let list):
-                                        DispatchQueue.main.async(execute: { () -> Void in
+                                        DispatchQueue.main.async(execute: { () in
                                             let startDepth = self.cDepth[more.getId()] ?? 0
                                             
                                             var queue: [RedditObject] = []

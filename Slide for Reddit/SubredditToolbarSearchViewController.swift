@@ -635,11 +635,6 @@ class SubredditToolbarSearchViewController: UIViewController, UIGestureRecognize
         gestureRecognizer.addTarget(self, action: #selector(viewPanned(sender:)))
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     func setViewController(controller: SingleSubredditViewController) {
         parentController = controller
         

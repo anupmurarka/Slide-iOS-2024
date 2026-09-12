@@ -251,7 +251,7 @@ extension SwipeForwardNavigationController {
         if #available(iOS 14, *) {
             not14 = false
         }
-        if let secondaryAsNav = secondaryViewController as? UINavigationController, (UIDevice.current.userInterfaceIdiom == .phone || not14) {
+        if let secondaryAsNav = secondaryViewController as? UINavigationController, UIDevice.current.userInterfaceIdiom == .phone || not14 {
             for viewController in secondaryAsNav.viewControllers {
                 if !viewControllers.contains(viewController) {
                     viewControllers.append(viewController)

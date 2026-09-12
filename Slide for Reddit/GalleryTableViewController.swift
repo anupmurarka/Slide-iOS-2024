@@ -72,10 +72,6 @@ class GalleryTableViewController: MediaTableViewController {
         super.viewDidDisappear(animated)
         UIApplication.shared.statusBarUIView?.backgroundColor = .clear
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
 
     override func loadView() {
         super.loadView()
@@ -97,11 +93,6 @@ class GalleryTableViewController: MediaTableViewController {
     
     func doExit() {
         self.dismiss(animated: true, completion: nil)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source

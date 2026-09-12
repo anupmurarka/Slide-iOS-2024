@@ -25,10 +25,6 @@ class SettingsBackup: BubbleSettingTableViewController {
         navigationController?.setToolbarHidden(true, animated: false)
         doCells()
     }
-
-    override func loadView() {
-        super.loadView()
-    }
     
     func doCells(_ reset: Bool = true) {
         self.view.backgroundColor = UIColor.backgroundColor
@@ -51,11 +47,6 @@ class SettingsBackup: BubbleSettingTableViewController {
         self.restore.detailTextLabel?.text = "Restore your backup data from iCloud"
         self.restore.imageView?.image = UIImage(sfString: SFSymbol.arrowClockwise, overrideString: "restore")?.toolbarIcon().getCopy(withColor: UIColor.fontColor)
         self.restore.imageView?.tintColor = UIColor.fontColor
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
     }
 
 }

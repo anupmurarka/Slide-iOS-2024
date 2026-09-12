@@ -176,7 +176,7 @@ public class ColorPickerViewController: UIViewController {
     @IBInspectable var minimumValue: CGFloat = 0.0 // default 0.0. the current value may change if outside new min value
     @IBInspectable var maximumValue: CGFloat = 1.0 // default 1.0. the current value may change if outside new max value
     
-    @IBInspectable var minimumValueImage: UIImage? = nil { // default is nil. image that appears to left of control (e.g. speaker off)
+    @IBInspectable var minimumValueImage: UIImage? { // default is nil. image that appears to left of control (e.g. speaker off)
         didSet {
             if let img = minimumValueImage {
                 let imgLayer = _minTrackImageLayer ?? {
@@ -196,7 +196,7 @@ public class ColorPickerViewController: UIViewController {
             self.layer.needsLayout()
         }
     }
-    @IBInspectable var maximumValueImage: UIImage? = nil { // default is nil. image that appears to right of control (e.g. speaker max)
+    @IBInspectable var maximumValueImage: UIImage? { // default is nil. image that appears to right of control (e.g. speaker max)
         didSet {
             if let img = maximumValueImage {
                 let imgLayer = _maxTrackImageLayer ?? {
@@ -257,7 +257,7 @@ public class ColorPickerViewController: UIViewController {
         }
     }
     
-    @IBInspectable var thumbIcon: UIImage? = nil {
+    @IBInspectable var thumbIcon: UIImage? {
         didSet {
             _thumbIconLayer.contents = thumbIcon?.cgImage
         }

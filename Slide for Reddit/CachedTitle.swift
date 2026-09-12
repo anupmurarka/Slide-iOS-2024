@@ -309,7 +309,7 @@ class CachedTitle {
         } else if approved.contains(submission.id) || (!(submission.approvedBy ?? "").isEmpty() && !removed.contains(submission.id)) {
             let attrs = [NSAttributedString.Key.font: FontGenerator.boldFontOfSize(size: 12, submission: true), NSAttributedString.Key.foregroundColor: GMColor.green500Color()] as [NSAttributedString.Key: Any]
             extraLine.append(spacer)
-            extraLine.append(NSMutableAttributedString.init(string: "Approved\(!(submission.approvedBy ?? "").isEmpty() ? " by \(submission.approvedBy!)":"")", attributes: attrs))
+            extraLine.append(NSMutableAttributedString.init(string: "Approved\(!(submission.approvedBy ?? "").isEmpty() ? " by \(submission.approvedBy!)" : "")", attributes: attrs))
         }
         
         if submission.isCrosspost && !full {

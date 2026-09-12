@@ -494,7 +494,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
                 UIView.animate(withDuration: 0.2) {
                     self.backgroundColor = self.action.getColor()
                 }
-            } else if progress < 0.1  && previousProgress >= 0.1 {
+            } else if progress < 0.1 && previousProgress >= 0.1 {
                 typeImage.alpha = 1
                 UIView.animate(withDuration: 0.2, animations: {
                     self.typeImage.alpha = 0
@@ -969,7 +969,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
         
         do {
             let name = comment!.id
-            try session?.postComment(body!.text!, parentName: name, completion: { (result) -> Void in
+            try session?.postComment(body!.text!, parentName: name, completion: { (result) in
                 switch result {
                 case .failure(let error):
                     slideLog(error.description)
@@ -1184,7 +1184,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
                 break
             }
             do {
-                try parent?.session?.setVote(direction, name: (comment!.name), completion: { (result) -> Void in
+                try parent?.session?.setVote(direction, name: (comment!.name), completion: { (result) in
                     switch result {
                     case .failure(let error):
                         slideLog(error.description)
@@ -1202,7 +1202,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
     func modApprove() {
         if content is CommentObject {
             do {
-                try parent?.session?.approve(comment!.id, completion: { (result) -> Void in
+                try parent?.session?.approve(comment!.id, completion: { (result) in
                     switch result {
                     case .failure(let error):
                         slideLog(error.description)
@@ -1230,7 +1230,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
     func modDistinguish() {
         if content is CommentObject {
             do {
-                try parent?.session?.distinguish(comment!.id, how: "yes", completion: { (result) -> Void in
+                try parent?.session?.distinguish(comment!.id, how: "yes", completion: { (result) in
                     switch result {
                     case .failure(let error):
                         slideLog(error.description)
@@ -1253,7 +1253,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
     func modSticky(sticky: Bool) {
         if content is CommentObject {
             do {
-                try parent?.session?.distinguish(comment!.id, how: "yes", sticky: sticky, completion: { (result) -> Void in
+                try parent?.session?.distinguish(comment!.id, how: "yes", sticky: sticky, completion: { (result) in
                     switch result {
                     case .failure(let error):
                         slideLog(error.description)
@@ -1276,7 +1276,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
     func modRemove(_ spam: Bool = false) {
         if content is CommentObject {
             do {
-                try parent?.session?.remove(comment!.id, spam: spam, completion: { (result) -> Void in
+                try parent?.session?.remove(comment!.id, spam: spam, completion: { (result) in
                     switch result {
                     case .failure(let error):
                     slideLog(error.description)
@@ -1305,7 +1305,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
     func modBan(why: String, duration: Int?) {
         if content is CommentObject {
             do {
-                try parent?.session?.ban(comment!.author, banReason: why, duration: duration == nil ? 999 /*forever*/ : duration!, completion: { (result) -> Void in
+                try parent?.session?.ban(comment!.author, banReason: why, duration: duration == nil ? 999 /*forever*/ : duration!, completion: { (result) in
                     switch result {
                     case .failure(let error):
                         slideLog(error.description)
@@ -1938,12 +1938,12 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
             if comment.removedBy == "true" {
                 infoString.append(NSMutableAttributedString.init(string: "Removed by Reddit\(!(comment.removalReason ?? "").isEmpty() ? ":\(comment.removalReason!)" : "")", attributes: attrs))
             } else {
-                infoString.append(NSMutableAttributedString.init(string: "Removed\(!(comment.removedBy ?? "").isEmpty() ? " by \(comment.removedBy!)":"")\(!(comment.removalReason ?? "").isEmpty() ? " for \(comment.removalReason!)" : "")\(!(comment.removalNote ?? "").isEmpty() ? " \(comment.removalNote!)" : "")", attributes: attrs))
+                infoString.append(NSMutableAttributedString.init(string: "Removed\(!(comment.removedBy ?? "").isEmpty() ? " by \(comment.removedBy!)" : "")\(!(comment.removalReason ?? "").isEmpty() ? " for \(comment.removalReason!)" : "")\(!(comment.removalNote ?? "").isEmpty() ? " \(comment.removalNote!)" : "")", attributes: attrs))
             }
         } else if parent!.approved.contains(comment.id) || (!(comment.approvedBy ?? "").isEmpty() && !parent!.removed.contains(comment.id)) {
             let attrs = [NSAttributedString.Key.font: FontGenerator.boldFontOfSize(size: 12, submission: false), NSAttributedString.Key.foregroundColor: GMColor.green500Color()]
             infoString.append(spacer)
-            infoString.append(NSMutableAttributedString.init(string: "Approved\(!(comment.approvedBy ?? "").isEmpty() ? " by \(comment.approvedBy!)":"")", attributes: attrs))
+            infoString.append(NSMutableAttributedString.init(string: "Approved\(!(comment.approvedBy ?? "").isEmpty() ? " by \(comment.approvedBy!)" : "")", attributes: attrs))
         }
         
         paragraphStyle.lineSpacing = 1.5

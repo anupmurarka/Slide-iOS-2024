@@ -74,7 +74,7 @@ class CommentObjectReportService: XCTestCase {
             let mirroredNew = Mirror(reflecting: newCommentObject)
 
             for attr in mirroredOriginal.children {
-                if let property_name = attr.label, (attr.value is String || attr.value is Int || attr.value is Date || attr.value is Double) {
+                if let property_name = attr.label, attr.value is String || attr.value is Int || attr.value is Date || attr.value is Double {
                     let firstValue = attr.value
                     if let secondValue = mirroredNew.children.first(where: { $0.label == property_name })?.value {
                         if firstValue is String {

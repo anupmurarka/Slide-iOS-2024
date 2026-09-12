@@ -343,14 +343,14 @@ class WebsiteViewController: MediaViewController, WKNavigationDelegate {
             if (URLComponents(url: url!, resolvingAgainstBaseURL: false))?.scheme == Config.sharedInstance.redirectURIScheme {
                 webView.endEditing(true)
                 self.navigationController?.dismiss(animated: true) {
-                    _ = OAuth2Authorizer.sharedInstance.receiveRedirect(url!, completion: { (result) -> Void in
+                    _ = OAuth2Authorizer.sharedInstance.receiveRedirect(url!, completion: { (result) in
                         slideLog(result)
                         switch result {
                             
                         case .failure(let error):
                             slideLog(error)
                         case .success(let token):
-                            DispatchQueue.main.async(execute: { () -> Void in
+                            DispatchQueue.main.async(execute: { () in
                                 do {
                                     try OAuth2TokenRepository.save(token: token, of: token.name)
                                     // Also persist into the current UserDefaults store (SAVED_TOKENS)
@@ -518,17 +518,12 @@ class WebsiteViewController: MediaViewController, WKNavigationDelegate {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
 }
 extension WKWebView {
     func stringByEvaluatingJavaScriptFromString(script: String) -> String? {
         var resultString: String?
         var finished: Bool = false
-        self.evaluateJavaScript(script, completionHandler: {(result: Any?, error: Error?) -> Void in
+        self.evaluateJavaScript(script, completionHandler: {(result: Any?, error: Error?) in
             if error == nil {
                 if result != nil {
                     resultString = result as? String

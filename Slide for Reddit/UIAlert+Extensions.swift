@@ -51,8 +51,7 @@ extension UIAlertController {
     }
     
     private var visualEffectView: UIVisualEffectView? {
-        if let presentationController = presentationController, presentationController.responds(to: Selector(("popoverView"))), let view = presentationController.value(forKey: "popoverView") as? UIView // We're on an iPad and visual effect view is in a different place.
-        {
+        if let presentationController = presentationController, presentationController.responds(to: Selector(("popoverView"))), let view = presentationController.value(forKey: "popoverView") as? UIView { // We're on an iPad and visual effect view is in a different place.
             return view.recursiveSubviews.compactMap({ $0 as? UIVisualEffectView }).first
         }
         

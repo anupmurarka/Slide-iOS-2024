@@ -246,7 +246,7 @@ public class ToolbarTextView: NSObject {
                             slideLog(json)
                             let album = json["data"]["deletehash"].stringValue
                             let url = "https://imgur.com/a/" + json["data"]["id"].stringValue
-                            self.uploadImages(results, album: album, completion: { (last, success) in
+                            self.uploadImages(results, album: album, completion: { (_, success) in
                                 DispatchQueue.main.async {
                                     self.alertView!.dismiss(animated: true, completion: {
                                         if success {

@@ -27,7 +27,7 @@ class ActionViewController: UIViewController {
             count += 1
             for provider in item.attachments ?? [] {
                 if provider.hasItemConformingToTypeIdentifier("public.url") {
-                    provider.loadItem(forTypeIdentifier: "public.url", options: nil, completionHandler: { (url, _) -> Void in
+                    provider.loadItem(forTypeIdentifier: "public.url", options: nil, completionHandler: { (url, _) in
                         if let shareURL = url as? NSURL {
                             let absolute = shareURL.absoluteString ?? ""
                             

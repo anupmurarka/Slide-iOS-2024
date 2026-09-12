@@ -572,7 +572,7 @@ class MainViewController: ColorMuxPagingViewController, UINavigationControllerDe
 
     @objc func screenEdgeSwiped() {
         switch SettingValues.sideGesture {
-        case .SUBS:()
+        case .SUBS: ()
             // TODO show sidebar
         case .INBOX:
             self.showCurrentAccountMenu(nil)

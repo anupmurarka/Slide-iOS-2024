@@ -194,11 +194,6 @@ class SubredditReorderViewController: UITableViewController {
 
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     // MARK: – Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -311,7 +306,7 @@ class SubredditReorderViewController: UITableViewController {
         var cancelActionButton = UIAlertAction()
 
         if AccountController.isLoggedIn {
-            cancelActionButton = UIAlertAction(title: "Remove and unsubscribe", style: .default) { _ -> Void in
+            cancelActionButton = UIAlertAction(title: "Remove and unsubscribe", style: .default) { _ in
                // TODO: - unsub
                 var top: [String] = []
                 for i in self.selectedSubRows {
@@ -336,7 +331,7 @@ class SubredditReorderViewController: UITableViewController {
             actionSheetController.addAction(cancelActionButton)
         }
 
-        cancelActionButton = UIAlertAction(title: "Just remove", style: .default) { _ -> Void in
+        cancelActionButton = UIAlertAction(title: "Just remove", style: .default) { _ in
             var top: [String] = []
             for i in self.selectedSubRows {
                 top.append(self.subs[i.row])
