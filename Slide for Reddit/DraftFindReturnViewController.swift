@@ -42,7 +42,6 @@ class DraftFindReturnViewController: MediaTableViewController, UIGestureRecogniz
 
     override func loadView() {
         super.loadView()
-        self.automaticallyAdjustsScrollViewInsets = false
         self.tableView.register(DraftCellView.classForCoder(), forCellReuseIdentifier: "draft")
         
         tableView.backgroundColor = .clear

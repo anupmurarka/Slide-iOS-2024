@@ -264,7 +264,6 @@ class SettingsTheme: BubbleSettingTableViewController, ColorPickerViewDelegate {
     }
     
     func setupViews() {
-        self.automaticallyAdjustsScrollViewInsets = false
         self.edgesForExtendedLayout = UIRectEdge.all
         self.extendedLayoutIncludesOpaqueBars = true
         

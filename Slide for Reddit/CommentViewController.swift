@@ -1332,7 +1332,6 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
         tableView.verticalAnchors /==/ view.verticalAnchors
         tableView.horizontalAnchors /==/ view.safeHorizontalAnchors
         
-        self.automaticallyAdjustsScrollViewInsets = false
         self.registerForPreviewing(with: self, sourceView: self.tableView)
         
         self.tableView.allowsSelection = false

@@ -115,7 +115,6 @@ class TabsContentPagingViewController: ColorMuxPagingViewController, UIPageViewC
         self.edgesForExtendedLayout = UIRectEdge.all
     
         self.extendedLayoutIncludesOpaqueBars = true
-        self.automaticallyAdjustsScrollViewInsets = false
 
         var isModal13 = false
         if #available(iOS 13, *), self.navigationController?.viewControllers[0] == self {

@@ -69,7 +69,6 @@ class PagingCommentViewController: ColorMuxPagingViewController, UIPageViewContr
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.automaticallyAdjustsScrollViewInsets = false
         self.edgesForExtendedLayout = UIRectEdge.all
         self.extendedLayoutIncludesOpaqueBars = true
         self.view.backgroundColor = UIColor.clear

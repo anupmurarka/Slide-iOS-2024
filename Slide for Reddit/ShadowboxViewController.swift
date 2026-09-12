@@ -60,7 +60,6 @@ class ShadowboxViewController: SwipeDownModalVC, UIPageViewControllerDataSource,
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.automaticallyAdjustsScrollViewInsets = false
         self.edgesForExtendedLayout = UIRectEdge.all
         self.extendedLayoutIncludesOpaqueBars = true
         submissionDataSource.delegate = self

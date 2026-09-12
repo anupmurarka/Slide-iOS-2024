@@ -234,7 +234,6 @@ class SplitMainViewController: MainViewController {
         self.navigationController?.modalPresentationStyle = .currentContext
         
         super.viewDidLoad()
-        self.automaticallyAdjustsScrollViewInsets = false
         
         inHeadView.removeFromSuperview()
         var statusBarHeight = UIApplication.shared.statusBarUIView?.frame.size.height ?? 0

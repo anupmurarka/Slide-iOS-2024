@@ -84,7 +84,6 @@ class SubredditFindReturnViewController: UITableViewController, UISearchBarDeleg
     
     override func loadView() {
         super.loadView()
-        self.automaticallyAdjustsScrollViewInsets = false
         self.tableView.register(SubredditCellView.classForCoder(), forCellReuseIdentifier: "sub")
         
         tableView.backgroundColor = UIColor.backgroundColor

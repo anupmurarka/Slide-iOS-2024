@@ -71,7 +71,6 @@ class ThreadViewControler: MediaViewController, UICollectionViewDelegate, Wrappi
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.automaticallyAdjustsScrollViewInsets = false
         self.edgesForExtendedLayout = UIRectEdge.all
         self.extendedLayoutIncludesOpaqueBars = true
         self.navigationController?.setNavigationBarHidden(false, animated: false)
