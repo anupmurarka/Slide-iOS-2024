@@ -156,7 +156,13 @@ class SubmissionsDataSource {
             }
             return
         }
-        if (!loading || force) && (!offline || content.count == 0) {
+        // `offline` means "what is on screen came from the cache", not "never try the
+        // network again". A reload — pull to refresh, revisiting the screen, an account
+        // or content-settings change — must be able to retry, otherwise one failed load
+        // at launch leaves the subreddit latched to cached content for the life of the
+        // view controller. Pagination stays blocked while offline: there is nothing to
+        // page through in a cached listing.
+        if (!loading || force) && (reload || force || !offline || content.isEmpty) {
             if !loaded {
                 if let delegate = delegate {
                     delegate.showIndicator()

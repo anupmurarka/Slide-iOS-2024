@@ -1131,28 +1131,12 @@ extension Session {
      - parameter completion: The completion handler to call when the load request is complete.
      */
     public func refreshTokenLocal(_ completion: @escaping (Result<Token>) -> Void) throws {
-        guard let currentToken = token as? OAuth2Token
-            else { throw ReddiftError.tokenIsNotAvailable as NSError }
-        do {
-            try currentToken.refresh({ (result) -> Void in
-                switch result {
-                case .failure(let error):
-                    completion(Result(error: error as NSError))
-                case .success(let newToken):
-                    DispatchQueue.main.async(execute: { () -> Void in
-                        self.token = newToken
-                        // A refreshed token is usable whether or not it persists, so a
-                        // storage failure must not be reported as a refresh failure.
-                        do {
-                            try LocalKeystore.save(token: newToken)
-                        } catch {
-                            slideLog("Failed to persist refreshed token: \(error)")
-                        }
-                        completion(Result(value: newToken))
-                    })
-                }
-            })
-        } catch { throw error }
+        // Refreshing goes through `refreshToken` so the launch and foreground refreshes
+        // share one gate with the automatic 401 retries — otherwise they race, and the
+        // loser can install a token the winner has already replaced. Persistence to
+        // LocalKeystore happens there via `Session.tokenPersistenceHandler`, registered
+        // in `didFinishLaunching`.
+        try refreshToken(completion)
     }
     
     /**

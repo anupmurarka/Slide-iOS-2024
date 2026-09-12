@@ -33,11 +33,31 @@ extension Session {
     public func refreshToken(_ completion: @escaping (Result<Token>) -> Void) throws {
         guard let currentToken = token as? OAuth2Token
             else { throw ReddiftError.tokenIsNotAvailable as NSError }
+
+        // One grant at a time: callers arriving while a refresh is in flight are served
+        // by that refresh instead of starting their own.
+        refreshLock.lock()
+        if isRefreshingToken {
+            queuedRefreshCompletions.append(completion)
+            refreshLock.unlock()
+            return
+        }
+        isRefreshingToken = true
+        refreshLock.unlock()
+
+        /// Opens the gate and hands `result` to everyone queued behind this refresh and
+        /// then to this caller. The gate is released first, so a completion that kicks off
+        /// another refresh starts a new one instead of queueing onto a finished gate.
+        let finish: (Result<Token>) -> Void = { result in
+            self.drainQueuedRefreshCompletions(with: result)
+            completion(result)
+        }
+
         do {
             try currentToken.refresh({ (result) -> Void in
                 switch result {
                 case .failure(let error):
-                    completion(Result(error: error as NSError))
+                    finish(Result(error: error as NSError))
                 case .success(let newToken):
                     DispatchQueue.main.async(execute: { () -> Void in
                         self.token = newToken
@@ -51,11 +71,28 @@ extension Session {
                         } catch {
                             print("Failed to persist refreshed token: \(error)")
                         }
-                        completion(Result(value: newToken))
+                        finish(Result(value: newToken))
                     })
                 }
             })
-        } catch { throw error }
+        } catch {
+            // No request was created, so release the gate — otherwise every later refresh
+            // queues behind one that will never complete — and fail anyone already queued.
+            // This caller learns of the failure from the `throw`, not the completion.
+            drainQueuedRefreshCompletions(with: Result(error: error as NSError))
+            throw error
+        }
+    }
+
+    /// Closes the refresh gate and delivers `result` to the completions that queued behind
+    /// the in-flight refresh.
+    private func drainQueuedRefreshCompletions(with result: Result<Token>) {
+        refreshLock.lock()
+        let queued = queuedRefreshCompletions
+        queuedRefreshCompletions = []
+        isRefreshingToken = false
+        refreshLock.unlock()
+        queued.forEach { $0(result) }
     }
     
     /**

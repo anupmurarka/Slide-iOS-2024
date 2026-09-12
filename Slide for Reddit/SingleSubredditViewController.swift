@@ -1310,6 +1310,12 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
     @objc func contentSettingsChanged() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self, self.isViewLoaded else { return }
+            // A listing that fell back to cached content, or that has nothing to show,
+            // gets another go at the network now that the account's settings are known.
+            if self.dataSource.offline || !self.dataSource.hasContent() {
+                self.dataSource.getData(reload: true, force: true)
+                return
+            }
             CachedTitle.titles.removeAll()
             self.reloadDataReset()
         }

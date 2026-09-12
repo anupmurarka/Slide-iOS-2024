@@ -29,6 +29,16 @@ public class Session: NSObject, URLSessionDelegate, URLSessionDataDelegate {
     /// Session object to communicate a server
     var session = URLSession(configuration: URLSessionConfiguration.default)
     
+    /// Guards the token-refresh gate below.
+    let refreshLock = NSLock()
+    /// True while a refresh grant is in flight. A burst of 401s — the norm at launch,
+    /// where several screens request at once — would otherwise each POST their own
+    /// grant to /api/v1/access_token.
+    var isRefreshingToken = false
+    /// Completions for refreshes that arrived while one was already in flight. They are
+    /// all served by that single refresh.
+    var queuedRefreshCompletions: [(Result<Token>) -> Void] = []
+
     /// Duration until rate limit of API usage as second.
     var rateLimitDurationToReset: Double = 0
     /// Count of use API after rete limit is reseted.
@@ -107,23 +117,35 @@ public class Session: NSObject, URLSessionDelegate, URLSessionDataDelegate {
      - parameter completion: The completion handler to call when the load request is complete.
      */
     func executeTaskAgainAfterRefresh<T>(_ request: URLRequest, handleResponse: @escaping (_ data: Data?, _ response: URLResponse?, _ error: NSError?) -> Result<T>, completion: @escaping (Result<T>) -> Void) {
+        // Another request may already have refreshed the token while this one was in
+        // flight. If the token on hand is newer than the one this request was signed
+        // with, retry with it rather than asking for yet another grant.
+        if let current = token, !current.accessToken.isEmpty,
+            request.value(forHTTPHeaderField: "Authorization") != "bearer " + current.accessToken {
+            retry(request, with: current, handleResponse: handleResponse, completion: completion)
+            return
+        }
         do {
             try self.refreshToken({ (result) -> Void in
                 switch result {
                 case .failure(let error):
                     completion(Result(error: error as NSError))
                 case .success(let token):
-                    // http header must be updated with new OAuth token.
-                    var request = request
-                    request.setOAuth2Token(token)
-                    let task = self.session.dataTask(with: request, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) -> Void in
-                        self.updateRateLimit(with: response)
-                        completion(handleResponse(data, response, error as NSError?))
-                    })
-                    task.resume()
+                    self.retry(request, with: token, handleResponse: handleResponse, completion: completion)
                 }
             })
         } catch { completion(Result(error: error as NSError)) }
+    }
+
+    /// Re-sends `request` signed with `token`.
+    private func retry<T>(_ request: URLRequest, with token: Token, handleResponse: @escaping (_ data: Data?, _ response: URLResponse?, _ error: NSError?) -> Result<T>, completion: @escaping (Result<T>) -> Void) {
+        var request = request
+        request.setOAuth2Token(token)
+        let task = session.dataTask(with: request, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) -> Void in
+            self.updateRateLimit(with: response)
+            completion(handleResponse(data, response, error as NSError?))
+        })
+        task.resume()
     }
     
     /**
