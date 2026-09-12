@@ -261,16 +261,8 @@ class MainViewController: ColorMuxPagingViewController, UINavigationControllerDe
                         slideLog(error)
                     case .success(let profile):
                         AccountController.current = profile
-                        SettingValues.nsfwEnabled = profile.over18
-                        if let nsfw = UserDefaults.standard.object(forKey: SettingValues.pref_hideNSFWCollection + AccountController.currentName) {
-                            SettingValues.hideNSFWCollection = nsfw as! Bool
-                        } else {
-                            SettingValues.hideNSFWCollection = UserDefaults.standard.bool(forKey: SettingValues.pref_hideNSFWCollection)
-                        }
-                        if let nsfw = UserDefaults.standard.object(forKey: SettingValues.pref_nsfwPreviews + AccountController.currentName) {
-                            SettingValues.nsfwPreviews = nsfw as! Bool
-                        } else {
-                            SettingValues.nsfwPreviews = UserDefaults.standard.bool(forKey: SettingValues.pref_nsfwPreviews)
+                        if SettingValues.applyAccountScopedSettings(for: AccountController.currentName, over18: profile.over18) {
+                            NotificationCenter.default.post(name: .onContentSettingsChanged, object: nil)
                         }
                         
                         let unread = profile.inboxCount

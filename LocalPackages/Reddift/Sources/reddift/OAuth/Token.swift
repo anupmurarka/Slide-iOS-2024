@@ -52,4 +52,16 @@ extension Token {
         ]
         return dict
     }
+
+    /**
+     Whether the access token is expired, or close enough to expiry that it should be
+     refreshed before being used. `expiresDate` is expressed in
+     `Date.timeIntervalSinceReferenceDate` units.
+
+     - parameter leeway: Seconds of headroom before the real expiry. Defaults to 5 minutes.
+     - returns: true when the token should be refreshed before use.
+     */
+    public func isExpired(leeway: TimeInterval = 300) -> Bool {
+        return expiresDate - leeway <= Date.timeIntervalSinceReferenceDate
+    }
 }

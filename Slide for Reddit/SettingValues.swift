@@ -244,7 +244,17 @@ class SettingValues {
     public static var largerThumbnail = true
     public static var isPro = true
     public static var lqLow = true
-    public static var nsfwEnabled = false
+    /// Whether the signed-in account is allowed to see over-18 content. This mirrors the
+    /// account's `over_18` flag, which only arrives with the profile response — so it is
+    /// cached per account and restored at launch. Without that, every cold launch starts
+    /// at `false` and the first subreddit's NSFW posts are filtered out before the
+    /// profile lands, leaving an empty screen.
+    public static var nsfwEnabled = false {
+        didSet {
+            guard !AccountController.currentName.isEmpty, nsfwEnabled != oldValue else { return }
+            UserDefaults.standard.set(nsfwEnabled, forKey: SettingValues.pref_nsfwEnabled + AccountController.currentName)
+        }
+    }
     public static var reduceColor = true
     public static var nsfwPreviews = false
     public static var hideNSFWCollection = false
@@ -489,6 +499,40 @@ class SettingValues {
     public static func setCommentSorting(forSubreddit: String, commentSorting: CommentSort) {
         UserDefaults.standard.set(commentSorting.path, forKey: forSubreddit.lowercased() + "CommentSorting")
         UserDefaults.standard.synchronize()
+    }
+
+    /// Settings scoped to the signed-in reddit account. These were previously only
+    /// applied from the profile response in `MainViewController.checkForMail()`, which
+    /// arrives *after* the opening subreddit has already been filtered, sized and
+    /// rendered — so on a cold launch the first screen was built with everyone's
+    /// defaults (no NSFW content, thumbnails instead of previews) and only corrected
+    /// once the user navigated away and back.
+    ///
+    /// - parameter name: Account whose cached values should be applied.
+    /// - parameter over18: Authoritative `over_18` from a profile response, when one is
+    ///   in hand. Omitted at launch, where the cached value is used instead.
+    /// - returns: true when any value actually changed, so callers can relayout.
+    @discardableResult
+    public static func applyAccountScopedSettings(for name: String, over18: Bool? = nil) -> Bool {
+        guard !name.isEmpty else { return false }
+
+        let previous = (nsfwEnabled, nsfwPreviews, hideNSFWCollection)
+
+        nsfwEnabled = over18 ?? UserDefaults.standard.bool(forKey: pref_nsfwEnabled + name)
+
+        if let value = UserDefaults.standard.object(forKey: pref_hideNSFWCollection + name) as? Bool {
+            hideNSFWCollection = value
+        } else {
+            hideNSFWCollection = UserDefaults.standard.bool(forKey: pref_hideNSFWCollection)
+        }
+
+        if let value = UserDefaults.standard.object(forKey: pref_nsfwPreviews + name) as? Bool {
+            nsfwPreviews = value
+        } else {
+            nsfwPreviews = UserDefaults.standard.bool(forKey: pref_nsfwPreviews)
+        }
+
+        return previous != (nsfwEnabled, nsfwPreviews, hideNSFWCollection)
     }
 
     public static func initialize() {

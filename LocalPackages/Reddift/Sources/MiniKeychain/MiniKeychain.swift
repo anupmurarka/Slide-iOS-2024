@@ -58,14 +58,21 @@ public class Keychain {
     }
 
     public func save(key: String, data: Data) throws {
-        var query = getDefaultQuery()
+        // Remove any existing item (synchronizable or not) before adding the new one.
+        var deleteQuery = getDefaultQuery()
+        deleteQuery[kSecAttrAccount as String] = key
+        SecItemDelete(deleteQuery as CFDictionary)
 
-        query[kSecAttrAccount as String] = key
-        query[kSecValueData as String] = data
+        // `kSecAttrSynchronizableAny` is only valid for search, update and delete
+        // queries. Passing it to `SecItemAdd` fails with errSecParam (-50), which used
+        // to make every token save throw — and, in turn, made the automatic OAuth token
+        // refresh report failure even when the refresh itself had succeeded.
+        var addQuery = getDefaultQuery()
+        addQuery.removeValue(forKey: kSecAttrSynchronizable as String)
+        addQuery[kSecAttrAccount as String] = key
+        addQuery[kSecValueData as String] = data
 
-        SecItemDelete(query as CFDictionary)
-
-        let status = SecItemAdd(query as CFDictionary, nil)
+        let status = SecItemAdd(addQuery as CFDictionary, nil)
         if  status != noErr {
             throw Status(status: status)
         }

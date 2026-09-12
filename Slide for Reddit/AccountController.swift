@@ -85,6 +85,9 @@ class AccountController {
         AccountController.isGold = false
         AccountController.current = nil
         AccountController.currentName = ""
+        // Cleared after `currentName`, so this does not overwrite the cached value of the
+        // account we just signed out of.
+        SettingValues.nsfwEnabled = false
         (UIApplication.shared.delegate as! AppDelegate).session = Session()
         NotificationCenter.default.post(name: .onRequireLogin, object: nil)
     }
@@ -117,23 +120,58 @@ class AccountController {
 
                 AccountController.isLoggedIn = true
                 AccountController.currentName = name
+                // Apply this account's cached content settings before anything loads.
+                // They are authoritative only once the profile response lands, but
+                // starting from the last known values stops the opening subreddit from
+                // being filtered and sized as if NSFW content were disallowed.
+                SettingValues.applyAccountScopedSettings(for: name)
 
                 let session = Session(token: token)
                 (UIApplication.shared.delegate as! AppDelegate).session = session
-                try session.getUserProfile(name, completion: { (result) in
-                    switch result {
-                    case .failure(let error):
+
+                let loadProfile = {
+                    do {
+                        try session.getUserProfile(name, completion: { (result) in
+                            switch result {
+                            case .failure(let error):
+                                slideLog(error)
+                            case .success(let account):
+                                AccountController.current = account
+                                if SettingValues.applyAccountScopedSettings(for: name, over18: account.over18) {
+                                    NotificationCenter.default.post(name: .onContentSettingsChanged, object: nil)
+                                }
+                                NotificationCenter.default.post(name: .onAccountChanged, object: nil, userInfo: [
+                                    "Account": account,
+                                    ])
+                                if AccountController.currentName == name {
+                                    AccountController.isGold = account.isGold
+                                }
+                            }
+                        })
+                    } catch {
                         slideLog(error)
-                    case .success(let account):
-                        AccountController.current = account
-                        NotificationCenter.default.post(name: .onAccountChanged, object: nil, userInfo: [
-                            "Account": account,
-                            ])
-                        if AccountController.currentName == name {
-                            AccountController.isGold = account.isGold
-                        }
                     }
-                })
+                }
+
+                // Reddit access tokens are only valid for an hour, so on a cold launch
+                // after any longer gap the stored token is already dead. Refresh it up
+                // front instead of letting the first screenful of requests race the
+                // foreground refresh and fail with a 401.
+                if token.isExpired() {
+                    do {
+                        try session.refreshTokenLocal({ (result) in
+                            if case .failure(let error) = result {
+                                slideLog("Token refresh at launch failed: \(error)")
+                            }
+                            loadProfile()
+                        })
+                    } catch {
+                        slideLog(error)
+                        loadProfile()
+                    }
+                } else {
+                    loadProfile()
+                }
                 UserDefaults.standard.set(name, forKey: "name")
                 UserDefaults.standard.synchronize()
             } catch {
@@ -289,6 +327,9 @@ extension Sequence where Iterator.Element: Hashable {
 extension Notification.Name {
     static let onRequireLogin = Notification.Name("on-require-login")
     static let onAccountChanged = Notification.Name("on-account-changed")
+    /// Posted when the account's content settings (NSFW visibility/previews) change after
+    /// content has already been laid out, so visible listings can resize themselves.
+    static let onContentSettingsChanged = Notification.Name("on-content-settings-changed")
     static let onAccountMailCountChanged = Notification.Name("on-account-mail-count-changed")
     static let accountRefreshRequested = Notification.Name("account-refresh-requested")
     static let onThemeChanged = Notification.Name("theme-change-requested")

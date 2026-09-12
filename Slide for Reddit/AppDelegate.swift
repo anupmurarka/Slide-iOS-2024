@@ -119,6 +119,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func didFinishLaunching(window: UIWindow) {
         UIPanGestureRecognizer.swizzle()
+        // Reddift's automatic 401 token refresh persists through OAuth2TokenRepository
+        // (Keychain), but this app reads tokens back from LocalKeystore. Mirror every
+        // refreshed token there so the next cold launch starts with a live token.
+        Session.tokenPersistenceHandler = { token in
+            do {
+                try LocalKeystore.save(token: token)
+            } catch {
+                slideLog("Failed to persist refreshed token: \(error)")
+            }
+        }
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true) as NSArray
         let documentDirectory = paths[0] as! String
         seenFile = documentDirectory.appending("/seen.plist")
@@ -846,7 +856,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func didBecomeActive() {
-        if AccountController.current == nil {
+        // `AccountController.current` is populated asynchronously, so on a cold launch it
+        // is still nil here — re-initializing on that condition built a second Session
+        // and swapped it into `self.session` while the first screen's request was still
+        // in flight. Only re-initialize when there is genuinely no authenticated session.
+        if session?.token == nil && AccountController.current == nil {
             AccountController.initialize()
         }
         
@@ -1127,10 +1141,14 @@ extension Session {
                 case .success(let newToken):
                     DispatchQueue.main.async(execute: { () -> Void in
                         self.token = newToken
+                        // A refreshed token is usable whether or not it persists, so a
+                        // storage failure must not be reported as a refresh failure.
                         do {
                             try LocalKeystore.save(token: newToken)
-                            completion(Result(value: newToken))
-                        } catch { completion(Result(error: error as NSError)) }
+                        } catch {
+                            slideLog("Failed to persist refreshed token: \(error)")
+                        }
+                        completion(Result(value: newToken))
                     })
                 }
             })

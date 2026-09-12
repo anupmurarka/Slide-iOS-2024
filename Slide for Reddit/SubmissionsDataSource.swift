@@ -189,7 +189,8 @@ class SubmissionsDataSource {
                     self.loaded = true
                     self.isReset = false
                     switch result {
-                    case .failure:
+                    case .failure(let error):
+                        slideLog("r/\(self.subreddit) request failed (\(error.code)): \(error)")
                         self.loadOffline()
                     case .success(let listing):
                         self.loading = false

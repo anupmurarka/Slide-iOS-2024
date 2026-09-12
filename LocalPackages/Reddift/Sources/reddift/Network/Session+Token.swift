@@ -21,6 +21,10 @@ func refreshTokenWithJSON(_ result: Result<JSONDictionary>, token: OAuth2Token) 
 }
 
 extension Session {
+    /// Optional hook so the host app can persist a refreshed token in its own store.
+    /// Called on the main queue with every successfully refreshed token.
+    public static var tokenPersistenceHandler: ((OAuth2Token) -> Void)?
+
     /**
     Refresh own token.
     
@@ -37,10 +41,17 @@ extension Session {
                 case .success(let newToken):
                     DispatchQueue.main.async(execute: { () -> Void in
                         self.token = newToken
+                        // The refreshed token is valid whether or not we manage to write
+                        // it to disk, so persistence failures must not fail the refresh —
+                        // callers use this result to decide whether to retry a request
+                        // that was rejected with a 401.
+                        Session.tokenPersistenceHandler?(newToken)
                         do {
                             try OAuth2TokenRepository.save(token: newToken)
-                            completion(Result(value: newToken))
-                        } catch { completion(Result(error: error as NSError)) }
+                        } catch {
+                            print("Failed to persist refreshed token: \(error)")
+                        }
+                        completion(Result(value: newToken))
                     })
                 }
             })

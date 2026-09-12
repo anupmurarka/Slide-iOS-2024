@@ -116,7 +116,6 @@ public class Session: NSObject, URLSessionDelegate, URLSessionDataDelegate {
                     // http header must be updated with new OAuth token.
                     var request = request
                     request.setOAuth2Token(token)
-                    print("new token - \(token.accessToken) - automatically refreshed.")
                     let task = self.session.dataTask(with: request, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) -> Void in
                         self.updateRateLimit(with: response)
                         completion(handleResponse(data, response, error as NSError?))

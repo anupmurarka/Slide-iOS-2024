@@ -203,6 +203,7 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(youTubePlaying), name: .onYouTubeWillStart, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(contentSettingsChanged), name: .onContentSettingsChanged, object: nil)
 
         flowLayout.delegate = self
         self.tableView = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
@@ -1301,6 +1302,16 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
         setupFab(UIScreen.main.bounds.size)
         if parentController != nil {
             parentController?.colorChanged(ColorUtil.getColorForSub(sub: sub))
+        }
+    }
+
+    /// The account's NSFW settings feed both `PostFilter` and cell sizing, so a listing
+    /// laid out before the profile response landed has to be measured again.
+    @objc func contentSettingsChanged() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self, self.isViewLoaded else { return }
+            CachedTitle.titles.removeAll()
+            self.reloadDataReset()
         }
     }
 
