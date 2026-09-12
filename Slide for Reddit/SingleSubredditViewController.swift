@@ -1308,7 +1308,16 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
             guard let self = self, self.isViewLoaded else { return }
             // A listing that fell back to cached content, or that has nothing to show,
             // gets another go at the network now that the account's settings are known.
-            if self.dataSource.offline || !self.dataSource.hasContent() {
+            //
+            // Not while a load is already in flight, though: `force` bypasses the
+            // data source's `loading` guard, so this would run a second request
+            // concurrently with the first. Both would append to `content` and both would
+            // report a stale `before` to loadSuccess, leaving the collection view's item
+            // count out of step with the data source — an invalid batch update, which
+            // asserts. The in-flight load filters its results with the settings that are
+            // already applied by the time this notification is posted, so there is
+            // nothing to re-fetch for.
+            if !self.dataSource.loading && (self.dataSource.offline || !self.dataSource.hasContent()) {
                 self.dataSource.getData(reload: true, force: true)
                 return
             }
@@ -2125,7 +2134,18 @@ extension SingleSubredditViewController: SubmissionDataSouceDelegate {
             self.tableView.contentOffset = CGPoint.init(x: 0, y: setOffset)
         } else {
             self.flowLayout.invalidateLayout()
-            self.tableView.insertItems(at: paths)
+            // `numberOfItemsInSection` is not simply `content.count`: it also counts the
+            // header and a trailing loading cell, each of which appears or disappears
+            // with the data source's `loading`/`isReset`/`hasContent` flags. So the count
+            // can move without any insert, and `insertItems` would assert. Only insert
+            // when the arithmetic holds; otherwise reload.
+            let known = self.tableView.numberOfItems(inSection: 0)
+            let expected = self.collectionView(self.tableView, numberOfItemsInSection: 0)
+            if known + paths.count == expected {
+                self.tableView.insertItems(at: paths)
+            } else {
+                self.tableView.reloadData()
+            }
         }
         self.tableView.isUserInteractionEnabled = true
 
