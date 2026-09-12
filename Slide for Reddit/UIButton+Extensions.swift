@@ -11,6 +11,21 @@ import UIKit
 private let minimumHitArea = CGSize(width: 100, height: 100)
 // https://stackoverflow.com/a/50127204/3697225
 extension UIButton {
+    /// Padding between the button's bounds and its content.
+    ///
+    /// Wraps `contentEdgeInsets`, deprecated in iOS 15 in favour of
+    /// `UIButton.Configuration.contentInsets`. No button in this app sets a
+    /// `configuration`, so the property still applies exactly as it always has — the
+    /// deprecation is a migration notice, not a behaviour change.
+    ///
+    /// Call sites funnel through here so the migration in #13 is one function to rewrite
+    /// rather than 27 call sites to find. Note the trade: the compiler no longer flags
+    /// those call sites, so if a button is ever given a `configuration`, this padding
+    /// will be silently ignored on it.
+    func setContentPadding(_ insets: UIEdgeInsets) {
+        contentEdgeInsets = insets
+    }
+
     func leftImage(image: UIImage, renderMode: UIImage.RenderingMode) {
         self.setImage(image.withRenderingMode(renderMode), for: .normal)
         self.imageEdgeInsets = UIEdgeInsets(top: 0, left: image.size.width / 2, bottom: 0, right: image.size.width / 2)

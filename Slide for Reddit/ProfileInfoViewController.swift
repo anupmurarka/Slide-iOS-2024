@@ -49,7 +49,7 @@ class ProfileInfoViewController: UIViewController {
     
     var closeButton = UIButton(type: .custom).then {
         $0.setImage(UIImage(sfString: SFSymbol.xmark, overrideString: "close")!.getCopy(withSize: .square(size: 30), withColor: .white), for: UIControl.State.normal)
-        $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 16, bottom: 24, right: 24)
+        $0.setContentPadding(UIEdgeInsets(top: 4, left: 16, bottom: 24, right: 24))
         $0.accessibilityLabel = "Close"
     }
 

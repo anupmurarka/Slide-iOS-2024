@@ -256,49 +256,49 @@ class VideoMediaViewController: EmbeddableMediaViewController, UIGestureRecogniz
             menuButton = UIButton().then {
                 $0.accessibilityIdentifier = "More Button"
                 $0.setImage(UIImage(sfString: SFSymbol.ellipsis, overrideString: "moreh")?.navIcon(true), for: [])
-                $0.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+                $0.setContentPadding(UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
             }
             
             downloadButton = UIButton().then {
                 $0.accessibilityIdentifier = "Download Button"
                 $0.setImage(UIImage(sfString: SFSymbol.squareAndArrowDownFill, overrideString: "download")?.navIcon(true), for: [])
                 $0.isHidden = true // The button will be unhidden once the content has loaded.
-                $0.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+                $0.setContentPadding(UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
             }
             
             upvoteButton = UIButton().then {
                 $0.accessibilityIdentifier = "Upvote Button"
                 $0.setImage(UIImage(sfString: SFSymbol.arrowUp, overrideString: "upvote")?.navIcon(true).getCopy(withColor: isUpvoted ? ColorUtil.upvoteColor : UIColor.white), for: [])
                 $0.isHidden = upvoteCallback == nil // The button will be unhidden once the content has loaded.
-                $0.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+                $0.setContentPadding(UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
             }
 
             muteButton = UIButton().then {
                 $0.accessibilityIdentifier = "Un-mute video"
                 $0.setImage(UIImage(sfString: SFSymbol.speakerSlashFill, overrideString: "mute")?.navIcon(true).getCopy(withColor: GMColor.red500Color()), for: [])
                 $0.isHidden = true // The button will be unhidden once the content has loaded.
-                $0.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+                $0.setContentPadding(UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
             }
             
             ytButton = UIButton().then {
                 $0.accessibilityIdentifier = "Open in YouTube"
                 $0.setImage(UIImage(named: "youtube")?.navIcon(true), for: [])
                 $0.isHidden = true // The button will be unhidden once the content has loaded.
-                $0.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+                $0.setContentPadding(UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
             }
             
             goToCommentsButton = UIButton().then {
                 $0.accessibilityIdentifier = "Go to Comments Button"
                 $0.setImage(UIImage(sfString: SFSymbol.bubbleLeftAndBubbleRightFill, overrideString: "comments")?.navIcon(true), for: [])
                 $0.isHidden = commentCallback == nil
-                $0.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+                $0.setContentPadding(UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
             }
             
             showTitleButton = UIButton().then {
                 $0.accessibilityIdentifier = "Show Title Button"
                 $0.setImage(UIImage(sfString: SFSymbol.textbox, overrideString: "size")?.navIcon(true), for: [])
                 $0.isHidden = !(data.text != nil && !(data.text!.isEmpty))
-                $0.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+                $0.setContentPadding(UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
             }
             
             size = UILabel().then {

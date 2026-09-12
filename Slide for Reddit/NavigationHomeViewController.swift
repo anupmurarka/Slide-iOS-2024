@@ -57,7 +57,7 @@ class NavigationHomeViewController: UIViewController {
 
     var multiButton = UIButton(type: .custom).then {
         $0.setImage(UIImage(sfString: SFSymbol.folderFillBadgePlus, overrideString: "compact")!.getCopy(withSize: .square(size: 30), withColor: .white), for: UIControl.State.normal)
-        $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 16, bottom: 24, right: 24)
+        $0.setContentPadding(UIEdgeInsets(top: 4, left: 16, bottom: 24, right: 24))
         $0.accessibilityLabel = "Create a Multireddit"
     }
 
@@ -894,13 +894,13 @@ class CurrentAccountHeaderView: UIView {
     
     var settingsButton = UIButton(type: .custom).then {
         $0.setImage(UIImage(sfString: .gear, overrideString: "settings")!.getCopy(withSize: .square(size: 30), withColor: UIColor.fontColor), for: UIControl.State.normal)
-        $0.contentEdgeInsets = UIEdgeInsets(top: 7, left: 8, bottom: 7, right: 8)
+        $0.setContentPadding(UIEdgeInsets(top: 7, left: 8, bottom: 7, right: 8))
         $0.accessibilityLabel = "App Settings"
     }
     
     var forwardButton = UIButton(type: .custom).then {
         $0.setImage(UIImage(sfString: UIDevice.current.userInterfaceIdiom == .pad ? .xmark : .chevronRight, overrideString: "next")!.getCopy(withSize: .square(size: 20), withColor: UIColor.fontColor), for: UIControl.State.normal)
-        $0.contentEdgeInsets = UIEdgeInsets(top: 7, left: 8, bottom: 7, right: 8)
+        $0.setContentPadding(UIEdgeInsets(top: 7, left: 8, bottom: 7, right: 8))
         $0.accessibilityLabel = "Go home"
     }
 
@@ -912,12 +912,12 @@ class CurrentAccountHeaderView: UIView {
     }
     var modButton = UIButton(type: .custom).then {
         $0.setImage(UIImage(sfString: SFSymbol.shieldLefthalfFill, overrideString: "mod")!.getCopy(withSize: .square(size: 30), withColor: ColorUtil.baseAccent), for: UIControl.State.normal)
-        $0.contentEdgeInsets = UIEdgeInsets(top: 7, left: 8, bottom: 7, right: 8)
+        $0.setContentPadding(UIEdgeInsets(top: 7, left: 8, bottom: 7, right: 8))
         $0.accessibilityLabel = "Mod Queue"
     }
     var mailButton = UIButton(type: .custom).then {
         $0.setImage(UIImage(sfString: SFSymbol.trayFill, overrideString: "messages")!.getCopy(withSize: .square(size: 30), withColor: ColorUtil.baseAccent), for: UIControl.State.normal)
-        $0.contentEdgeInsets = UIEdgeInsets(top: 7, left: 8, bottom: 7, right: 8)
+        $0.setContentPadding(UIEdgeInsets(top: 7, left: 8, bottom: 7, right: 8))
         $0.accessibilityLabel = "Inbox"
     }
     var mailBadge = BadgeSwift().then {
