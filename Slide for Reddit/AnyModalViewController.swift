@@ -366,7 +366,7 @@ class AnyModalViewController: UIViewController {
                 presenter.sourceView = sender
                 presenter.sourceRect = sender.bounds
             }
-            let window = UIApplication.shared.keyWindow!
+            let window = UIApplication.shared.currentKeyWindow!
             if let modalVC = window.rootViewController?.presentedViewController {
                 modalVC.present(activityViewController, animated: true, completion: nil)
             } else {
@@ -378,7 +378,7 @@ class AnyModalViewController: UIViewController {
             self.shareVideo(baseURL, sender: sender)
         }
 
-        let window = UIApplication.shared.keyWindow!
+        let window = UIApplication.shared.currentKeyWindow!
         
         if let modalVC = window.rootViewController?.presentedViewController {
             alertController.show(modalVC)
@@ -397,7 +397,7 @@ class AnyModalViewController: UIViewController {
                         presenter.sourceView = sender
                         presenter.sourceRect = sender.bounds
                     }
-                    let window = UIApplication.shared.keyWindow!
+                    let window = UIApplication.shared.currentKeyWindow!
                     if let modalVC = window.rootViewController?.presentedViewController {
                         modalVC.present(activityViewController, animated: true, completion: nil)
                     } else {

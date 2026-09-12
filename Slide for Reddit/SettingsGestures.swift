@@ -191,7 +191,7 @@ class SettingsGestures: BubbleSettingTableViewController {
     }
     
     override func loadView() {
-        canForceTouch = (UIApplication.shared.keyWindow?.rootViewController?.traitCollection.forceTouchCapability ?? .unknown) == .available
+        canForceTouch = (UIApplication.shared.currentKeyWindow?.rootViewController?.traitCollection.forceTouchCapability ?? .unknown) == .available
         super.loadView()
         self.view.backgroundColor = UIColor.backgroundColor
         // set the title

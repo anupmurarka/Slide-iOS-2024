@@ -1039,7 +1039,7 @@ class ManageAccountsViewController: UITableViewController {
 
     /// Rebuilds the app UI so the whole app reflects the account change.
     private func rebuildApp() {
-        let window = view.window ?? UIApplication.shared.keyWindow
+        let window = view.window ?? UIApplication.shared.currentKeyWindow
         _ = (UIApplication.shared.delegate as? AppDelegate)?.resetStack(window: window)
     }
 }

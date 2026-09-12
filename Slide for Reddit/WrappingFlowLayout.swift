@@ -69,7 +69,7 @@ class WrappingFlowLayout: UICollectionViewLayout {
         }
         
         if !UIApplication.shared.isMac() {
-            if pad && UIApplication.shared.keyWindow?.frame != UIScreen.main.bounds || UIApplication.shared.isSplitOrSlideOver {
+            if pad && UIApplication.shared.currentKeyWindow?.frame != UIScreen.main.bounds || UIApplication.shared.isSplitOrSlideOver {
                 numberOfColumns = 1
             }
         }

@@ -581,7 +581,7 @@ class SettingsTheme: BubbleSettingTableViewController, ColorPickerViewDelegate {
                         presenter.sourceView = tableView.cellForRow(at: indexPath)
                         presenter.sourceRect = tableView.cellForRow(at: indexPath)?.bounds ?? CGRect.zero
                     }
-                    let window = UIApplication.shared.keyWindow!
+                    let window = UIApplication.shared.currentKeyWindow!
                     if let modalVC = window.rootViewController?.presentedViewController {
                         modalVC.present(activityViewController, animated: true, completion: nil)
                     } else {

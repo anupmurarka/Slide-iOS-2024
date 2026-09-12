@@ -14,17 +14,7 @@ import UIKit
 public extension UIApplication {
     var statusBarUIView: UIView? {
         let tag = 100000
-        var keyWindow = UIApplication.shared.keyWindow
-        if keyWindow == nil {
-            if #available(iOS 13.0, *) {
-                keyWindow = UIApplication.shared.connectedScenes
-                    .filter({ $0.activationState == .foregroundActive })
-                    .map({ $0 as? UIWindowScene })
-                    .compactMap({ $0 })
-                    .first?.windows
-                    .filter({ $0.isKeyWindow }).first
-            }
-        }
+        let keyWindow = UIApplication.shared.currentKeyWindow
 
         if let statusBar = keyWindow?.viewWithTag(tag) {
             return statusBar

@@ -709,13 +709,13 @@ class LinkCellView: UICollectionViewCell, UIViewControllerPreviewingDelegate, UI
                 alertController.addView(title: "\(award[0]) x\(award[2])", icon_url: award[5], action: {() in
                     let alertController = DragDownAlertMenu(title: award[0], subtitle: award[3], icon: award[5])
                     alertController.modalPresentationStyle = .overCurrentContext
-                    if let window = UIApplication.shared.keyWindow, let modalVC = window.rootViewController?.presentedViewController {
+                    if let window = UIApplication.shared.currentKeyWindow, let modalVC = window.rootViewController?.presentedViewController {
                         if let presented = modalVC.presentedViewController {
                             alertController.show(presented)
                         } else {
                             alertController.show(modalVC)
                         }
-                    } else if let window = UIApplication.shared.keyWindow, let root = window.rootViewController {
+                    } else if let window = UIApplication.shared.currentKeyWindow, let root = window.rootViewController {
                         alertController.show(root)
                     }
                 })

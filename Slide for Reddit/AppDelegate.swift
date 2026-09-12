@@ -809,7 +809,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 UserDefaults.standard.set(colorString, forKey: "Theme+" + title)
             }
 
-            alert.show(UIApplication.shared.keyWindow?.topViewController())
+            alert.show(UIApplication.shared.currentKeyWindow?.topViewController())
             return true
         } else if url.absoluteString.contains("reddit.com") || url.absoluteString.contains("google.com/amp") || url.absoluteString.contains("redd.it") {
                 VCPresenter.openRedditLink(url.absoluteString.replacingOccurrences(of: "slide://", with: ""), window?.rootViewController as? UINavigationController, window?.rootViewController)
@@ -878,7 +878,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if totalBackground && SettingValues.biometrics && !TopLockViewController.presented {
             let topLock = TopLockViewController()
             topLock.modalPresentationStyle = .overFullScreen
-            UIApplication.shared.keyWindow?.topViewController()?.present(topLock, animated: false, completion: nil)
+            UIApplication.shared.currentKeyWindow?.topViewController()?.present(topLock, animated: false, completion: nil)
         }
         // Only attempt iCloud sync if CloudKit is available and properly configured
         if isCloudKitAvailable() {

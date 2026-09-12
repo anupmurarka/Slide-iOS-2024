@@ -29,7 +29,7 @@ public extension AlertController {
         let viewController = UIViewController()
         self.alertWindow.rootViewController = viewController
 
-        let topWindow = UIApplication.shared.windows.last
+        let topWindow = UIApplication.shared.currentWindowScene?.windows.last
         if let topWindow = topWindow {
             self.alertWindow.windowLevel = topWindow.windowLevel + 1
         }
@@ -64,7 +64,7 @@ public extension UIAlertController {
         let viewController = UIViewController()
         self.alertWindow.rootViewController = viewController
 
-        let topWindow = UIApplication.shared.windows.last
+        let topWindow = UIApplication.shared.currentWindowScene?.windows.last
         if let topWindow = topWindow {
             self.alertWindow.windowLevel = topWindow.windowLevel + 1
         }
@@ -97,7 +97,7 @@ public extension UIActivityViewController {
         let viewController = UIViewController()
         self.alertWindow.rootViewController = viewController
 
-        let topWindow = UIApplication.shared.windows.last
+        let topWindow = UIApplication.shared.currentWindowScene?.windows.last
         if let topWindow = topWindow {
             self.alertWindow.windowLevel = topWindow.windowLevel + 1
         }

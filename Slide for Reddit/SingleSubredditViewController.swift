@@ -2652,7 +2652,7 @@ extension SingleSubredditViewController: UICollectionViewDataSource {
             numberOfColumns = 1
         }
         
-        if pad && UIApplication.shared.keyWindow?.frame != UIScreen.main.bounds {
+        if pad && UIApplication.shared.currentKeyWindow?.frame != UIScreen.main.bounds {
             numberOfColumns = 1
         }
         

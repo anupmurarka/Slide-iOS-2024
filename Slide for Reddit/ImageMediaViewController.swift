@@ -372,7 +372,7 @@ extension ImageMediaViewController {
                 presenter.sourceView = sender
                 presenter.sourceRect = sender.bounds
             }
-            let window = UIApplication.shared.keyWindow!
+            let window = UIApplication.shared.currentKeyWindow!
             if let modalVC = window.rootViewController?.presentedViewController {
                 modalVC.present(activityViewController, animated: true, completion: nil)
             } else {
@@ -479,7 +479,7 @@ extension ImageMediaViewController: UIGestureRecognizerDelegate {
 
 extension UIApplication {
     
-    class func topViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+    class func topViewController(base: UIViewController? = UIApplication.shared.currentKeyWindow?.rootViewController) -> UIViewController? {
         if let nav = base as? UINavigationController {
             return topViewController(base: nav.visibleViewController)
         }
