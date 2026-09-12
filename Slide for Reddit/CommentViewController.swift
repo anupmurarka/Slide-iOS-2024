@@ -72,9 +72,9 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                 UIKeyCommand(input: " ", modifierFlags: [], action: #selector(spacePressed)),
                 UIKeyCommand(input: UIKeyCommand.inputDownArrow, modifierFlags: [], action: #selector(spacePressed)),
                 UIKeyCommand(input: UIKeyCommand.inputUpArrow, modifierFlags: [], action: #selector(spacePressedUp)),
-                UIKeyCommand(input: "l", modifierFlags: .command, action: #selector(upvote(_:)), discoverabilityTitle: "Like post"),
-                UIKeyCommand(input: "r", modifierFlags: .command, action: #selector(reply(_:)), discoverabilityTitle: "Reply to post"),
-                UIKeyCommand(input: "s", modifierFlags: .command, action: #selector(save(_:)), discoverabilityTitle: "Save post"),
+                UIKeyCommand(title: "Like post", action: #selector(upvote(_:)), input: "l", modifierFlags: .command),
+                UIKeyCommand(title: "Reply to post", action: #selector(reply(_:)), input: "r", modifierFlags: .command),
+                UIKeyCommand(title: "Save post", action: #selector(save(_:)), input: "s", modifierFlags: .command),
             ]
         }
     }

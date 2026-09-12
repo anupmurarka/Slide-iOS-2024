@@ -50,9 +50,9 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
             UIKeyCommand(input: " ", modifierFlags: [], action: #selector(spacePressed)),
             UIKeyCommand(input: UIKeyCommand.inputDownArrow, modifierFlags: [], action: #selector(spacePressed)),
             UIKeyCommand(input: UIKeyCommand.inputUpArrow, modifierFlags: [], action: #selector(spacePressedUp)),
-            UIKeyCommand(input: "s", modifierFlags: .command, action: #selector(search), discoverabilityTitle: "Search"),
-            UIKeyCommand(input: "p", modifierFlags: .command, action: #selector(hideReadPosts), discoverabilityTitle: "Hide read posts"),
-            UIKeyCommand(input: "r", modifierFlags: .command, action: #selector(refresh(_:)), discoverabilityTitle: "Reload"),
+            UIKeyCommand(title: "Search", action: #selector(search), input: "s", modifierFlags: .command),
+            UIKeyCommand(title: "Hide read posts", action: #selector(hideReadPosts), input: "p", modifierFlags: .command),
+            UIKeyCommand(title: "Reload", action: #selector(refresh(_:)), input: "r", modifierFlags: .command),
         ]
     }
     
