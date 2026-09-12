@@ -136,7 +136,7 @@ class SubredditThemeViewController: UITableViewController, ColorPickerViewDelega
         let defaults = UserDefaults.standard
         alertController = UIAlertController(title: "Syncing colors...\n\n\n", message: nil, preferredStyle: .alert)
 
-        let spinnerIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        let spinnerIndicator = UIActivityIndicatorView(style: .large)
         spinnerIndicator.center = CGPoint(x: 135.0, y: 65.5)
         spinnerIndicator.color = UIColor.fontColor
         spinnerIndicator.startAnimating()
@@ -774,7 +774,10 @@ public extension UIView {
             activityView.layer.shadowOffset = style.shadowOffset
         }
 
-        let activityIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
+        let activityIndicatorView = UIActivityIndicatorView(style: .large)
+        // `.whiteLarge` implied white; `.large` does not, and this sits on a toast with a
+        // black 0.8-alpha background.
+        activityIndicatorView.color = .white
         activityIndicatorView.center = CGPoint(x: activityView.bounds.size.width / 2.0, y: activityView.bounds.size.height / 2.0)
         activityView.addSubview(activityIndicatorView)
         activityIndicatorView.startAnimating()

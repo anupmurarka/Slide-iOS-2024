@@ -104,7 +104,7 @@ class SettingsDonate: UIViewController, MFMailComposeViewControllerDelegate {
             IAPHandlerTip.shared.purchaseMyProduct(index: 0)
             self.alertController = UIAlertController(title: "Processing your tip!\n\n\n", message: nil, preferredStyle: .alert)
             
-            let spinnerIndicator = UIActivityIndicatorView(style: .whiteLarge)
+            let spinnerIndicator = UIActivityIndicatorView(style: .large)
             spinnerIndicator.center = CGPoint(x: 135.0, y: 65.5)
             spinnerIndicator.color = UIColor.fontColor
             spinnerIndicator.startAnimating()
@@ -117,7 +117,7 @@ class SettingsDonate: UIViewController, MFMailComposeViewControllerDelegate {
             IAPHandlerTip.shared.purchaseMyProduct(index: 1)
             self.alertController = UIAlertController(title: "Processing your tip!\n\n\n", message: nil, preferredStyle: .alert)
             
-            let spinnerIndicator = UIActivityIndicatorView(style: .whiteLarge)
+            let spinnerIndicator = UIActivityIndicatorView(style: .large)
             spinnerIndicator.center = CGPoint(x: 135.0, y: 65.5)
             spinnerIndicator.color = UIColor.fontColor
             spinnerIndicator.startAnimating()
@@ -130,7 +130,7 @@ class SettingsDonate: UIViewController, MFMailComposeViewControllerDelegate {
             IAPHandlerTip.shared.purchaseMyProduct(index: 2)
             self.alertController = UIAlertController(title: "Processing your tip!\n\n\n", message: nil, preferredStyle: .alert)
             
-            let spinnerIndicator = UIActivityIndicatorView(style: .whiteLarge)
+            let spinnerIndicator = UIActivityIndicatorView(style: .large)
             spinnerIndicator.center = CGPoint(x: 135.0, y: 65.5)
             spinnerIndicator.color = UIColor.fontColor
             spinnerIndicator.startAnimating()

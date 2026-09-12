@@ -907,7 +907,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
     @objc func doEdit(_ sender: AnyObject) {
         alertController = UIAlertController(title: "Editing comment...\n\n\n", message: nil, preferredStyle: .alert)
         
-        let spinnerIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        let spinnerIndicator = UIActivityIndicatorView(style: .large)
         spinnerIndicator.center = CGPoint(x: 135.0, y: 65.5)
         spinnerIndicator.color = UIColor.fontColor
         spinnerIndicator.startAnimating()
@@ -959,7 +959,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
             alertController = UIAlertController(title: "Sending reply...\n\n\n", message: nil, preferredStyle: .alert)
         }
         
-        let spinnerIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        let spinnerIndicator = UIActivityIndicatorView(style: .large)
         spinnerIndicator.center = CGPoint(x: 135.0, y: 65.5)
         spinnerIndicator.color = UIColor.fontColor
         spinnerIndicator.startAnimating()

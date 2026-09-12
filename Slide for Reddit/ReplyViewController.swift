@@ -1362,7 +1362,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
 
             alertController = UIAlertController(title: "Editing submission...\n\n\n", message: nil, preferredStyle: .alert)
 
-            let spinnerIndicator = UIActivityIndicatorView(style: .whiteLarge)
+            let spinnerIndicator = UIActivityIndicatorView(style: .large)
             spinnerIndicator.center = CGPoint(x: 135.0, y: 65.5)
             spinnerIndicator.color = UIColor.fontColor
             spinnerIndicator.startAnimating()
@@ -1424,7 +1424,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
                 alertController = UIAlertController(title: "Posting submission...\n\n\n", message: nil, preferredStyle: .alert)
             }
 
-            let spinnerIndicator = UIActivityIndicatorView(style: .whiteLarge)
+            let spinnerIndicator = UIActivityIndicatorView(style: .large)
             spinnerIndicator.center = CGPoint(x: 135.0, y: 65.5)
             spinnerIndicator.color = UIColor.fontColor
             spinnerIndicator.startAnimating()
@@ -1489,7 +1489,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
         
         alertController = UIAlertController(title: "Crossposting...\n\n\n", message: nil, preferredStyle: .alert)
         
-        let spinnerIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        let spinnerIndicator = UIActivityIndicatorView(style: .large)
         spinnerIndicator.center = CGPoint(x: 135.0, y: 65.5)
         spinnerIndicator.color = UIColor.fontColor
         spinnerIndicator.startAnimating()
@@ -1554,7 +1554,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
         }
 
         alertController = UIAlertController(title: "Sending message...\n\n\n", message: nil, preferredStyle: .alert)
-        let spinnerIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        let spinnerIndicator = UIActivityIndicatorView(style: .large)
         spinnerIndicator.center = CGPoint(x: 135.0, y: 65.5)
         spinnerIndicator.color = UIColor.fontColor
         spinnerIndicator.startAnimating()
@@ -1624,7 +1624,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
             alertController = UIAlertController(title: "Sending comment...\n\n\n", message: nil, preferredStyle: .alert)
         }
 
-        let spinnerIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        let spinnerIndicator = UIActivityIndicatorView(style: .large)
         spinnerIndicator.center = CGPoint(x: 135.0, y: 65.5)
         spinnerIndicator.color = UIColor.fontColor
         spinnerIndicator.startAnimating()

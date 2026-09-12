@@ -16,7 +16,7 @@ import UIKit
 class TrendingViewController: UITableViewController {
     var trendingSubs: [String] = []
     var trendingSearches: [TrendingItem] = []
-    var spinnerIndicator = UIActivityIndicatorView(style: .whiteLarge)
+    var spinnerIndicator = UIActivityIndicatorView(style: .large)
 
     var taskSearches: DataRequest?
     var taskSubs: DataRequest?

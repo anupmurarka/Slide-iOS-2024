@@ -85,7 +85,7 @@ class ModalMediaViewController: UIViewController {
             }
         }
         if ContentType.isImgurLink(uri: url) || type == .DEVIANTART || type == .XKCD {
-            spinnerIndicator = UIActivityIndicatorView(style: .whiteLarge)
+            spinnerIndicator = UIActivityIndicatorView(style: .large)
             spinnerIndicator.center = self.view.center
             spinnerIndicator.color = UIColor.white
             self.view.addSubview(spinnerIndicator)

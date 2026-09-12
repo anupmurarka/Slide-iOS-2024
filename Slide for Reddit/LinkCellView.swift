@@ -466,7 +466,9 @@ class LinkCellView: UICollectionViewCell, UIViewControllerPreviewingDelegate, UI
             
             self.topVideoView = UIView()
             self.progressDot = UIView()
-            self.spinner = UIActivityIndicatorView(style: .white)
+            self.spinner = UIActivityIndicatorView(style: .medium)
+            // `.white` implied white; `.medium` does not, and this spinner sits over video.
+            self.spinner.color = .white
             
             progressDot.alpha = 0.7
             progressDot.backgroundColor = UIColor.black.withAlphaComponent(0.5)

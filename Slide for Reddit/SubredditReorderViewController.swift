@@ -162,7 +162,7 @@ class SubredditReorderViewController: UITableViewController {
     @objc func sync(_ selector: AnyObject) {
         let alertController = UIAlertController(title: "Syncing subscriptions...\n\n\n", message: nil, preferredStyle: .alert)
 
-        let spinnerIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        let spinnerIndicator = UIActivityIndicatorView(style: .large)
         spinnerIndicator.center = CGPoint(x: 135.0, y: 65.5)
         spinnerIndicator.color = UIColor.fontColor
         spinnerIndicator.startAnimating()

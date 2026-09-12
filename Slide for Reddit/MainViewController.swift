@@ -315,7 +315,7 @@ class MainViewController: ColorMuxPagingViewController, UINavigationControllerDe
         } else {
             alertController = UIAlertController(title: "Syncing subscriptions...\n\n\n", message: nil, preferredStyle: .alert)
             
-            let spinnerIndicator = UIActivityIndicatorView(style: .whiteLarge)
+            let spinnerIndicator = UIActivityIndicatorView(style: .large)
             UserDefaults.standard.setValue(true, forKey: "done" + token.name)
             spinnerIndicator.center = CGPoint(x: 135.0, y: 65.5)
             spinnerIndicator.color = UIColor.fontColor

@@ -31,7 +31,7 @@ class ProfilePreviewViewController: UIViewController {
     }
     
     var spinner = UIActivityIndicatorView().then {
-        $0.style = UIActivityIndicatorView.Style.whiteLarge
+        $0.style = UIActivityIndicatorView.Style.large
         $0.color = UIColor.fontColor
         $0.hidesWhenStopped = true
     }

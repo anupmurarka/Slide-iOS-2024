@@ -677,7 +677,7 @@ class AnyModalViewController: UIViewController {
     var lastTracks = false
     
     func showSpinner() {
-        spinnerIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        spinnerIndicator = UIActivityIndicatorView(style: .large)
         spinnerIndicator.center = self.view.center
         spinnerIndicator.color = UIColor.white
         self.view.addSubview(spinnerIndicator)
