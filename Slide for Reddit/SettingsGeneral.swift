@@ -121,13 +121,11 @@ class SettingsGeneral: BubbleSettingTableViewController {
                             SettingValues.notifications = granted
                             UserDefaults.standard.set(granted, forKey: SettingValues.pref_notifications)
                             
+                            let appDelegate = UIApplication.shared.delegate as? AppDelegate
                             if SettingValues.notifications {
-                                UIApplication.shared.setMinimumBackgroundFetchInterval(60 * 10) // 10 minute interval
-                                slideLog("Application background refresh minimum interval: \(60 * 10) seconds")
-                                slideLog("Application background refresh status: \(UIApplication.shared.backgroundRefreshStatus.rawValue)")
+                                appDelegate?.scheduleMessageRefresh()
                             } else {
-                                UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalNever)
-                                slideLog("Application background refresh minimum set to never")
+                                appDelegate?.cancelMessageRefresh()
                             }
                         }
                     }

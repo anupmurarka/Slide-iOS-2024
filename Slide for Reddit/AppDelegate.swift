@@ -8,6 +8,7 @@
 
 import Anchorage
 import AVKit
+import BackgroundTasks
 import BiometricAuthentication
 import CloudKit
 import DTCoreText
@@ -85,19 +86,63 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
-        if let url = notification.userInfo?["permalink"] as? String {
-            VCPresenter.openRedditLink(url, window?.rootViewController as? UINavigationController, window?.rootViewController)
-        } else {
-            VCPresenter.showVC(viewController: InboxViewController(), popupIfPossible: false, parentNavigationController: window?.rootViewController as? UINavigationController, parentViewController: window?.rootViewController)
-        }
-    }
-        
     static var removeDict = NSMutableDictionary()
     
     var launchedURL: URL?
     
+    /// Identifier for the unread-message background refresh. Must match the entry in
+    /// Info.plist's `BGTaskSchedulerPermittedIdentifiers`, which uses the same
+    /// `$(USR_DOMAIN)` substitution.
+    static var messageRefreshTaskIdentifier: String {
+        let domain = Bundle.main.object(forInfoDictionaryKey: "USR_DOMAIN") as? String ?? "me.ccrama"
+        return "\(domain).redditslide.messagerefresh"
+    }
+
+    /// Asks the system to run the unread-message check again, no sooner than ten minutes
+    /// from now. iOS decides when it actually runs — the interval is a floor, not a
+    /// schedule, which was equally true of the `setMinimumBackgroundFetchInterval` this
+    /// replaces.
+    func scheduleMessageRefresh() {
+        guard SettingValues.notifications else { return }
+        let request = BGAppRefreshTaskRequest(identifier: AppDelegate.messageRefreshTaskIdentifier)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 60 * 10)
+        do {
+            try BGTaskScheduler.shared.submit(request)
+            slideLog("Scheduled message refresh no earlier than \(60 * 10) seconds from now")
+        } catch {
+            // The simulator always throws here, and the system refuses submissions when
+            // Background App Refresh is turned off for the app.
+            slideLog("Could not schedule message refresh: \(error)")
+        }
+    }
+
+    func cancelMessageRefresh() {
+        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: AppDelegate.messageRefreshTaskIdentifier)
+        slideLog("Cancelled scheduled message refresh")
+    }
+
+    private func handleMessageRefresh(_ task: BGAppRefreshTask) {
+        // Queue the next one first: a task that does not reschedule never runs again.
+        scheduleMessageRefresh()
+
+        task.expirationHandler = {
+            slideLog("Message refresh expired before finishing")
+            task.setTaskCompleted(success: false)
+        }
+
+        getData { result in
+            task.setTaskCompleted(success: result != .failed)
+        }
+    }
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Must be registered before this method returns. On iOS 13+ the rest of setup
+        // happens later, from scene(_:willConnectTo:), so it cannot live there.
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: AppDelegate.messageRefreshTaskIdentifier, using: nil) { [weak self] task in
+            guard let task = task as? BGAppRefreshTask else { return }
+            self?.handleMessageRefresh(task)
+        }
+
         if #available(iOS 13.0, *) { return true } else {
             let window = UIWindow(frame: UIScreen.main.bounds)
             self.window = window
@@ -357,12 +402,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         WatchSessionManager.sharedManager.doInit()
 
         if SettingValues.notifications {
-            UIApplication.shared.setMinimumBackgroundFetchInterval(60 * 10) // 10 minute interval
-            slideLog("Application background refresh minimum interval: \(60 * 10) seconds")
+            scheduleMessageRefresh()
             slideLog("Application background refresh status: \(UIApplication.shared.backgroundRefreshStatus.rawValue)")
         } else {
-            UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalNever)
-            slideLog("Application background refresh minimum set to never")
+            cancelMessageRefresh()
         }
 
         #if DEBUG
@@ -569,10 +612,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
 
         }
-    }
-
-    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        getData(completionHandler)
     }
 
     var backgroundTaskId: UIBackgroundTaskIdentifier?
