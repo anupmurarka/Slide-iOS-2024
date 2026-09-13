@@ -1312,9 +1312,7 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
     var indicator: MDCActivityIndicator = MDCActivityIndicator()
     
     @objc func youTubePlaying() {
-        if let cell = self.headerCell as? LinkCellView {
-            cell.endVideos()
-        }
+        self.headerCell?.endVideos()
     }
     
     deinit {

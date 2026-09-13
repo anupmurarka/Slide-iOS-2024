@@ -35,8 +35,8 @@ struct Hot_PostsEntryView: View {
             VStack(alignment: .leading) {
                 SubredditViewHorizontal(imageData: entry.imageData, title: entry.subreddit, redacted: true, fontColor: Color(getSchemeFontColor())).padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
                 if !entry.posts.posts.isEmpty {
-                    ForEach((0..<min(entry.posts.posts.count, (widgetFamily == .systemMedium ? 2 : 5)))) { post in
-                        PostView(post: entry.posts.posts[post], redacted: true)
+                    ForEach(entry.posts.posts.prefix(widgetFamily == .systemMedium ? 2 : 5)) { post in
+                        PostView(post: post, redacted: true)
                     }
                 }
                 Spacer()
@@ -44,8 +44,8 @@ struct Hot_PostsEntryView: View {
         } else {
             VStack(alignment: .center) {
                 SubredditViewHorizontal(imageData: entry.imageData, title: entry.subreddit, redacted: false, fontColor: Color(getSchemeFontColor())).widgetURL(URL(string: "slide://www.reddit.com/r/\(entry.subreddit)"))
-                ForEach((0..<min(entry.posts.posts.count, (widgetFamily == .systemMedium ? 2 : 5)))) { post in
-                    PostView(post: entry.posts.posts[post], redacted: false)
+                ForEach(entry.posts.posts.prefix(widgetFamily == .systemMedium ? 2 : 5)) { post in
+                    PostView(post: post, redacted: false)
                 }
             }
             .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
