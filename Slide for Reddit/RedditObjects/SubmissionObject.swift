@@ -368,6 +368,12 @@ class SubmissionObject: RedditObject {
 
         self.imageHeight = h
         self.imageWidth = w
+        // `ws`/`hs` are the smaller preview's dimensions, computed alongside
+        // `previewSmaller` above. These two properties exist and are round-tripped
+        // through Core Data (see init(model:) and the save path) but were never
+        // assigned here, so they persisted as 0 for every submission.
+        self.imageHeightSmaller = hs
+        self.imageWidthSmaller = ws
         self.smallerBannerUrl = previewSmaller
         self.distinguished = submission.distinguished.type
         self.isMod = submission.canMod

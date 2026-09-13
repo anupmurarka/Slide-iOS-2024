@@ -2896,10 +2896,8 @@ extension SingleSubredditViewController: SubmissionMoreDelegate {
             try session?.setHide(true, name: cell.link!.id, completion: { (_) in })
             let id = cell.link!.id
             var location = 0
-            var item = dataSource.content[0]
             for submission in dataSource.content {
                 if submission.id == id {
-                    item = dataSource.content[location]
                     dataSource.content.remove(at: location)
                     break
                 }
@@ -2910,7 +2908,7 @@ extension SingleSubredditViewController: SubmissionMoreDelegate {
 
             if !dataSource.loading {
                 tableView.performBatchUpdates({
-                    self.tableView.deleteItems(at: [IndexPath.init(item: location, section: 0)])
+                    self.tableView.deleteItems(at: [IndexPath.init(item: location + self.headerOffset(), section: 0)])
                 }, completion: { (_) in
                     self.tableView.isUserInteractionEnabled = true
                     self.flowLayout.reset(modal: self.presentingViewController != nil, vc: self, isGallery: self.isGallery)
