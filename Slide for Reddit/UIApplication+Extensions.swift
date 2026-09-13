@@ -21,6 +21,17 @@ extension UIApplication {
         return windowScenes.first { $0.activationState == .foregroundActive } ?? windowScenes.first
     }
 
+    /// The interface orientation of the scene the user is currently interacting with.
+    ///
+    /// Replaces `statusBarOrientation`, deprecated in iOS 13: it reports a single
+    /// app-wide orientation, which is not meaningful once several scenes can be on
+    /// screen in different orientations on iPad and Mac. Falls back to `.unknown`,
+    /// which is what `statusBarOrientation` itself returned with no windows — so
+    /// comparisons behave as they did before.
+    var currentInterfaceOrientation: UIInterfaceOrientation {
+        currentWindowScene?.interfaceOrientation ?? .unknown
+    }
+
     /// The key window of the scene the user is currently interacting with.
     ///
     /// Replaces `UIApplication.keyWindow`, deprecated in iOS 13 because it returns a key

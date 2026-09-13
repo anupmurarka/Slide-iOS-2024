@@ -494,7 +494,7 @@ class VideoMediaViewController: EmbeddableMediaViewController, UIGestureRecogniz
     func enableForcedFullscreen() {
         // Turn on forced fullscreen
 
-        let currentOrientation = UIApplication.shared.statusBarOrientation
+        let currentOrientation = UIApplication.shared.currentInterfaceOrientation
 
         // Don't allow fullscreen to be forced if it's already landscape
         if currentOrientation != .landscapeLeft && currentOrientation != .landscapeRight {

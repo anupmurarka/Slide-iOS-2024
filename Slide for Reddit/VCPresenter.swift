@@ -79,7 +79,7 @@ public class VCPresenter {
             let barButton = UIBarButtonItem.init(customView: button)
 
             // Let's figure out how to present it
-            let small: Bool = shouldPopup && UIScreen.main.traitCollection.userInterfaceIdiom == .pad && UIApplication.shared.statusBarOrientation != .portrait
+            let small: Bool = shouldPopup && UIScreen.main.traitCollection.userInterfaceIdiom == .pad && UIApplication.shared.currentInterfaceOrientation != .portrait
 
             if small || override13 || respectedOverride13 {
                 newParent.modalPresentationStyle = .pageSheet

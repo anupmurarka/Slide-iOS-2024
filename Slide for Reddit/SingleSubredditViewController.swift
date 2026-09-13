@@ -2653,7 +2653,7 @@ extension SingleSubredditViewController: UICollectionViewDataSource {
         let pad = UIScreen.main.traitCollection.userInterfaceIdiom == .pad
         
         if SettingValues.appMode == .MULTI_COLUMN {
-            if UIApplication.shared.statusBarOrientation.isPortrait {
+            if UIApplication.shared.currentInterfaceOrientation.isPortrait {
                 if UIScreen.main.traitCollection.userInterfaceIdiom != .pad {
                     numberOfColumns = 1
                 } else {
