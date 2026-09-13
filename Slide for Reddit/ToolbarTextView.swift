@@ -154,36 +154,6 @@ public class ToolbarTextView: NSObject {
         alert.addBlurView()
         
         parent?.present(alert, animated: true, completion: nil)
-        /*
-        if Drafts.drafts.isEmpty {
-            parent.view.makeToast("No drafts found", duration: 4, position: .top)
-        } else {
-            var drafts = [NSString]()
-            
-            for arrayIndex in stride(from: Drafts.drafts.count - 1, through: 0, by: -1) {
-                drafts.append(Drafts.drafts[arrayIndex])
-            }
-
-            picker = ActionSheetStringPicker(title: "Choose a draft", rows: drafts, initialSelection: 0, doneBlock: { (_, index, _) in
-                self.text!.insertText(drafts[index] as String)
-            }, cancel: { (_) in
-                return
-            }, origin: text!)
-
-            let doneButton = UIBarButtonItem.init(title: "Insert", style: .done, target: nil, action: nil)
-            picker?.setDoneButton(doneButton)
-            picker?.addCustomButton(withTitle: "Delete Draft", actionBlock: {
-                if let p = self.picker?.pickerView as? UIPickerView
-                {
-                    var current = drafts[p.selectedRow(inComponent: 0)]
-                    Drafts.deleteDraft(s: current as String)
-                    
-                    self.openDrafts(sender)
-                }
-            })
-            picker?.show()
-
-        }*/
     }
     
     @objc func uploadImage(_ sender: UIButton!) {
