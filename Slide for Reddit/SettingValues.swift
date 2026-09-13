@@ -849,11 +849,12 @@ class SettingValues {
         
         public static func getMenuNone() -> [PostOverflowAction] {
             let menu = UserDefaults.standard.stringArray(forKey: "postMenu") ?? ["profile", "sub", "moderate", "report", "block", "save", "crosspost", "readlater", "sharecontent", "sharereddit", "openchrome", "opensafari", "filter", "copy", "hide"]
-            var toReturn = [PostOverflowAction]()
-            for item in menu {
-                toReturn.append(PostOverflowAction(rawValue: item)!)
-            }
-            return toReturn
+            // A persisted menu can name actions this build has no case for. "shareauthor"
+            // is one such: it ships in upstream Slide's UserDefaults and is carried over
+            // by anyone who migrated from that app, and force-unwrapping it here crashed
+            // on every post long-press. Skip what we cannot map, as the sibling
+            // NavigationHeaderActions.getMenuNone() already does.
+            return menu.compactMap { PostOverflowAction(rawValue: $0) }
         }
 
         public func getTitle(_ link: SubmissionObject? = nil) -> String {
