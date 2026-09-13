@@ -21,6 +21,17 @@ extension UIApplication {
         return windowScenes.first { $0.activationState == .foregroundActive } ?? windowScenes.first
     }
 
+    /// The status bar frame of the scene the user is currently interacting with.
+    ///
+    /// Replaces `statusBarFrame`, deprecated in iOS 13 for the same reason as
+    /// `statusBarOrientation`: it reports one app-wide value where each scene has its
+    /// own. Falls back to `.zero`, which is what `statusBarFrame` returned when there
+    /// was no status bar — callers here already treat a zero height as "unknown" and
+    /// substitute the navigation bar's origin.
+    var currentStatusBarFrame: CGRect {
+        currentWindowScene?.statusBarManager?.statusBarFrame ?? .zero
+    }
+
     /// The interface orientation of the scene the user is currently interacting with.
     ///
     /// Replaces `statusBarOrientation`, deprecated in iOS 13: it reports a single

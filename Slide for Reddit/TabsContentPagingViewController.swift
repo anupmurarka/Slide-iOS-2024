@@ -120,7 +120,7 @@ class TabsContentPagingViewController: ColorMuxPagingViewController, UIPageViewC
         if #available(iOS 13, *), self.navigationController?.viewControllers[0] == self {
             isModal13 = true
         }
-        let topAnchorOffset = (self.navigationController?.navigationBar.frame.size.height ?? 64) + (isModal13 ? 0 : UIApplication.shared.statusBarFrame.height)
+        let topAnchorOffset = (self.navigationController?.navigationBar.frame.size.height ?? 64) + (isModal13 ? 0 : UIApplication.shared.currentStatusBarFrame.height)
         if #available(iOS 13, *) {
             tabBar.topAnchor /==/ self.view.topAnchor + topAnchorOffset
         } else {

@@ -19,7 +19,7 @@ public extension UIApplication {
         if let statusBar = keyWindow?.viewWithTag(tag) {
             return statusBar
         } else {
-            let statusBarView = UIView(frame: UIApplication.shared.statusBarFrame)
+            let statusBarView = UIView(frame: UIApplication.shared.currentStatusBarFrame)
             statusBarView.tag = tag
 
             keyWindow?.addSubview(statusBarView)

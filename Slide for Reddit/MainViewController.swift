@@ -76,7 +76,7 @@ class MainViewController: ColorMuxPagingViewController, UINavigationControllerDe
     }
     
     var statusbarHeight: CGFloat {
-        return UIApplication.shared.statusBarFrame.size.height
+        return UIApplication.shared.currentStatusBarFrame.size.height
     }
     
     var currentPage: Int {
