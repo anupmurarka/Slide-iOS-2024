@@ -231,7 +231,7 @@ class SubredditFindReturnViewController: UITableViewController, UISearchBarDeleg
         searchBar.placeholder = " Search for a subreddit"
         searchBar.sizeToFit()
         searchBar.isTranslucent = true
-        searchBar.barStyle = .blackTranslucent
+        searchBar.barStyle = .black
         searchBar.delegate = self
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.title = "Search for a Subreddit"

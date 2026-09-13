@@ -81,7 +81,7 @@ class SubredditToolbarSearchViewController: UIViewController, UIGestureRecognize
         $0.searchBarStyle = UISearchBar.Style.minimal
         $0.placeholder = " Search subs, posts, or profiles"
         $0.isTranslucent = true
-        $0.barStyle = .blackTranslucent
+        $0.barStyle = .black
         $0.accessibilityLabel = "Search"
         $0.accessibilityHint = "Search subreddits, posts, or profiles"
     }
