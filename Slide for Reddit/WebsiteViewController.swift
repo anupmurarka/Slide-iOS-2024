@@ -315,7 +315,6 @@ class WebsiteViewController: MediaViewController, WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         if register && (webView.url?.absoluteString ?? "").contains("login.compact") {
             if !(webView.url?.absoluteString ?? "").contains("register") {
                 var login = webView.url?.absoluteString ?? ""
@@ -514,10 +513,6 @@ class WebsiteViewController: MediaViewController, WKNavigationDelegate {
         return firstPeriod == nil || AdDictionary.hosts.contains(host) || firstPeriod! + 1 < host.length && AdDictionary.hosts.contains(host.substring(firstPeriod! + 1, length: host.length - (firstPeriod! + 1)))
     }
     
-    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-    }
-    
 }
 extension WKWebView {
     func stringByEvaluatingJavaScriptFromString(script: String) -> String? {
@@ -548,10 +543,6 @@ extension WKWebView {
                 WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
             }
         }
-    }
-
-    func refreshCookies() {
-        self.configuration.processPool = WKProcessPool()
     }
 
 }
