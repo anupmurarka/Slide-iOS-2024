@@ -273,45 +273,21 @@ class SettingsFont: BubbleSettingTableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell
-        var is13 = false
-        if #available(iOS 13, *) {
-            is13 = true
-        }
 
         switch indexPath.section {
         case 0:
-            if is13 {
-                switch indexPath.row {
-                case 0: cell = self.submissionFont
-                case 1: cell = self.submissionSize
-                case 2: cell = self.submissionPreview
-                default: fatalError("Unknown row in section \(indexPath.section)")
-                }
-            } else {
-                switch indexPath.row {
-                case 0: cell = self.submissionFont
-                case 1: cell = self.submissionWeight
-                case 2: cell = self.submissionSize
-                case 3: cell = self.submissionPreview
-                default: fatalError("Unknown row in section \(indexPath.section)")
-                }
+            switch indexPath.row {
+            case 0: cell = self.submissionFont
+            case 1: cell = self.submissionSize
+            case 2: cell = self.submissionPreview
+            default: fatalError("Unknown row in section \(indexPath.section)")
             }
         case 1:
-            if is13 {
-                switch indexPath.row {
-                case 0: cell = self.commentFont
-                case 1: cell = self.commentSize
-                case 2: cell = self.commentPreview
-                default: fatalError("Unknown row in section \(indexPath.section)")
-                }
-            } else {
-                switch indexPath.row {
-                case 0: cell = self.commentFont
-                case 1: cell = self.commentWeight
-                case 2: cell = self.commentSize
-                case 3: cell = self.commentPreview
-                default: fatalError("Unknown row in section \(indexPath.section)")
-                }
+            switch indexPath.row {
+            case 0: cell = self.commentFont
+            case 1: cell = self.commentSize
+            case 2: cell = self.commentPreview
+            default: fatalError("Unknown row in section \(indexPath.section)")
             }
         case 2:
             switch indexPath.row {
@@ -336,13 +312,9 @@ class SettingsFont: BubbleSettingTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var versionOffset = 0
-        if #available(iOS 13, *) {
-            versionOffset = 1
-        }
         switch section {
-        case 0: return 4 - versionOffset
-        case 1: return 4 - versionOffset
+        case 0: return 3
+        case 1: return 3
         case 2: return 3
         default: fatalError("Unknown number of sections")
         }

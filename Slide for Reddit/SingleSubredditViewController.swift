@@ -338,14 +338,10 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
         self.view.backgroundColor = UIColor.backgroundColor
         
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        var isBelow13 = true
-        if #available(iOS 13, *) {
-            isBelow13 = false
-        }
-        navigationController?.navigationBar.isTranslucent = isBelow13 ? true : false
+        navigationController?.navigationBar.isTranslucent = false
         
         if !single {
-            splitViewController?.navigationController?.navigationBar.isTranslucent = isBelow13 ? true : false
+            splitViewController?.navigationController?.navigationBar.isTranslucent = false
             splitViewController?.navigationController?.setNavigationBarHidden(true, animated: false)
         }
         if let bar = splitViewController?.navigationController?.navigationBar {

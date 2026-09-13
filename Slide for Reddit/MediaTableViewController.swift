@@ -200,9 +200,11 @@ class MediaTableViewController: UITableViewController, MediaVCDelegate, UIViewCo
     var contentUrl: URL?
 
     public func shouldTruncate(url: URL) -> Bool {
-        return false // TODO: - figure out what this does
-        let path = url.path
-        return !ContentType.isGif(uri: url) && !ContentType.isImage(uri: url) && path.contains(".")
+        // TODO: - figure out what this does. Deliberately stubbed to false; the original
+        // implementation was `!ContentType.isGif(uri: url) && !ContentType.isImage(uri: url)
+        // && url.path.contains(".")`, left here as a comment because it sat unreachable
+        // below this return.
+        return false
     }
 
     func showSpoiler(_ string: String) {
