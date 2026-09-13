@@ -944,7 +944,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             switch status {
             case .available:
                 isAvailable = true
-            case .noAccount, .restricted, .couldNotDetermine:
+            case .noAccount, .restricted, .couldNotDetermine, .temporarilyUnavailable:
                 isAvailable = false
             @unknown default:
                 isAvailable = false

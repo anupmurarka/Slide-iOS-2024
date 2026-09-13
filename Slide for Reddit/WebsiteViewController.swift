@@ -389,7 +389,7 @@ class WebsiteViewController: MediaViewController, WKNavigationDelegate {
                 if #available(iOS 13.0, *) {
                     // Let Reddit create new reddit_session Cookie from data returned from Apple Login
                     let jsonData = try JSONSerialization.data(withJSONObject: params, options: .withoutEscapingSlashes)
-                    AF.request("https://www.reddit.com/account/identity_provider_login", method: .post, parameters: [:], encoding: String(data: jsonData, encoding: .utf8)!, headers: nil).responseData { (response) in
+                    AF.request("https://www.reddit.com/account/identity_provider_login", method: .post, parameters: [:], encoding: RawBodyStringEncoding(body: String(data: jsonData, encoding: .utf8)!), headers: nil).responseData { (response) in
                         switch response.result {
                         case .success(let data):
                             let jsonObject = try? JSONSerialization.jsonObject(with: data)
@@ -584,12 +584,17 @@ extension WKWebView {
         }
     }
 }
-extension String: ParameterEncoding {
+/// Sends an already-encoded body string verbatim as the request body.
+///
+/// This replaces a `String: ParameterEncoding` conformance, which applied to every
+/// `String` in the module and would break if Swift or Alamofire ever declared that
+/// conformance themselves.
+struct RawBodyStringEncoding: ParameterEncoding {
+    let body: String
 
-    public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
+    func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
         var request = try urlRequest.asURLRequest()
-        request.httpBody = data(using: .utf8, allowLossyConversion: false)
+        request.httpBody = body.data(using: .utf8, allowLossyConversion: false)
         return request
     }
-
 }

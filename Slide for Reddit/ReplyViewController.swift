@@ -1760,7 +1760,7 @@ extension UIView {
     }
 }
 
-extension UITextView: UITextViewDelegate {
+extension UITextView: @retroactive UITextViewDelegate {
 
     // Placeholder text
     var placeholder: String? {
