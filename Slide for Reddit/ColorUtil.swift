@@ -331,18 +331,27 @@ public class ColorUtil {
 extension UserDefaults {
 
     func colorForKey(key: String) -> UIColor? {
-        var color: UIColor?
-        if let colorData = data(forKey: key) {
-            color = NSKeyedUnarchiver.unarchiveObject(with: colorData) as? UIColor
-        }
-        return color
+        guard let colorData = data(forKey: key) else { return nil }
+
+        // Read through an explicit unarchiver rather than the secure-coding convenience
+        // API: these archives were written by the pre-iOS-12 `archivedData(withRootObject:)`
+        // and are not secure-coding archives, so `requiresSecureCoding` has to be off for
+        // an existing user's saved theme colours to keep decoding.
+        guard let unarchiver = try? NSKeyedUnarchiver(forReadingFrom: colorData) else { return nil }
+        unarchiver.requiresSecureCoding = false
+        defer { unarchiver.finishDecoding() }
+        return unarchiver.decodeObject(of: UIColor.self, forKey: NSKeyedArchiveRootObjectKey)
     }
 
     func setColor(color: UIColor?, forKey key: String) {
-        var colorData: NSData?
-        if let color = color {
-            colorData = NSKeyedArchiver.archivedData(withRootObject: color) as NSData?
+        guard let color = color else {
+            set(nil, forKey: key)
+            return
         }
+        // `requiringSecureCoding: false` keeps the archive byte-compatible with what the
+        // old API wrote, so a build carrying this change can be rolled back without
+        // stranding colours saved in the meantime.
+        let colorData = try? NSKeyedArchiver.archivedData(withRootObject: color, requiringSecureCoding: false)
         set(colorData, forKey: key)
     }
 }
