@@ -1,4 +1,8 @@
 fastlane/report.xml
+fastlane/test_output/
+
+# JetBrains IDE state (AppCode / IntelliJ)
+.idea/
 ProfilingArtifacts/
 
 # Xcode workspace user data
