@@ -6,9 +6,9 @@
 //  Copyright © 2020 Haptic Apps. All rights reserved.
 //
 
-import CoreServices
 import CoreSpotlight
 import Foundation
+import UniformTypeIdentifiers
 
 // Open a subreddit
 @available(iOS 12.0, *)
@@ -18,7 +18,7 @@ extension SingleSubredditViewController {
         activity.persistentIdentifier = NSUserActivityPersistentIdentifier(subredditIntent)
         activity.isEligibleForSearch = true
         activity.isEligibleForPrediction = true
-        let attributes = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
+        let attributes = CSSearchableItemAttributeSet(contentType: UTType.item)
         activity.title = subreddit
         activity.userInfo = ["TYPE": "SUBREDDIT"]
         attributes.contentDescription = "Open r/\(subreddit) in Slide"
@@ -37,7 +37,7 @@ extension InboxViewController {
         activity.isEligibleForSearch = true
         activity.isEligibleForPrediction = true
         
-        let attributes = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
+        let attributes = CSSearchableItemAttributeSet(contentType: UTType.item)
         activity.title = "Reddit Inbox"
         activity.userInfo = ["TYPE": "INBOX"]
         attributes.contentDescription = "Open Reddit Inbox"

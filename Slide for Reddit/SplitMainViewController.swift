@@ -471,7 +471,7 @@ class SplitMainViewController: MainViewController {
 
         if soft && false { // in case we need to not destroy the stack, disable for now
         } else {
-            (UIApplication.shared.delegate as! AppDelegate).resetStack(window: keyWindow)
+            _ = (UIApplication.shared.delegate as! AppDelegate).resetStack(window: keyWindow)
         }
     }
 

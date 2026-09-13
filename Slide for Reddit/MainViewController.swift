@@ -173,7 +173,9 @@ class MainViewController: ColorMuxPagingViewController, UINavigationControllerDe
                 UserDefaults.standard.synchronize()
                 return
             }
-            SKStoreReviewController.requestReview()
+            if let scene = UIApplication.shared.currentWindowScene {
+                SKStoreReviewController.requestReview(in: scene)
+            }
             UserDefaults.standard.set(0, forKey: "appOpens")
             UserDefaults.standard.set(getVersion(), forKey: "lastReviewed")
             UserDefaults.standard.synchronize()

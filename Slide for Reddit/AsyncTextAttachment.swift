@@ -12,9 +12,9 @@
 //  Copyright © 2016 Cocoanetics. All rights reserved.
 //
 
-import MobileCoreServices
 import SDWebImage
 import UIKit
+import UniformTypeIdentifiers
 
 @objc public protocol AsyncTextAttachmentDelegate {
     /// Called when the image has been loaded
@@ -99,9 +99,8 @@ public class AsyncTextAttachment: NSTextAttachment {
     }
     
     public func display(_ image: UIImage?, with: Data?, url: URL) {
-        let ext = url.pathExtension as CFString
-        if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, ext, nil) {
-            self.fileType = uti.takeRetainedValue() as String
+        if let uti = UTType(filenameExtension: url.pathExtension) {
+            self.fileType = uti.identifier
         }
         if let image = image { // 2 was causing weird clipping
             let imageSize = image.size
