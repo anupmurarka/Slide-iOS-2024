@@ -1251,7 +1251,7 @@ extension CurrentAccountHeaderView {
                 UIView.animate(withDuration: 0.3, animations: {
                     if (SettingValues.appMode == .MULTI_COLUMN || SettingValues.appMode == .SINGLE) && UIDevice.current.userInterfaceIdiom == .pad {
                         UIView.animate(withDuration: 0.5, animations: { () in
-                            self.parent?.splitViewController?.preferredDisplayMode = .primaryHidden
+                            self.parent?.splitViewController?.preferredDisplayMode = .secondaryOnly
                         }, completion: { (_) in
                         })
                     }
