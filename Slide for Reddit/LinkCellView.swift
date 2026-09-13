@@ -1709,11 +1709,12 @@ class LinkCellView: UICollectionViewCell, UIGestureRecognizerDelegate {
                     thumbImage.image = LinkCellImageCache.web
                 }
                 if let round = thumbImage as? RoundedImageView {
-                    if full {
-                        round.setCornerRadius(rect: CGRect(x: 0, y: 0, width: SettingValues.largerThumbnail ? 75 : 50, height: SettingValues.largerThumbnail ? 75 : 50))
-                    } else {
-                        round.setCornerRadius()
-                    }
+                    // Was hardcoded to (largerThumbnail ? 75 : 50) in the `full` case, which
+                    // contradicted FullLinkCellView: the comment-thread header always lays
+                    // its thumbnail out at 75. With the setting off that masked a 75pt view
+                    // to 50pt, clipping the image to its top-left corner. The mask follows
+                    // the view's own bounds now.
+                    round.setCornerRadius()
                 }
             } else {
                 thumbText.isHidden = false
@@ -3707,12 +3708,29 @@ class RoundedImageView: UIImageView {
     }
     
     func setCornerRadius(rect: CGRect? = nil) {
+        applyMask(for: rect ?? self.bounds)
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        // The mask is a CAShapeLayer, so unlike layer.cornerRadius it does not follow the
+        // view. setCornerRadius() is called when the image is set, which is before Auto
+        // Layout has resolved this view's size and, on a reused cell, while the bounds can
+        // still describe the previous post. A mask smaller than the view clips the image to
+        // the mask's rect anchored at its origin, which reads as a crop from the top left
+        // rather than a rescale. Rebuild it whenever the bounds actually change.
+        if maskLayer != nil && maskLayer.frame != self.layer.bounds {
+            applyMask(for: self.bounds)
+        }
+    }
+
+    private func applyMask(for rect: CGRect) {
         self.layer.mask = nil
         self.layer.masksToBounds = false
-        let path = UIBezierPath(roundedRect: rect ?? self.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
         maskLayer?.removeFromSuperlayer()
         maskLayer = CAShapeLayer()
-        maskLayer.frame = rect ?? self.layer.bounds
+        maskLayer.frame = rect
         maskLayer.path = path.cgPath
         self.layer.mask = maskLayer
         self.layer.masksToBounds = true
