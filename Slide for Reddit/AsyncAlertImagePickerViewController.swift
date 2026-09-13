@@ -127,7 +127,8 @@ final class AsyncImagePickerViewController: UIViewController {
         switch selection {
         case .single?: collectionView.allowsSelection = true
         case .multiple?: collectionView.allowsMultipleSelection = true
-        case .none: break }
+        case .none: break
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -155,14 +156,16 @@ extension AsyncImagePickerViewController: UICollectionViewDelegate {
         case .multiple(let action)?:
             action?(selectedImages)
             
-        case .none: break }
+        case .none: break
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         switch selection {
         case .multiple(let action)?:
             action?(selectedImages)
-        default: break }
+        default: break
+        }
     }
 }
 

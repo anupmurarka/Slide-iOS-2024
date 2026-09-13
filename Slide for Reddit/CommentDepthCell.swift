@@ -1282,9 +1282,9 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
                 try parent?.session?.remove(comment!.id, spam: spam, completion: { (result) in
                     switch result {
                     case .failure(let error):
-                    slideLog(error.description)
-                    DispatchQueue.main.async {
-                        BannerUtil.makeBanner(text: "Removing comment failed!", color: ColorUtil.accentColorForSub(sub: self.comment!.subreddit), seconds: 3, context: self.parent!)
+                        slideLog(error.description)
+                        DispatchQueue.main.async {
+                            BannerUtil.makeBanner(text: "Removing comment failed!", color: ColorUtil.accentColorForSub(sub: self.comment!.subreddit), seconds: 3, context: self.parent!)
                         }
                     case .success:
                         self.parent!.removed.append(self.comment!.id)
@@ -1295,7 +1295,7 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
                             self.parent!.tableView.reloadData()
                             BannerUtil.makeBanner(text: "Comment removed!", color: ColorUtil.accentColorForSub(sub: self.comment!.subreddit), seconds: 3, context: self.parent!)
                         }
-                }
+                    }
             })
             
             } catch {
