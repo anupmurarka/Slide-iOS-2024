@@ -11,6 +11,11 @@ import UIKit
 
 class ActionViewController: UIViewController {
 
+    /// Passed to `cancelRequest(withError:)` when this extension finishes. A bare
+    /// `NSError()` — which is what every one of these call sites used — has an empty
+    /// domain and code 0, which tells the host app nothing about why the request ended.
+    private static let dismissError = NSError(domain: NSCocoaErrorDomain, code: NSUserCancelledError, userInfo: nil)
+
     @IBOutlet weak var imageView: UIImageView!
 
     override func viewDidLoad() {
@@ -41,19 +46,10 @@ class ActionViewController: UIViewController {
                             
                             var comps = URLComponents(url: shareURL as URL, resolvingAgainstBaseURL: false)!
                             comps.scheme = "slide"
-                            if let newUrl = comps.url {
-                                if self.openURL(newUrl) {
-                                    self.extensionContext!.cancelRequest(withError: NSError())
-                                } else {
-                                    self.extensionContext!.cancelRequest(withError: NSError())
-                                }
-                            } else {
-                                if self.openURL(shareURL as URL) {
-                                    self.extensionContext!.cancelRequest(withError: NSError())
-                                } else {
-                                    self.extensionContext!.cancelRequest(withError: NSError())
-                                }
-                            }
+                            // Both branches of the old if/else did the same thing; only
+                            // openURL's side effect matters, not its result.
+                            _ = self.openURL(comps.url ?? (shareURL as URL))
+                            self.extensionContext!.cancelRequest(withError: ActionViewController.dismissError)
                         }
                     })
                     break
@@ -77,7 +73,7 @@ class ActionViewController: UIViewController {
             }
             responder = responder?.next
         }
-        self.extensionContext!.cancelRequest(withError: NSError())
+        self.extensionContext!.cancelRequest(withError: ActionViewController.dismissError)
         return false
     }
 
