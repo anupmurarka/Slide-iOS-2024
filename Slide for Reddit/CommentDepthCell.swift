@@ -2463,19 +2463,35 @@ extension CommentDepthCell: UIContextMenuInteractionDelegate {
             }
         }
         
+        // On iPad and Mac, a long press on a comment that already owns the action bar
+        // offers the "more" menu. It must not do anything else: UIKit calls this to ask
+        // what menu to show, and it can be called more than once per press. This used to
+        // call showMenuAnimated() here and then return nil, which raced the `long`
+        // recognizer below — the interaction showed the bar at ~0.5s, then doLongClick
+        // fired at ~0.72s, saw the menu already shown for this comment and toggled it
+        // straight back off. Showing the bar is the gesture path's job alone.
         if UIDevice.current.userInterfaceIdiom == .pad || UIApplication.shared.isMac() {
-            if self.parent?.menuCell == self {
-                if let parent = self.parent {
-                    let menu = self.getMoreMenu(parent)
-                    return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { _ in
-                        return menu
-                    })
-                }
-            } else {
-                self.showMenuAnimated()
+            if self.parent?.menuCell == self, let parent = self.parent {
+                let menu = self.getMoreMenu(parent)
+                return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { _ in
+                    return menu
+                })
             }
         }
         return nil
+    }
+
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willDisplayMenuFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
+        // Dim the thread behind the parent-comment preview. This belongs here rather than
+        // in the configuration provider: a configuration that is built but never displayed
+        // would otherwise leave the thread dimmed with nothing to undo it.
+        if self.previewedVC is ParentCommentViewController {
+            self.parent?.setAlphaOfBackgroundViews(alpha: 0.5)
+        }
+    }
+
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willEndFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
+        self.parent?.setAlphaOfBackgroundViews(alpha: 1)
     }
     
     func contextMenuInteractionDidEnd(_ interaction: UIContextMenuInteraction) {
@@ -2627,7 +2643,6 @@ extension CommentDepthCell: UIContextMenuInteractionDelegate {
             return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)
         }
         
-        commentParent.setAlphaOfBackgroundViews(alpha: 0.5)
         guard let indexPath = commentParent.tableView.indexPath(for: self) else {
             return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)
         }
@@ -2675,6 +2690,8 @@ extension CommentDepthCell: UIContextMenuInteractionDelegate {
             let detailViewController = ParentCommentViewController(view: parentCell.contentView, size: size)
             detailViewController.preferredContentSize = CGSize(width: size.width, height: min(size.height, 300))
 
+            // Belt and braces alongside willEndFor, which covers the case where the
+            // preview is configured but never appears.
             detailViewController.dismissHandler = {() in
                 commentParent.setAlphaOfBackgroundViews(alpha: 1)
             }
