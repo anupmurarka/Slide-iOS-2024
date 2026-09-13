@@ -386,7 +386,11 @@ class OnboardingTFViewController: UIViewController {
     var textView = UILabel()
     var subTextView = UILabel()
     var imageView = UIImageView()
-    var subButton = UIButton().then {
+    // `lazy` so `self` in `addTarget` below is the instance. In a non-lazy property
+    // initializer `self` resolves to the unapplied `NSObject.self()` method, so the
+    // button's target was a function object rather than this view controller and
+    // `subTapped` never reached it.
+    lazy var subButton = UIButton().then {
         $0.backgroundColor = UIColor(hexString: "#F95200")
         $0.titleLabel?.textColor = .white
         $0.tintColor = .white

@@ -604,7 +604,10 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
         return true
     }
 
-    var long = UILongPressGestureRecognizer.init(target: self, action: nil)
+    // `lazy` so `self` is the instance rather than the unapplied `self()` method. This
+    // placeholder is replaced in setupGestures() before the recognizer is ever attached,
+    // so the wrong target was never reachable — but it should still be correct.
+    lazy var long = UILongPressGestureRecognizer.init(target: self, action: nil)
 
     @objc func showMenu(_ sender: AnyObject?) {
         self.oldLocation = CGPoint.zero
