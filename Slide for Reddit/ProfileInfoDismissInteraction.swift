@@ -48,7 +48,11 @@ class ProfileInfoDismissInteraction: UIPercentDrivenInteractiveTransition {
             cancel()
         case .ended:
             interactionInProgress = false
-            shouldCompleteTransition ? finish() : cancel()
+            if shouldCompleteTransition {
+                finish()
+            } else {
+                cancel()
+            }
         default:
             break
         }

@@ -171,7 +171,11 @@ extension BottomSheetPresentationManager: UIViewControllerAnimatedTransitioning 
                 transitionContext.completeTransition(false)
             } else {
                 if self.interactive {
-                    finished ? transitionContext.finishInteractiveTransition() : transitionContext.cancelInteractiveTransition()
+                    if finished {
+                        transitionContext.finishInteractiveTransition()
+                    } else {
+                        transitionContext.cancelInteractiveTransition()
+                    }
                 }
                 transitionContext.completeTransition(finished)
             }

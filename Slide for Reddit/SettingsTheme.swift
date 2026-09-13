@@ -526,10 +526,9 @@ class SettingsTheme: BubbleSettingTableViewController, ColorPickerViewDelegate {
         } else if indexPath.section == 0 && indexPath.row == 1 {
             pickAccent()
         } else if indexPath.section == 1 && indexPath.row == 0 {
-            if #available(iOS 13, *) {
-            } else {
-                self.selectTime()
-            }
+            // Row 1.0 used to open a time picker on iOS 12 and earlier; on 13+ it has
+            // always done nothing. Kept as an explicit no-op branch so the row does not
+            // fall through to the next case.
         } else if indexPath.section == 1 && indexPath.row == 1 {
             self.selectTheme()
         } else if indexPath.section == 2 && indexPath.row == 0 {

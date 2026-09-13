@@ -141,7 +141,7 @@ class WrappingFlowLayout: UICollectionViewLayout {
                 // 6
                 contentHeight = max(contentHeight, frame.maxY)
 
-                yOffset[column] = yOffset[column] + height
+                yOffset[column] += height
                 let col = column >= (numberOfColumns - 1)
                 if col {
                     column = 0

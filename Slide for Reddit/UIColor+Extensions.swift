@@ -22,9 +22,9 @@ public extension UIColor {
     private struct StaticVars {
         static let randomColorBlock: @convention(block) (AnyObject?) -> CGColor = { (_: AnyObject?) -> (CGColor) in
             return CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [
-                CGFloat(Float(arc4random()) / Float(UINT32_MAX)), // R
-                CGFloat(Float(arc4random()) / Float(UINT32_MAX)), // G
-                CGFloat(Float(arc4random()) / Float(UINT32_MAX)), // B
+                CGFloat.random(in: 0...1), // R
+                CGFloat.random(in: 0...1), // G
+                CGFloat.random(in: 0...1), // B
                 1.0, // A
                 ])!
         }

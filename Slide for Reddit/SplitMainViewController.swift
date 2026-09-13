@@ -490,10 +490,6 @@ class SplitMainViewController: MainViewController {
             checkForMail()
         }
 
-        if #available(iOS 13, *) { } else {
-            (self.navigationController as? SwipeForwardNavigationController)?.pushCompletion?()
-            (self.navigationController as? SwipeForwardNavigationController)?.pushCompletion = nil
-        }
     }
     
     @objc func doReAppearToolbar() {

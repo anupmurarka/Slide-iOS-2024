@@ -328,8 +328,6 @@ class SingleSubredditViewController: MediaViewController, AutoplayScrollViewDele
 
         if single && !(parent is SplitMainViewController) {
             setupBaseBarColors(ColorUtil.getColorForSub(sub: sub, true))
-        } else if #available(iOS 13, *) {} else {
-            setupBaseBarColors(ColorUtil.getColorForSub(sub: sub, true))
         }
         
         if !dataSource.loaded {

@@ -450,7 +450,7 @@ extension ProfileInfoViewController {
         get {
             return true
         }
-        set { } // swiftlint:disable:this unused_setter_value
+        set { }
     }
 }
 

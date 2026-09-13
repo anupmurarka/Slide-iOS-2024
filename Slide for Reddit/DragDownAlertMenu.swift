@@ -721,7 +721,7 @@ extension DragDownAlertMenu {
         get {
             return true
         }
-        set { } // swiftlint:disable:this unused_setter_value
+        set { }
     }
 }
 
@@ -910,7 +910,11 @@ class DragDownDismissInteraction: UIPercentDrivenInteractiveTransition, UIGestur
         case .ended:
             interactionInProgress = false
             self.completionSpeed = 0.4
-            shouldCompleteTransition ? finish() : cancel()
+            if shouldCompleteTransition {
+                finish()
+            } else {
+                cancel()
+            }
         default:
             break
         }

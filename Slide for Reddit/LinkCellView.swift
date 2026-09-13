@@ -661,13 +661,6 @@ class LinkCellView: UICollectionViewCell, UIViewControllerPreviewingDelegate, UI
                 long4.delegate = self
                 infoContainer.addGestureRecognizer(long4)
 
-                if #available(iOS 13, *) {} else {
-                    let long = UILongPressGestureRecognizer(target: self, action: #selector(LinkCellView.linkMenu(sender:)))
-                    long.delegate = self
-                    bannerImage.addGestureRecognizer(long)
-                    longPress!.require(toFail: long)
-                }
-
                 longPress!.require(toFail: long2)
                 longPress!.require(toFail: long3)
                 longPress!.require(toFail: long4)

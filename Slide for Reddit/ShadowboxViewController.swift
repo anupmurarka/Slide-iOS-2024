@@ -260,7 +260,7 @@ extension ShadowboxViewController: SubmissionDataSouceDelegate {
 private var hasSwizzled = false
 
 extension UIPanGestureRecognizer {
-    final public class func swizzle() {
+    public static func swizzle() {
         guard !hasSwizzled else { return }
         
         hasSwizzled = true
