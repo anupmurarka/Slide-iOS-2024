@@ -29,7 +29,7 @@ protocol ReplyDelegate: AnyObject {
     func editSent(cr: Comment?, cell: CommentDepthCell)
 }
 
-class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegate, UITextViewDelegate {
+class CommentDepthCell: MarginedTableViewCell, UITextViewDelegate {
     
     var oldConstraints: [NSLayoutConstraint] = []
     var oldLocation: CGPoint = CGPoint.zero
@@ -1790,10 +1790,6 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
 
         refresh(comment: comment, submissionAuthor: author, text: text, date)
 
-        if !registered {
-            parent.registerForPreviewing(with: self, sourceView: title)
-            registered = true
-        }
         if parent.getMenuShown() ?? "" == comment.id {
             showCommentMenu()
             if parent.savedText != nil {
@@ -2012,37 +2008,6 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
         return Double(submissionScore)
     }
 
-    var registered: Bool = false
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing,
-                           viewControllerForLocation location: CGPoint) -> UIViewController? {
-
-        let locationInTextView = title.convert(location, to: title)
-
-        if let (url, rect) = getInfo(locationInTextView: locationInTextView) {
-            previewingContext.sourceRect = title.convert(rect, from: title)
-            if let controller = parent?.getControllerForUrl(baseUrl: url, link: SubmissionObject()) {
-                return controller
-            }
-        }
-
-        return nil
-    }
-
-    func getInfo(locationInTextView: CGPoint) -> (URL, CGRect)? {
-        return nil
-        // TODO: - this
-        /*
-        if let attr = title.firstTextView.link(at: locationInTextView) {
-            if let url = attr.result.url {
-                return (url, title.bounds)
-            }
-
-        }
-        return nil
-        */
-    }
-    
     func animateMore() {
         loading = true
         if loader == nil {
@@ -2058,18 +2023,6 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
         loader?.isHidden = false
         loader?.startAnimating()
         title.attributedText = TextDisplayStackView.createAttributedChunk(baseHTML: "Loading...", fontSize: 16, submission: false, accentColor: .white, fontColor: UIColor.fontColor, linksCallback: nil, indexCallback: nil)
-    }
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        if viewControllerToCommit is AlbumViewController {
-            viewControllerToCommit.modalPresentationStyle = .overFullScreen
-            parent?.present(viewControllerToCommit, animated: true, completion: nil)
-        } else if viewControllerToCommit is ModalMediaViewController || viewControllerToCommit is AnyModalViewController {
-            viewControllerToCommit.modalPresentationStyle = .overFullScreen
-            parent?.present(viewControllerToCommit, animated: true, completion: nil)
-        } else {
-            VCPresenter.showVC(viewController: viewControllerToCommit, popupIfPossible: true, parentNavigationController: parent?.navigationController, parentViewController: parent)
-        }
     }
 
     func longPressed(_ sender: AnyObject?) {

@@ -1330,8 +1330,6 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
         tableView.verticalAnchors /==/ view.verticalAnchors
         tableView.horizontalAnchors /==/ view.safeHorizontalAnchors
         
-        self.registerForPreviewing(with: self, sourceView: self.tableView)
-        
         self.tableView.allowsSelection = false
         // self.tableView.layer.speed = 1.5
         self.view.backgroundColor = UIColor.backgroundColor
@@ -3443,101 +3441,6 @@ class ParentCommentViewController: UIViewController {
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-}
-
-extension CommentViewController: UIViewControllerPreviewingDelegate {
-    
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = self.tableView.indexPathForRow(at: location) else {
-            return nil
-        }
-        
-        guard let cell = self.tableView.cellForRow(at: indexPath) as? CommentDepthCell else {
-            return nil
-        }
-        
-        if SettingValues.commentActionForceTouch != .PARENT_PREVIEW {
-            // TODO: - maybe
-            /*let textView =
-             let locationInTextView = textView.convert(location, to: textView)
-             
-             if let (url, rect) = getInfo(locationInTextView: locationInTextView) {
-             previewingContext.sourceRect = textView.convert(rect, from: textView)
-             if let controller = parentViewController?.getControllerForUrl(baseUrl: url) {
-             return controller
-             }
-             }*/
-            return nil
-        }
-        
-        if cell.depth == 1 {
-            return nil
-        }
-        self.setAlphaOfBackgroundViews(alpha: 0.5)
-        
-        var topCell = (indexPath as NSIndexPath).row
-        
-        var contents = content[dataArray[topCell]]
-        
-        while (contents is CommentObject ? (contents as! CommentObject).depth >= cell.depth : true) && dataArray.count > topCell && topCell - 1 >= 0 {
-            topCell -= 1
-            contents = content[dataArray[topCell]]
-        }
-        
-        let parentCell = CommentDepthCell(style: .default, reuseIdentifier: "test")
-        if let comment = contents as? CommentObject {
-            parentCell.contentView.layer.cornerRadius = 10
-            parentCell.contentView.clipsToBounds = true
-            parentCell.commentBody.ignoreHeight = false
-            parentCell.commentBody.estimatedWidth = UIScreen.main.bounds.size.width * 0.85 - 36
-            if contents is CommentObject {
-                var count = 0
-                let hiddenP = hiddenPersons.contains(comment.getId())
-                if hiddenP {
-                    count = getChildNumber(n: comment.getId())
-                }
-                var t = text[comment.getId()]!
-                if isSearching {
-                    t = highlight(t)
-                }
-                
-                parentCell.setComment(comment: contents as! CommentObject, depth: 0, parent: self, hiddenCount: count, date: lastSeen, author: submission?.author, text: t, isCollapsed: hiddenP, parentOP: "", depthColors: commentDepthColors, indexPath: indexPath, width: UIScreen.main.bounds.size.width * 0.85)
-            } else {
-                parentCell.setMore(more: (contents as! MoreObject), depth: cDepth[comment.getId()]!, depthColors: commentDepthColors, parent: self)
-            }
-            parentCell.content = comment
-            parentCell.contentView.isUserInteractionEnabled = false
-            
-            let textHeight = parentCell.title.attributedText!.height(containerWidth: UIScreen.main.bounds.size.width * 0.85)
-            
-            let size = CGSize(width: UIScreen.main.bounds.size.width * 0.85, height: parentCell.commentBody.estimatedHeight + 24 + textHeight)
-            let detailViewController = ParentCommentViewController(view: parentCell.contentView, size: size)
-            detailViewController.preferredContentSize = CGSize(width: size.width, height: min(size.height, 300))
-            
-            previewingContext.sourceRect = cell.frame
-            detailViewController.dismissHandler = {() in
-                self.setAlphaOfBackgroundViews(alpha: 1)
-            }
-            return detailViewController
-        }
-        return nil
-    }
-    
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        viewControllerToCommit.modalPresentationStyle = .popover
-        if let popover = viewControllerToCommit.popoverPresentationController {
-            popover.sourceView = self.tableView
-            popover.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)
-            popover.backgroundColor = UIColor.foregroundColor
-            popover.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
-            // detailViewController.frame = CGRect(x: (self.view.frame.bounds.width / 2 - (UIScreen.main.bounds.size.width * 0.85)), y: (self.view.frame.bounds.height / 2 - (cell2.title.estimatedHeight + 12)), width: UIScreen.main.bounds.size.width * 0.85, height: cell2.title.estimatedHeight + 12)
-            popover.delegate = self
-            viewControllerToCommit.preferredContentSize = (viewControllerToCommit as! ParentCommentViewController).estimatedSize
-        }
-        
-        self.present(viewControllerToCommit, animated: true, completion: {
-        })
     }
 }
 

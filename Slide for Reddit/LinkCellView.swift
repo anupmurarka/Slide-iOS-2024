@@ -38,7 +38,7 @@ enum CurrentType {
     case thumb, banner, text, autoplay, none
 }
 
-class LinkCellView: UICollectionViewCell, UIViewControllerPreviewingDelegate, UIGestureRecognizerDelegate {
+class LinkCellView: UICollectionViewCell, UIGestureRecognizerDelegate {
     
     @objc func upvote(sender: UITapGestureRecognizer? = nil) {
        // TODO: - maybe? innerView.blink(color: GMColor.orange500Color())
@@ -1912,10 +1912,7 @@ class LinkCellView: UICollectionViewCell, UIViewControllerPreviewingDelegate, UI
         let mo = History.commentsSince(s: submission)
         comments.text = " \(submission.commentCount)" + (mo > 0 ? "(+\(mo))" : "")
         
-        if !registered && !full && SettingValues.submissionActionForceTouch == .NONE {
-            parent.registerForPreviewing(with: self, sourceView: self.innerView)
-            registered = true
-        } else if SettingValues.submissionActionForceTouch != .NONE && force == nil {
+        if SettingValues.submissionActionForceTouch != .NONE && force == nil {
             force = ForceTouchGestureRecognizer()
             force?.addTarget(self, action: #selector(self.do3dTouch(_:)))
             force?.cancelsTouchesInView = false
@@ -2772,34 +2769,6 @@ class LinkCellView: UICollectionViewCell, UIViewControllerPreviewingDelegate, UI
         super.layoutSubviews()
     }
     
-    var registered: Bool = false
-    
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing,
-                           viewControllerForLocation location: CGPoint) -> UIViewController? {
-        // TODO: - this
-        /* if full {
-            let locationInTextView = textView.convert(location, to: textView)
-            
-            if let (url, rect) = getInfo(locationInTextView: locationInTextView) {
-                previewingContext.sourceRect = textView.convert(rect, from: textView)
-                if let controller = parentViewController?.getControllerForUrl(baseUrl: url) {
-                    return controller
-                }
-            }
-        } else {*/
-            History.addSeen(s: link!)
-            if History.getSeen(s: link!) && !SettingValues.newIndicator {
-                self.title.alpha = 0.3
-            } else {
-                self.title.alpha = 1
-            }
-        if let url = link?.url, let controller = parentViewController?.getControllerForUrl(baseUrl: url, link: link!) {
-                return controller
-            }
-        // }
-        return nil
-    }
-    
     func estimateHeight(_ full: Bool, _ reset: Bool = false, np: Bool) -> CGFloat {
         if estimatedHeight == 0 || reset {
             var paddingTop = CGFloat(0)
@@ -2903,18 +2872,6 @@ class LinkCellView: UICollectionViewCell, UIViewControllerPreviewingDelegate, UI
         return nil
     }
     */
-    
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        if viewControllerToCommit is AlbumViewController {
-            viewControllerToCommit.modalPresentationStyle = .overFullScreen
-            parentViewController?.present(viewControllerToCommit, animated: true, completion: nil)
-        } else if viewControllerToCommit is ModalMediaViewController || viewControllerToCommit is AnyModalViewController {
-            viewControllerToCommit.modalPresentationStyle = .overFullScreen
-            parentViewController?.present(viewControllerToCommit, animated: true, completion: nil)
-        } else {
-            VCPresenter.showVC(viewController: viewControllerToCommit, popupIfPossible: true, parentNavigationController: parentViewController?.navigationController, parentViewController: parentViewController)
-        }
-    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
