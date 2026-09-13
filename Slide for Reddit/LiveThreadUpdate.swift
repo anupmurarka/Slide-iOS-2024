@@ -13,6 +13,12 @@ import UIKit
 import WebKit
 
 class LiveThreadUpdate: UICollectionViewCell, UIGestureRecognizerDelegate {
+    /// Held strongly: `UIViewController.transitioningDelegate` is a weak property, so a
+    /// freshly constructed manager assigned inline is deallocated immediately and the
+    /// custom presentation silently falls back to the default. Mirrors the pattern in
+    /// LinkCellView and ProfileViewController.
+    var profilePresentationManager = ProfileInfoPresentationManager()
+
     var title: TitleUITextView!
     var image = UIImageView()
     var web = WKWebView()
@@ -240,7 +246,7 @@ extension LiveThreadUpdate: TextDisplayStackViewDelegate {
         if let parent = self.parentViewController {
             let vc = ProfileInfoViewController(accountNamed: profile)
             vc.modalPresentationStyle = .custom
-            vc.transitioningDelegate = ProfileInfoPresentationManager()
+            vc.transitioningDelegate = profilePresentationManager
             parent.present(vc, animated: true)
         }
     }

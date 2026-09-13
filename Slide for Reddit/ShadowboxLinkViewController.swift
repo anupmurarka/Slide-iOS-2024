@@ -13,6 +13,12 @@ import CoreData
 import SDWebImage
 
 class ShadowboxLinkViewController: MediaViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate {
+    /// Held strongly: `UIViewController.transitioningDelegate` is a weak property, so a
+    /// freshly constructed manager assigned inline is deallocated immediately and the
+    /// custom presentation silently falls back to the default. Mirrors the pattern in
+    /// LinkCellView and ProfileViewController.
+    var profilePresentationManager = ProfileInfoPresentationManager()
+
     var type: ContentType.CType = ContentType.CType.UNKNOWN
     
     var textView: TextDisplayStackView!
@@ -552,7 +558,7 @@ extension ShadowboxLinkViewController: TextDisplayStackViewDelegate {
         if let parent = self.parentVC {
             let vc = ProfileInfoViewController(accountNamed: profile)
             vc.modalPresentationStyle = .custom
-            vc.transitioningDelegate = ProfileInfoPresentationManager()
+            vc.transitioningDelegate = profilePresentationManager
             parent.present(vc, animated: true)
         }
     }

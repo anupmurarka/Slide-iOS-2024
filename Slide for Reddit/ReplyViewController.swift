@@ -18,6 +18,11 @@ import Then
 import UIKit
 
 class ReplyViewController: MediaViewController, UITextViewDelegate {
+    /// Held strongly: `UIViewController.transitioningDelegate` is a weak property, so a
+    /// freshly constructed manager assigned inline is deallocated immediately and the
+    /// custom presentation silently falls back to the default. Mirrors the pattern in
+    /// LinkCellView and ProfileViewController.
+    var profilePresentationManager = ProfileInfoPresentationManager()
 
     public enum ReplyType {
         case NEW_MESSAGE
@@ -1856,7 +1861,7 @@ extension ReplyViewController: TextDisplayStackViewDelegate {
     func previewProfile(profile: String) {
         let vc = ProfileInfoViewController(accountNamed: profile)
         vc.modalPresentationStyle = .custom
-        vc.transitioningDelegate = ProfileInfoPresentationManager()
+        vc.transitioningDelegate = profilePresentationManager
         self.present(vc, animated: true)
     }
 }
