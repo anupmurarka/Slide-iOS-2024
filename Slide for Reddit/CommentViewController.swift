@@ -3419,20 +3419,26 @@ class ParentCommentViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // A context menu preview platter takes its appearance from the view controller's
+        // root view, not from whatever it contains. Without this the platter is clear and
+        // the comment draws straight over the thread behind it. The 3D Touch path this
+        // replaced set the same colour on its popover.
+        self.view.backgroundColor = UIColor.foregroundColor
+
         scrollView = UIScrollView().then {
             $0.backgroundColor = UIColor.foregroundColor
             $0.isUserInteractionEnabled = true
         }
         self.view.addSubview(scrollView)
         scrollView.edgeAnchors /==/ self.view.edgeAnchors
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+
+        // Built here rather than in viewWillAppear so a second appearance cannot stack up
+        // a duplicate set of constraints. childView is handed in by the initialiser.
         scrollView.addSubview(childView)
         childView.widthAnchor /==/ estimatedSize.width
         childView.heightAnchor /==/ estimatedSize.height
         childView.topAnchor /==/ scrollView.topAnchor
+        childView.leadingAnchor /==/ scrollView.leadingAnchor
         scrollView.contentSize = estimatedSize
     }
     override func viewWillDisappear(_ animated: Bool) {
