@@ -555,7 +555,7 @@ class ReplyViewController: MediaViewController, UITextViewDelegate {
                         case .failure(let error):
                             slideLog(error)
                         case .success(let rules):
-                            var ruleString = NSMutableAttributedString()
+                            let ruleString = NSMutableAttributedString()
                             let newLine = NSAttributedString(string: "\n")
                             let titleAttributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 18), NSAttributedString.Key.foregroundColor: UIColor.fontColor]
                             let bodyAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15), NSAttributedString.Key.foregroundColor: UIColor.fontColor]

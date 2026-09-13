@@ -777,7 +777,7 @@ class SettingValues {
         body.layoutTitleImageViews()
         
         let textHeight = body.attributedText!.height(containerWidth: UIScreen.main.bounds.size.width * 0.85 - 30)
-        var size = CGSize(width: UIScreen.main.bounds.size.width * 0.85 - 30, height: textHeight)
+        let size = CGSize(width: UIScreen.main.bounds.size.width * 0.85 - 30, height: textHeight)
 
         let detailViewController = UpdateViewController(view: body, size: size)
         detailViewController.titleView.font = UIFont.boldSystemFont(ofSize: 20)

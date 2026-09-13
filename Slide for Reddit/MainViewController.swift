@@ -429,7 +429,7 @@ class MainViewController: ColorMuxPagingViewController, UINavigationControllerDe
     func goToSubreddit(index: Int) {
         let firstViewController = SingleSubredditViewController(subName: finalSubs[index], parent: self)
         
-        weak var weakPageVc = self
+        weak let weakPageVc = self
 
         setViewControllers([firstViewController],
                            direction: .forward,

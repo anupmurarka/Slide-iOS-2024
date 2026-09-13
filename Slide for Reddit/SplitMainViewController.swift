@@ -719,7 +719,7 @@ class SplitMainViewController: MainViewController {
         }
         
         let firstViewController = SingleSubredditViewController(subName: finalSubs[newIndex], parent: self)
-        weak var weakPageVc = self
+        weak let weakPageVc = self
         setViewControllers([firstViewController],
                            direction: .forward,
                            animated: true,

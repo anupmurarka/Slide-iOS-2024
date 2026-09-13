@@ -86,26 +86,20 @@ class LiveThreadUpdate: UICollectionViewCell, UIGestureRecognizerDelegate {
         
         content = NSMutableAttributedString(string: "u/\(json["author"] as! String) \(DateFormatter().timeSince(from: NSDate(timeIntervalSince1970: TimeInterval(json["created_utc"] as! Int)), numericDates: true))", attributes: [NSAttributedString.Key.foregroundColor: UIColor.fontColor, NSAttributedString.Key.font: FontGenerator.boldFontOfSize(size: 14, submission: false)])
         
-        var bodyDone = false
         if let body = json["body_html"] as? String {
             if !body.isEmpty() {
                 let html = body.unescapeHTML
                 content?.append(NSAttributedString(string: "\n"))
                // TODO: - maybe link parsing here?
                 content?.append(TextDisplayStackView.createAttributedChunk(baseHTML: html, fontSize: 16, submission: false, accentColor: ColorUtil.baseAccent, fontColor: UIColor.fontColor, linksCallback: nil, indexCallback: nil))
-                let size = CGSize(width: self.contentView.frame.size.width - 18, height: CGFloat.greatestFiniteMagnitude)
-
-                title.attributedText = content
-                title.layoutTitleImageViews()
             }
         }
-        
-        if !bodyDone {
-            let size = CGSize(width: self.contentView.frame.size.width - 18, height: CGFloat.greatestFiniteMagnitude)
-            
-            title.attributedText = content
-            title.layoutTitleImageViews()
-        }
+
+        // Previously guarded by a `bodyDone` flag that was never set to true, so this ran
+        // unconditionally anyway — and the block inside `if let body` above was an exact
+        // duplicate of it. Both also declared an unused `size` local.
+        title.attributedText = content
+        title.layoutTitleImageViews()
         
         imageHeight = 0
         image.alpha = 0
