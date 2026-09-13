@@ -111,25 +111,32 @@ class SettingsGeneral: BubbleSettingTableViewController {
         } else if changed == notificationsSwitch {
             SettingValues.notifications = changed.isOn
             UserDefaults.standard.set(changed.isOn, forKey: SettingValues.pref_notifications)
-            if changed.isOn, #available(iOS 10.0, *) {
+            let appDelegate = UIApplication.shared.delegate as? AppDelegate
+
+            if changed.isOn {
                 UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
                     if let error = error {
                         slideLog(error.localizedDescription)
-                    } else {
-                        DispatchQueue.main.async {
-                            self.notificationsSwitch.isOn = granted
-                            SettingValues.notifications = granted
-                            UserDefaults.standard.set(granted, forKey: SettingValues.pref_notifications)
-                            
-                            let appDelegate = UIApplication.shared.delegate as? AppDelegate
-                            if SettingValues.notifications {
-                                appDelegate?.scheduleMessageRefresh()
-                            } else {
-                                appDelegate?.cancelMessageRefresh()
-                            }
+                    }
+                    DispatchQueue.main.async {
+                        // Authorisation failing, or being declined, leaves the setting off
+                        // rather than on-with-no-permission.
+                        self.notificationsSwitch.isOn = granted
+                        SettingValues.notifications = granted
+                        UserDefaults.standard.set(granted, forKey: SettingValues.pref_notifications)
+
+                        if granted {
+                            appDelegate?.scheduleMessageRefresh()
+                        } else {
+                            appDelegate?.cancelMessageRefresh()
                         }
                     }
                 }
+            } else {
+                // Switching off has to cancel the scheduled refresh. Previously this
+                // whole block sat inside `if changed.isOn`, so turning notifications off
+                // saved the preference and left background work scheduled.
+                appDelegate?.cancelMessageRefresh()
             }
         } else if changed == pinToolbarSwitch {
             SettingValues.dontHideTopBar = !changed.isOn
