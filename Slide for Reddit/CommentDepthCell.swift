@@ -1338,7 +1338,11 @@ class CommentDepthCell: MarginedTableViewCell, UIViewControllerPreviewingDelegat
         }))
 
         actions.append(AlertMenuAction(title: "Share comment permalink", icon: UIImage(sfString: SFSymbol.link, overrideString: "link")!.menuIcon(), action: {
-            let activityViewController = UIActivityViewController(activityItems: [URL(string: "\(self.comment!.permalink)?context=5") ?? URL(string: "about://blank")], applicationActivities: nil)
+            // Both operands of the old `??` were optional, so the array element was an
+            // Optional<URL> coerced to Any — meaning a nil could be handed to the share
+            // sheet. Fall back to a URL that is known to parse.
+            let permalink = URL(string: "\(self.comment!.permalink)?context=5") ?? URL(string: "about://blank")!
+            let activityViewController = UIActivityViewController(activityItems: [permalink], applicationActivities: nil)
             if let presenter = activityViewController.popoverPresentationController {
                 presenter.sourceView = self.moreButton
                 presenter.sourceRect = self.moreButton.bounds

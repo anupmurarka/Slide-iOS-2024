@@ -3173,11 +3173,12 @@ class CommentViewController: MediaViewController, UITableViewDelegate, UITableVi
                                             
                                             var queue: [RedditObject] = []
                                             for i in self.extendForMore(parentID: more.parentID, comments: list, current: startDepth) {
-                                                if let item = i.0 is Comment ? CommentObject.commentToCommentObject(comment: i.0 as! Comment, depth: i.1) : MoreObject.moreToMoreObject(more: i.0 as! More) as? RedditObject {
-                                                    queue.append(item)
-                                                    self.cDepth[item.getId()] = i.1
-                                                    self.updateStrings([i])
-                                                }
+                                                let item: RedditObject = i.0 is Comment
+                                                    ? CommentObject.commentToCommentObject(comment: i.0 as! Comment, depth: i.1)
+                                                    : MoreObject.moreToMoreObject(more: i.0 as! More)
+                                                queue.append(item)
+                                                self.cDepth[item.getId()] = i.1
+                                                self.updateStrings([i])
                                             }
                                             
                                             var realPosition = 0
