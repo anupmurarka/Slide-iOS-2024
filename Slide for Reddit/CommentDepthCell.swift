@@ -2682,7 +2682,13 @@ extension CommentDepthCell: UIContextMenuInteractionDelegate {
             parentCell.content = comment
             parentCell.isUserInteractionEnabled = false
 
-            let cardWidth = UIScreen.main.bounds.size.width * 0.85
+            // UIKit scales a context menu preview down to fit a maximum width of 343pt,
+            // preserving its aspect ratio, and the scroll view then clips the content to
+            // the top-left of what is left. On an iPad, width * 0.85 is around 1200pt, so
+            // a 74pt card was rendered 343x21 — tall enough for the comment's header line
+            // and nothing else. Measured across 300/343/420/500/877pt in a standalone
+            // harness: 343 is the largest width that is not shrunk.
+            let cardWidth = min(UIScreen.main.bounds.size.width * 0.85, 343)
 
             // Give the *cell* its width and lay it out first: it is built outside a table,
             // so otherwise its frame stays at the default 320x44 and nothing below it has
