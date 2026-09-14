@@ -2680,12 +2680,31 @@ extension CommentDepthCell: UIContextMenuInteractionDelegate {
             parentCell.content = comment
             parentCell.contentView.isUserInteractionEnabled = false
 
-            var size: CGSize!
-            if let height = parentCell.title.attributedText?.height(containerWidth: UIScreen.main.bounds.size.width * 0.85) {
-                size = CGSize(width: UIScreen.main.bounds.size.width * 0.85, height: parentCell.commentBody.estimatedHeight + 24 + height)
-            } else {
-                size = CGSize(width: UIScreen.main.bounds.size.width * 0.85, height: parentCell.commentBody.estimatedHeight + 24)
+            let cardWidth = UIScreen.main.bounds.size.width * 0.85
+
+            // Measure the cell's own layout rather than re-deriving its height from
+            // commentBody.estimatedHeight. That estimate is only ever exercised here —
+            // every other CommentDepthCell runs with ignoreHeight = true and self-sizes —
+            // and it came out small enough to clip the card to about one line of text.
+            // Kept below as a floor so this can never be worse than the old arithmetic.
+            let content = parentCell.contentView
+            content.translatesAutoresizingMaskIntoConstraints = false
+            let widthConstraint = content.widthAnchor.constraint(equalToConstant: cardWidth)
+            widthConstraint.isActive = true
+            content.setNeedsLayout()
+            content.layoutIfNeeded()
+            let measuredHeight = content.systemLayoutSizeFitting(
+                CGSize(width: cardWidth, height: UIView.layoutFittingCompressedSize.height),
+                withHorizontalFittingPriority: .required,
+                verticalFittingPriority: .fittingSizeLevel).height
+            widthConstraint.isActive = false
+
+            var estimatedHeight = parentCell.commentBody.estimatedHeight + 24
+            if let titleHeight = parentCell.title.attributedText?.height(containerWidth: cardWidth) {
+                estimatedHeight += titleHeight
             }
+
+            let size = CGSize(width: cardWidth, height: max(measuredHeight, estimatedHeight))
 
             let detailViewController = ParentCommentViewController(view: parentCell.contentView, size: size)
             detailViewController.preferredContentSize = CGSize(width: size.width, height: min(size.height, 300))
