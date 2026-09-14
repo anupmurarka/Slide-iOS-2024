@@ -2658,55 +2658,67 @@ extension CommentDepthCell: UIContextMenuInteractionDelegate {
         let parentCell = CommentDepthCell(style: .default, reuseIdentifier: "test")
         
         if let comment = contents as? CommentObject {
-            parentCell.contentView.layer.cornerRadius = 10
-            parentCell.contentView.clipsToBounds = true
+            // Rounded on the cell rather than its content view: the cell is what gets
+            // handed to the preview controller, so that nothing constrains a content view
+            // UIKit owns.
+            parentCell.layer.cornerRadius = 10
+            parentCell.clipsToBounds = true
             parentCell.commentBody.ignoreHeight = false
             parentCell.commentBody.estimatedWidth = UIScreen.main.bounds.size.width * 0.85 - 36
+            var commentText = commentParent.text[comment.id] ?? NSAttributedString()
             if contents is CommentObject {
                 var count = 0
                 let hiddenP = commentParent.hiddenPersons.contains(comment.id)
                 if hiddenP {
                     count = commentParent.getChildNumber(n: comment.id)
                 }
-                var t = commentParent.text[comment.id]!
                 if commentParent.isSearching {
-                    t = commentParent.highlight(t)
+                    commentText = commentParent.highlight(commentText)
                 }
                 
-                parentCell.setComment(comment: contents as! CommentObject, depth: 0, parent: commentParent, hiddenCount: count, date: commentParent.lastSeen, author: commentParent.submission?.author, text: t, isCollapsed: hiddenP, parentOP: "", depthColors: commentParent.commentDepthColors, indexPath: indexPath, width: UIScreen.main.bounds.size.width * 0.85)
+                parentCell.setComment(comment: contents as! CommentObject, depth: 0, parent: commentParent, hiddenCount: count, date: commentParent.lastSeen, author: commentParent.submission?.author, text: commentText, isCollapsed: hiddenP, parentOP: "", depthColors: commentParent.commentDepthColors, indexPath: indexPath, width: UIScreen.main.bounds.size.width * 0.85)
             } else {
                 parentCell.setMore(more: (contents as! MoreObject), depth: commentParent.cDepth[comment.id]!, depthColors: commentParent.commentDepthColors, parent: commentParent)
             }
             parentCell.content = comment
-            parentCell.contentView.isUserInteractionEnabled = false
+            parentCell.isUserInteractionEnabled = false
 
             let cardWidth = UIScreen.main.bounds.size.width * 0.85
 
-            // Measure the cell's own layout rather than re-deriving its height from
-            // commentBody.estimatedHeight. That estimate is only ever exercised here —
-            // every other CommentDepthCell runs with ignoreHeight = true and self-sizes —
-            // and it came out small enough to clip the card to about one line of text.
-            // Kept below as a floor so this can never be worse than the old arithmetic.
-            let content = parentCell.contentView
-            content.translatesAutoresizingMaskIntoConstraints = false
-            let widthConstraint = content.widthAnchor.constraint(equalToConstant: cardWidth)
-            widthConstraint.isActive = true
-            content.setNeedsLayout()
-            content.layoutIfNeeded()
-            let measuredHeight = content.systemLayoutSizeFitting(
+            // Give the *cell* its width and lay it out first: it is built outside a table,
+            // so otherwise its frame stays at the default 320x44 and nothing below it has
+            // a real width to lay out against. Do not touch
+            // contentView.translatesAutoresizingMaskIntoConstraints to achieve that —
+            // UIKit owns it on a cell and logs "not supported ... undefined behavior".
+            parentCell.bounds = CGRect(x: 0, y: 0, width: cardWidth, height: parentCell.bounds.height)
+            parentCell.setNeedsLayout()
+            parentCell.layoutIfNeeded()
+
+            // Pass the target width at required priority rather than using plain
+            // layoutFittingCompressedSize, which compresses the width too and so asks the
+            // text views for their height at the wrong width — measured a comment 35%
+            // short in a standalone harness.
+            let measuredHeight = parentCell.contentView.systemLayoutSizeFitting(
                 CGSize(width: cardWidth, height: UIView.layoutFittingCompressedSize.height),
                 withHorizontalFittingPriority: .required,
                 verticalFittingPriority: .fittingSizeLevel).height
-            widthConstraint.isActive = false
 
-            var estimatedHeight = parentCell.commentBody.estimatedHeight + 24
-            if let titleHeight = parentCell.title.attributedText?.height(containerWidth: cardWidth) {
-                estimatedHeight += titleHeight
-            }
+            // Floor, derived straight from the text rather than from
+            // commentBody.estimatedHeight. That property is only populated when
+            // ignoreHeight is false, and this preview is its only caller in the app —
+            // every CommentDepthCell in the table runs with it true and self-sizes — so
+            // it has nothing keeping it honest. The title and body strings are the same
+            // ones the cell was just given.
+            let titleHeight = parentCell.title.attributedText?.height(containerWidth: cardWidth) ?? 0
+            let bodyHeight = commentText.height(containerWidth: cardWidth - 36)
+            let estimatedHeight = titleHeight + bodyHeight + 24
 
             let size = CGSize(width: cardWidth, height: max(measuredHeight, estimatedHeight))
 
-            let detailViewController = ParentCommentViewController(view: parentCell.contentView, size: size)
+            // The whole cell, not its content view. Re-parenting a cell's content view
+            // means constraining it, which UIKit rejects as undefined behavior, and it
+            // left the cell itself unreferenced and free to deallocate underneath.
+            let detailViewController = ParentCommentViewController(view: parentCell, size: size)
             detailViewController.preferredContentSize = CGSize(width: size.width, height: min(size.height, 300))
 
             // Belt and braces alongside willEndFor, which covers the case where the
