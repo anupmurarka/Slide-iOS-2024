@@ -2410,17 +2410,21 @@ extension CommentDepthCell: UIContextMenuInteractionDelegate {
     }
     
     func createPreview(_ interaction: UIContextMenuInteraction, configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
-        let parameters = UIPreviewParameters()
-        parameters.backgroundColor = .clear
+        let location = interaction.location(in: self.contentView)
+        if self.contentView.convert(self.sideViewSpace.frame, to: self.contentView).contains(location)
+            || self.contentView.convert(self.sideView.frame, to: self.contentView).contains(location) {
+            // The depth bar is a 4-8pt sliver. Targeting a snapshot of the whole cell at
+            // it, on a clear platter, drew this comment's own text over the thread with no
+            // background for as long as the press lasted. Returning nil lets UIKit
+            // highlight the cell the ordinary way.
+            return nil
+        }
+
         guard let snapshot = self.snapshotView(afterScreenUpdates: false) else {
               return nil
         }
-        let location = interaction.location(in: self.contentView)
-        if self.contentView.convert(self.sideViewSpace.frame, to: self.contentView).contains(location) {
-            return UITargetedPreview(view: snapshot, parameters: parameters, target: UIPreviewTarget(container: self.sideViewSpace, center: self.sideViewSpace.center))
-        } else if self.contentView.convert(self.sideView.frame, to: self.contentView).contains(location) {
-            return UITargetedPreview(view: snapshot, parameters: parameters, target: UIPreviewTarget(container: self.sideView, center: self.sideView.center))
-        } else if self.contentView.convert(self.title.frame, to: self.contentView).contains(location) {
+
+        if self.contentView.convert(self.title.frame, to: self.contentView).contains(location) {
             return createRectsTargetedPreview(textView: self.title, location: location, snapshot: snapshot)
         } else if self.commentBody.convert(self.commentBody.firstTextView.frame, to: self.contentView).contains(location) {
             return createRectsTargetedPreview(textView: self.commentBody.firstTextView, location: location, snapshot: snapshot)
@@ -2658,11 +2662,6 @@ extension CommentDepthCell: UIContextMenuInteractionDelegate {
         let parentCell = CommentDepthCell(style: .default, reuseIdentifier: "test")
         
         if let comment = contents as? CommentObject {
-            // Rounded on the cell rather than its content view: the cell is what gets
-            // handed to the preview controller, so that nothing constrains a content view
-            // UIKit owns.
-            parentCell.layer.cornerRadius = 10
-            parentCell.clipsToBounds = true
             parentCell.commentBody.ignoreHeight = false
             parentCell.commentBody.estimatedWidth = UIScreen.main.bounds.size.width * 0.85 - 36
             var commentText = commentParent.text[comment.id] ?? NSAttributedString()
@@ -2715,10 +2714,22 @@ extension CommentDepthCell: UIContextMenuInteractionDelegate {
 
             let size = CGSize(width: cardWidth, height: max(measuredHeight, estimatedHeight))
 
-            // The whole cell, not its content view. Re-parenting a cell's content view
-            // means constraining it, which UIKit rejects as undefined behavior, and it
-            // left the cell itself unreferenced and free to deallocate underneath.
-            let detailViewController = ParentCommentViewController(view: parentCell, size: size)
+            // Hand the preview controller a plain container, not the cell and not its
+            // content view. The controller constrains whatever it is given, and UIKit
+            // rejects that on both a cell ("will result in incorrect self-sizing", which
+            // left the card stuck at the cell's default 44pt) and on a cell's content view
+            // ("undefined behavior"). A plain view takes constraints happily; the cell
+            // inside it just gets a frame and an autoresizing mask, and stays referenced
+            // rather than deallocating out from under the card.
+            let container = UIView(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+            container.backgroundColor = UIColor.foregroundColor
+            container.layer.cornerRadius = 10
+            container.clipsToBounds = true
+            parentCell.frame = container.bounds
+            parentCell.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            container.addSubview(parentCell)
+
+            let detailViewController = ParentCommentViewController(view: container, size: size)
             detailViewController.preferredContentSize = CGSize(width: size.width, height: min(size.height, 300))
 
             // Belt and braces alongside willEndFor, which covers the case where the
